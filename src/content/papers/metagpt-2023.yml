@@ -1,0 +1,24 @@
+id: metagpt-2023
+title: "MetaGPT: Meta Programming for a Multi-Agent Collaborative Framework"
+authors: [Sirui Hong, Mingchen Zhuge, Jonathan Chen, Xiawu Zheng, Yuheng Cheng, Ceyao Zhang, Jinlin Wang, Zili Wang, Steven Ka Shing Yau, Zijuan Lin, Liyang Zhou, Chenyu Ran, Lingfeng Xiao, Chenglin Wu, Juergen Schmidhuber]
+year: 2023
+venue: "ICLR 2024"
+arxiv: "2308.00352"
+links:
+  paper: https://arxiv.org/abs/2308.00352
+  code: https://github.com/geekan/MetaGPT
+
+area: multi-agent
+topics: [roles, agent-organizations, collaboration, orchestration]
+capability: [planning, reasoning]
+level: [multi-agent]
+type: [framework, method]
+infra: []
+domain: [software-engineering]
+
+status: read
+tldr: "Codifica procedimientos operativos de una empresa de software como roles de agente encadenados por artefactos estructurados en vez de diálogo libre."
+notes: "El artefacto intermedio como interfaz entre agentes reduce la propagación de errores. Es una hipótesis concreta y medible: buen caso de prueba para U-Eval."
+relates_to: [autogen-2023]
+evaluated_on: [agentbench-2023]
+added: 2026-08-21

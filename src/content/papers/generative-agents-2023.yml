@@ -1,0 +1,24 @@
+id: generative-agents-2023
+title: "Generative Agents: Interactive Simulacra of Human Behavior"
+authors: [Joon Sung Park, Joseph C. O'Brien, Carrie J. Cai, Meredith Ringel Morris, Percy Liang, Michael S. Bernstein]
+year: 2023
+venue: "UIST 2023"
+arxiv: "2304.03442"
+links:
+  paper: https://arxiv.org/abs/2304.03442
+  code: https://github.com/joonspk-research/generative_agents
+
+area: memory
+topics: [long-term-memory, memory-retrieval, memory-consolidation, societies]
+capability: [memory, reflection, planning]
+level: [multi-agent]
+type: [method, case-study]
+infra: []
+domain: [general]
+
+status: read
+tldr: "Arquitectura de memoria con stream de observaciones, recuperación ponderada por relevancia-recencia-importancia y síntesis periódica en reflexiones."
+notes: "El componente de reflexión es una consolidación de memoria, no un mecanismo de razonamiento. Vale la pena distinguirlo de Reflexion, que ocupa otro nivel."
+relates_to: [reflexion-2023]
+evaluated_on: []
+added: 2026-08-21

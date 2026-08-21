@@ -1,0 +1,45 @@
+name: Add a Paper
+description: Submit a new paper to the repository using BibTeX
+title: "[Paper]: "
+labels: ["paper"]
+body:
+  - type: markdown
+    attributes:
+      value: "Thanks for contributing! Paste the BibTeX below and we will automatically create a Pull Request."
+  - type: input
+    id: paper_link
+    attributes:
+      label: Link to the paper
+      description: URL to arXiv, OpenReview, ACL Anthology, etc.
+      placeholder: https://arxiv.org/abs/...
+    validations:
+      required: true
+  - type: textarea
+    id: bibtex
+    attributes:
+      label: BibTeX
+      description: Paste the full BibTeX citation here.
+      placeholder: |
+        @article{...
+        }
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: What is the primary area of this paper?
+      options:
+        - foundations
+        - architectures
+        - reasoning-planning
+        - memory
+        - tools-context
+        - multi-agent
+        - interoperability
+        - learning-evolution
+        - engineering
+        - evaluation
+        - safety
+    validations:
+      required: true

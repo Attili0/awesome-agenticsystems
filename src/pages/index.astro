@@ -1,0 +1,320 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const papers = await getCollection('papers');
+
+// Sort papers by year descending, then alphabetically
+papers.sort((a, b) => {
+  if (b.data.year !== a.data.year) {
+    return (b.data.year || 0) - (a.data.year || 0);
+  }
+  return a.data.title.localeCompare(b.data.title);
+});
+---
+
+<Layout title="All Papers | Awesome Agentic Systems">
+    <div class="page-header">
+        <h2>All Papers</h2>
+        <div class="search-container">
+            <form id="global-search-form" action="" method="GET">
+                <input type="search" name="q" id="global-search-input" placeholder="Search across all papers..." aria-label="Search papers" />
+            </form>
+        </div>
+        <p class="subtitle">Showing {papers.length} papers, sorted by newest.</p>
+    </div>
+
+    <div class="feed">
+        {papers.map(paper => (
+            <article class="feed-card">
+                <div class="card-header">
+                    <h3><a href={`/awesome-agenticsystems/papers/${paper.data.id}`}>{paper.data.title}</a></h3>
+                    <div class="meta">
+                        <span class="year">{paper.data.year}</span>
+                        {paper.data.venue && <span class="venue"> • {paper.data.venue}</span>}
+                    </div>
+                </div>
+                
+                <div class="authors">
+                    {paper.data.authors.join(', ')}
+                </div>
+                
+                {paper.data.tldr && (
+                    <div class="tldr">
+                        <p>{paper.data.tldr}</p>
+                    </div>
+                )}
+                
+                <div class="tags">
+                    <a href={`/awesome-agenticsystems/areas/${paper.data.area}`} class="tag area-tag">{paper.data.area}</a>
+                    {paper.data.topics.slice(0, 3).map((t: string) => (
+                        <span class="tag">{t}</span>
+                    ))}
+                    {paper.data.topics.length > 3 && <span class="tag more-tag">+{paper.data.topics.length - 3} more</span>}
+                </div>
+                
+                <div class="actions">
+                    <a href={paper.data.links.paper} target="_blank" class="action-btn">Read Paper ↗</a>
+                    <a href={`/awesome-agenticsystems/papers/${paper.data.id}`} class="action-btn outline">Details</a>
+                </div>
+            </article>
+        ))}
+    </div>
+</Layout>
+
+<style>
+    .page-header {
+        margin-bottom: 32px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .page-header h2 {
+        font-size: 2rem;
+        margin-bottom: 0;
+    }
+
+    .subtitle {
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        margin: 0;
+    }
+
+    .search-container {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .search-container form {
+        display: flex;
+        width: 100%;
+    }
+
+    .search-container input {
+        width: 100%;
+        padding: 10px 16px;
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-main);
+        font-size: 0.95rem;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-container input:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
+    }
+
+    .feed {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .feed-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 24px;
+        transition: border-color 0.2s;
+    }
+
+    .feed-card:hover {
+        border-color: var(--accent-color);
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 8px;
+    }
+
+    .card-header h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        line-height: 1.4;
+    }
+
+    .card-header h3 a {
+        color: var(--text-main);
+        text-decoration: none;
+    }
+
+    .card-header h3 a:hover {
+        color: var(--accent-color);
+    }
+
+    .meta {
+        flex-shrink: 0;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        background: rgba(139, 148, 158, 0.1);
+        padding: 4px 10px;
+        border-radius: 16px;
+    }
+
+    .year {
+        font-weight: 600;
+        color: var(--accent-color);
+    }
+
+    .authors {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        margin-bottom: 16px;
+    }
+
+    .tldr {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--text-main);
+        margin-bottom: 16px;
+    }
+
+    .tldr p {
+        margin: 0;
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .tag {
+        font-size: 0.8rem;
+        padding: 2px 10px;
+        border-radius: 12px;
+        background: rgba(139, 148, 158, 0.1);
+        color: var(--text-muted);
+        text-decoration: none;
+    }
+
+    .area-tag {
+        background: rgba(88, 166, 255, 0.1);
+        color: var(--accent-color);
+        font-weight: 500;
+    }
+
+    .area-tag:hover {
+        text-decoration: underline;
+    }
+    
+    .more-tag {
+        background: transparent;
+        border: 1px dashed var(--border-color);
+    }
+
+    .actions {
+        display: flex;
+        gap: 12px;
+        border-top: 1px solid var(--border-color);
+        padding-top: 16px;
+    }
+
+    .action-btn {
+        font-size: 0.9rem;
+        padding: 6px 14px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .action-btn:not(.outline) {
+        background: var(--accent-color);
+        color: #000;
+    }
+
+    .action-btn:not(.outline):hover {
+        background: #3a82f6;
+    }
+
+    .action-btn.outline {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+    }
+
+    .action-btn.outline:hover {
+        border-color: var(--text-main);
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .hidden {
+        display: none !important;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const searchInput = document.getElementById('global-search-input') as HTMLInputElement;
+        const searchForm = document.getElementById('global-search-form') as HTMLFormElement;
+        const feedCards = document.querySelectorAll('.feed-card');
+        const subtitle = document.querySelector('.page-header .subtitle');
+        const totalPapers = feedCards.length;
+
+        function filterPapers(query: string) {
+            const q = query.toLowerCase().trim();
+            let visibleCount = 0;
+
+            feedCards.forEach((card) => {
+                const el = card as HTMLElement;
+                const text = el.innerText.toLowerCase();
+                
+                if (text.includes(q)) {
+                    el.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    el.classList.add('hidden');
+                }
+            });
+
+            if (subtitle) {
+                if (q) {
+                    subtitle.textContent = `Showing ${visibleCount} results for "${query}" (out of ${totalPapers})`;
+                } else {
+                    subtitle.textContent = `Showing ${totalPapers} papers, sorted by newest.`;
+                }
+            }
+        }
+
+        // Initialize from URL query param
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q');
+        if (query && searchInput) {
+            searchInput.value = query;
+            filterPapers(query);
+        }
+
+        if (searchInput && searchForm) {
+            // Live filtering
+            searchInput.addEventListener('input', (e) => {
+                const val = (e.target as HTMLInputElement).value;
+                filterPapers(val);
+                
+                // Update URL without reload
+                const newUrl = new URL(window.location.href);
+                if (val) {
+                    newUrl.searchParams.set('q', val);
+                } else {
+                    newUrl.searchParams.delete('q');
+                }
+                window.history.replaceState({}, '', newUrl.toString());
+            });
+
+            // Prevent form submission to avoid reload on the home page
+            searchForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+            });
+        }
+    });
+</script>

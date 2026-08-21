@@ -1,0 +1,115 @@
+# Fuente única de verdad del vocabulario.
+# El validador, el índice generado y (más adelante) el sitio leen SOLO de acá.
+version: 1
+
+# ---------------------------------------------------------------------------
+# AREAS — un paper pertenece a EXACTAMENTE una.
+# Criterio: "¿dónde lo buscaría yo primero?". Todo lo demás va en facets/topics.
+# ---------------------------------------------------------------------------
+areas:
+  foundations:
+    label: "Foundations & surveys"
+    blurb: "Visión general del campo, surveys, taxonomías, position papers."
+    topics: [agentic-ai, llm-agents, cognitive-agents, taxonomy, open-problems]
+
+  architectures:
+    label: "Agent architectures"
+    blurb: "Cómo está construido internamente un agente."
+    topics:
+      [perceive-reason-act, modular, stateful, cognitive-architecture, agent-loop,
+       profile, persona, role-definition, perception, environment-modeling]
+
+  reasoning-planning:
+    label: "Reasoning, planning & reflection"
+    blurb: "Lo que pasa entre la entrada y la acción: razonar, planificar, criticarse."
+    topics:
+      [chain-of-thought, react, tree-of-thoughts, self-consistency,
+       task-decomposition, hierarchical-planning, plan-and-execute, replanning,
+       self-reflection, self-correction, verbal-rl, ideation, long-horizon]
+
+  memory:
+    label: "Memory"
+    blurb: "Qué recuerda el agente y cómo lo recupera."
+    topics:
+      [working-memory, episodic-memory, semantic-memory, procedural-memory,
+       long-term-memory, memory-retrieval, memory-consolidation, forgetting]
+
+  tools-context:
+    label: "Tools, environment & context"
+    blurb: "Cómo el agente actúa sobre el mundo y de dónde saca contexto."
+    topics:
+      [tool-use, function-calling, code-execution, web-agents, computer-use,
+       gui-agents, rag, graph-rag, knowledge-graph, context-engineering, sandboxing,
+       agentic-search, skills, mcp-tools]
+
+  multi-agent:
+    label: "Multi-agent systems"
+    blurb: "Varios agentes: arquitectura, roles y cómo interactúan."
+    topics:
+      [mas-architecture, roles, agent-organizations, societies,
+       communication, coordination, collaboration, competition, negotiation,
+       emergent-behavior, orchestration]
+
+  interoperability:
+    label: "Interoperability & protocols"
+    blurb: "Estándares que permiten que agentes y herramientas se descubran y hablen."
+    topics: [mcp, a2a, agent-discovery, capability-description, agent-protocols]
+
+  learning-evolution:
+    label: "Learning, skills & self-evolution"
+    blurb: "Cambios que persisten ENTRE tareas: skills, experiencia, tuning."
+    topics:
+      [self-evolution, skill-learning, skill-library, skill-discovery,
+       agent-tuning, experience-learning, lifelong-learning, curriculum]
+
+  engineering:
+    label: "Harness, scaffolding & AgentOps"
+    blurb: "El sustrato de runtime alrededor del modelo, y su operación."
+    topics:
+      [harness, scaffolding, observability, tracing, debugging, deployment,
+       agent-ops, cost-efficiency, failure-attribution, runtime-patterns]
+
+  evaluation:
+    label: "Evaluation & benchmarks"
+    blurb: "Cómo se mide un agente o un sistema multi-agente."
+    topics:
+      [agent-evaluation, mas-evaluation, benchmark-design, llm-as-a-judge,
+       process-vs-outcome, failure-analysis, reproducibility, safety-evaluation]
+
+  safety:
+    label: "Safety, trust & governance"
+    blurb: "Riesgos, seguridad, confianza y control."
+    topics: [alignment, security, prompt-injection, trust, explainability, governance]
+
+# ---------------------------------------------------------------------------
+# FACETAS — transversales. Cortan cualquier área. Un paper puede tener varias.
+# ---------------------------------------------------------------------------
+facets:
+  capability: [reasoning, planning, memory, reflection, tool-use, learning,
+               perception, search, self-evolution]
+  level:      [single-agent, multi-agent, human-agent]
+  interaction: [communication, coordination, collaboration, negotiation]
+  infra:      [mcp, a2a, rag, knowledge-graph, sandbox, api]
+  type:       [survey, position, method, benchmark, framework, empirical, case-study]
+  domain:     [general, software-engineering, data, science, research, education,
+               healthcare, business, finance, enterprise,
+               embodied, robotics, gui, web, mobile]
+
+# ---------------------------------------------------------------------------
+# ESTADOS — un paper avanza; nunca bloquea la carga.
+# ---------------------------------------------------------------------------
+# featured: true marca un paper para la seccion de destacados del mes.
+
+status:
+  - captured   # solo metadata automática, sin clasificar
+  - triaged    # tiene area + level + type. Ya aparece en el índice.
+  - read       # tiene tldr, notes, capability, topics
+
+# ---------------------------------------------------------------------------
+# REGLAS DE CRECIMIENTO — para no rediseñar la taxonomía por impulso.
+# ---------------------------------------------------------------------------
+rules:
+  # Un area con más de N papers se parte en dos.
+  split_area_at: 25
+  # Un topic con más de N papers se promueve a area propia.
+  promote_topic_at: 10

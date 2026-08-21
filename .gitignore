@@ -1,0 +1,18 @@
+# node_modules
+node_modules/
+
+# astro
+dist/
+.astro/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db

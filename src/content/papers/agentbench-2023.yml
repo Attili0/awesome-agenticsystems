@@ -1,0 +1,25 @@
+id: agentbench-2023
+title: "AgentBench: Evaluating LLMs as Agents"
+authors: [Xiao Liu, Hao Yu, Hanchen Zhang, Yifan Xu, Xuanyu Lei, Hanyu Lai, Yu Gu, Hangliang Ding, Kaiwen Men, Kejuan Yang, Shudan Zhang, Xiang Deng, Aohan Zeng, Zhengxiao Du, Chenhui Zhang, Sheng Shen, Tianjun Zhang, Yu Su, Huan Sun, Minlie Huang, Yuxiao Dong, Jie Tang]
+year: 2023
+venue: "ICLR 2024"
+arxiv: "2308.03688"
+links:
+  paper: https://arxiv.org/abs/2308.03688
+  code: https://github.com/THUDM/AgentBench
+
+area: evaluation
+topics: [agent-evaluation, benchmark-design]
+capability: [reasoning, planning, tool-use]
+level: [single-agent]
+type: [benchmark]
+infra: [sandbox]
+domain: [general]
+
+featured: true
+status: read
+tldr: "Reúne ocho entornos interactivos heterogéneos para medir agentes en tareas de múltiples turnos bajo un protocolo común."
+notes: "Todo single-agent: confirma el hueco de evaluación de MAS que motiva la tesis. Útil como línea base de comparación y como ejemplo de agregación de entornos heterogéneos bajo una métrica única, decisión que vale la pena discutir."
+relates_to: [tau-bench-2024]
+evaluated_on: []
+added: 2026-08-21

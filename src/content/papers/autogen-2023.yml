@@ -1,0 +1,24 @@
+id: autogen-2023
+title: "AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation"
+authors: [Qingyun Wu, Gagan Bansal, Jieyu Zhang, Yiran Wu, Beibin Li, Erkang Zhu, Li Jiang, Xiaoyun Zhang, Shaokun Zhang, Jiale Liu, Ahmed Awadallah, Ryen W. White, Doug Burger, Chi Wang]
+year: 2023
+venue: "arXiv preprint"
+arxiv: "2308.08155"
+links:
+  paper: https://arxiv.org/abs/2308.08155
+  code: https://github.com/microsoft/autogen
+
+area: multi-agent
+topics: [mas-architecture, communication, orchestration, roles]
+capability: [tool-use, reasoning]
+level: [multi-agent, human-agent]
+type: [framework]
+infra: [sandbox]
+domain: [general]
+
+status: read
+tldr: "Modela la aplicación como una conversación entre agentes configurables, con humanos y ejecución de código como participantes de primera clase."
+notes: "Es framework, no evidencia empírica. Cuando exista ecosystem/, la entrada de software va allá y esta ficha se queda solo con el paper."
+relates_to: [metagpt-2023]
+evaluated_on: []
+added: 2026-08-21

@@ -1,0 +1,24 @@
+id: tree-of-thoughts-2023
+title: "Tree of Thoughts: Deliberate Problem Solving with Large Language Models"
+authors: [Shunyu Yao, Dian Yu, Jeffrey Zhao, Izhak Shafran, Thomas L. Griffiths, Yuan Cao, Karthik Narasimhan]
+year: 2023
+venue: "NeurIPS 2023"
+arxiv: "2305.10601"
+links:
+  paper: https://arxiv.org/abs/2305.10601
+  code: https://github.com/princeton-nlp/tree-of-thought-llm
+
+area: reasoning-planning
+topics: [tree-of-thoughts, chain-of-thought, task-decomposition]
+capability: [reasoning, planning]
+level: [single-agent]
+type: [method]
+infra: []
+domain: [general]
+
+status: read
+tldr: "Explora varios caminos de razonamiento en paralelo y los poda con autoevaluación, en vez de comprometerse con una única cadena lineal."
+notes: "Introduce costo de cómputo variable por tarea, lo que rompe las comparaciones de benchmark que asumen una llamada por instancia."
+relates_to: [react-2022]
+evaluated_on: []
+added: 2026-08-21

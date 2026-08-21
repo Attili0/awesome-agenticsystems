@@ -1,0 +1,140 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import fs from 'node:fs';
+import path from 'node:path';
+import yaml from 'js-yaml';
+
+const taxonomyRaw = fs.readFileSync(path.join(process.cwd(), 'src/data/taxonomy.yml'), 'utf-8');
+const taxonomy = yaml.load(taxonomyRaw) as any;
+const facets = taxonomy.facets;
+
+// Aggregate topics from areas
+const topics = new Set<string>();
+Object.values(taxonomy.areas).forEach((area: any) => {
+    if (area.topics) {
+        area.topics.forEach((t: string) => topics.add(t));
+    }
+});
+
+const papers = await getCollection('papers');
+
+function getCount(field: string, value: string) {
+    if (field === 'topic') {
+        return papers.filter(p => p.data.topics?.includes(value)).length;
+    }
+    return papers.filter(p => (p.data as any)[field]?.includes(value)).length;
+}
+---
+
+<Layout title="Taxonomy | Awesome Agentic Systems">
+    <div class="page-header">
+        <h2>Taxonomy Graph</h2>
+        <p class="subtitle">Explore the cross-cutting dimensions used to categorize the literature.</p>
+    </div>
+
+    <div class="taxonomy-container">
+        
+        <div class="facet-group">
+            <h3>Topics</h3>
+            <p class="facet-desc">Specific technical subjects or methods identified across areas.</p>
+            <div class="tags">
+                {Array.from(topics).sort().map(topic => {
+                    const count = getCount('topic', topic);
+                    return count > 0 ? (
+                        <div class="tag-wrapper">
+                            <span class="tag">{topic}</span>
+                            <span class="count">{count}</span>
+                        </div>
+                    ) : null;
+                })}
+            </div>
+        </div>
+
+        {Object.entries(facets).map(([facetKey, facetValues]: [string, any]) => (
+            <div class="facet-group">
+                <h3 style="text-transform: capitalize;">{facetKey}</h3>
+                <div class="tags">
+                    {facetValues.map((val: string) => {
+                        const count = getCount(facetKey, val);
+                        return count > 0 ? (
+                            <div class="tag-wrapper">
+                                <span class="tag">{val}</span>
+                                <span class="count">{count}</span>
+                            </div>
+                        ) : null;
+                    })}
+                </div>
+            </div>
+        ))}
+        
+    </div>
+</Layout>
+
+<style>
+    .page-header {
+        margin-bottom: 32px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .page-header h2 {
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+
+    .subtitle {
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        margin: 0;
+    }
+
+    .taxonomy-container {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        margin-bottom: 60px;
+    }
+
+    .facet-group h3 {
+        font-size: 1.4rem;
+        color: var(--accent-color);
+        margin-bottom: 8px;
+    }
+
+    .facet-desc {
+        color: var(--text-muted);
+        margin-bottom: 16px;
+        font-size: 0.95rem;
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .tag-wrapper {
+        display: flex;
+        align-items: center;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .tag {
+        padding: 4px 12px;
+        font-size: 0.9rem;
+        color: var(--text-main);
+    }
+
+    .count {
+        background: rgba(88, 166, 255, 0.1);
+        color: var(--accent-color);
+        padding: 4px 10px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-left: 1px solid var(--border-color);
+    }
+</style>

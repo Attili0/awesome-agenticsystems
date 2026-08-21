@@ -1,0 +1,115 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import fs from 'node:fs';
+import path from 'node:path';
+import yaml from 'js-yaml';
+
+const taxonomyRaw = fs.readFileSync(path.join(process.cwd(), 'src/data/taxonomy.yml'), 'utf-8');
+const taxonomy = yaml.load(taxonomyRaw) as any;
+const areas = taxonomy.areas;
+
+const papers = await getCollection('papers');
+
+// Group papers by area
+const papersByArea: Record<string, any[]> = {};
+papers.forEach(paper => {
+  if (!papersByArea[paper.data.area]) {
+    papersByArea[paper.data.area] = [];
+  }
+  papersByArea[paper.data.area].push(paper);
+});
+---
+
+<Layout title="Areas | Awesome Agentic Systems">
+    <div class="page-header">
+        <h2>Areas Overview</h2>
+        <p class="subtitle">Browse {papers.length} papers categorized across {Object.keys(areas).length} fundamental areas of Agentic AI.</p>
+    </div>
+
+    <section class="areas-grid">
+        {Object.entries(areas).map(([areaKey, areaData]: [string, any]) => (
+            <a href={`/awesome-agenticsystems/areas/${areaKey}`} class="area-card">
+                <h3>{areaData.label}</h3>
+                <p>{areaData.blurb}</p>
+                <div class="stats">
+                    <span class="count">{papersByArea[areaKey]?.length || 0} papers</span>
+                </div>
+            </a>
+        ))}
+    </section>
+</Layout>
+
+<style>
+    .page-header {
+        margin-bottom: 32px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .page-header h2 {
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+
+    .subtitle {
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        margin: 0;
+    }
+
+    .areas-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        margin-bottom: 60px;
+    }
+
+    .area-card {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 24px;
+        transition: transform 0.2s, border-color 0.2s;
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+    }
+
+    .area-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--accent-color);
+        text-decoration: none;
+    }
+
+    .area-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+        color: var(--accent-color);
+    }
+
+    .area-card p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        flex-grow: 1;
+        margin-bottom: 16px;
+    }
+
+    .stats {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid var(--border-color);
+        padding-top: 12px;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    .count {
+        background: rgba(88, 166, 255, 0.1);
+        color: var(--accent-color);
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-weight: 500;
+    }
+</style>

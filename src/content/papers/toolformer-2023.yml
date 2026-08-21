@@ -1,0 +1,23 @@
+id: toolformer-2023
+title: "Toolformer: Language Models Can Teach Themselves to Use Tools"
+authors: [Timo Schick, Jane Dwivedi-Yu, Roberto Dessi, Roberta Raileanu, Maria Lomeli, Luke Zettlemoyer, Nicola Cancedda, Thomas Scialom]
+year: 2023
+venue: "NeurIPS 2023"
+arxiv: "2302.04761"
+links:
+  paper: https://arxiv.org/abs/2302.04761
+
+area: tools-context
+topics: [tool-use, function-calling]
+capability: [tool-use, learning]
+level: [single-agent]
+type: [method]
+infra: [api]
+domain: [general]
+
+status: read
+tldr: "El modelo se autoanota dónde insertar llamadas a APIs y filtra las que reducen la perplejidad, aprendiendo el uso de herramientas sin supervisión humana."
+notes: "Contrasta con el enfoque dominante de tool-use por prompting: acá la capacidad queda en los pesos. Relevante para separar en la taxonomía 'tool use aprendido' de 'tool use orquestado'."
+relates_to: [react-2022]
+evaluated_on: []
+added: 2026-08-21
