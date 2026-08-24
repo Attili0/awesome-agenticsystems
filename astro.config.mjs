@@ -4,7 +4,7 @@ import pagefind from 'astro-pagefind';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://juliodosreis.github.io',
+  site: 'https://juliodosreis.com',
   base: '/awesome-agenticsystems',
   integrations: [
     sitemap(),
