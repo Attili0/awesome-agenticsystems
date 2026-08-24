@@ -1,0 +1,45 @@
+name: Fix a classification
+description: A paper is filed under the wrong area, or is missing topics/facets
+title: "[Fix]: "
+labels: ["classification"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Disagreeing about a classification is useful signal, not a complaint.
+        The area of a paper is a judgement call, and the point of writing the
+        criteria down is so that the call can be argued with.
+
+  - type: input
+    id: paper
+    attributes:
+      label: Which paper
+      description: The id (the filename without `.yml`) or the link to its page.
+      placeholder: react-2022
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+      description: >-
+        What does it say now, and what should it say? If it is about the area,
+        say which contribution you think is the main one — that is the
+        criterion.
+      placeholder: |
+        It is filed under `coordination`, but the contribution is the shared
+        memory mechanism; the multi-agent part is the setting, not the point.
+        It should be `memory` with scale: [multi-agent].
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Where in the paper does this show
+      description: >-
+        Optional, but it settles the discussion fast. A section number or a
+        quoted claim is plenty.
+    validations:
+      required: false

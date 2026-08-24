@@ -1,0 +1,13 @@
+# Blank issues stay enabled on purpose: a newcomer with a question should not
+# have to work out which template fits before being allowed to ask.
+blank_issues_enabled: true
+contact_links:
+  - name: How to pick an area
+    url: https://juliodosreis.github.io/awesome-agenticsystems/areas
+    about: The eleven areas with the rule for picking each one.
+  - name: The complete vocabulary
+    url: https://juliodosreis.github.io/awesome-agenticsystems/taxonomy
+    about: Every valid topic and facet value, with usage counts.
+  - name: Contributing guide
+    url: https://github.com/juliodosreis/awesome-agenticsystems/blob/main/CONTRIBUTING.md
+    about: How submissions work, and what the three paper states mean.

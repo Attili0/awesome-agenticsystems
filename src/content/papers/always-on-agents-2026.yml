@@ -1,0 +1,23 @@
+id: always-on-agents-2026
+title: "Always-On Agents: A Survey of Persistent Memory, State, and Governance in LLM Agents"
+authors: ["Tianyu Ding", "Aditya Nannapaneni", "Bingfan Liu", "Ling Zhang"]
+year: 2026
+arxiv: "2606.30306"
+links:
+  paper: https://arxiv.org/abs/2606.30306
+
+area: memory
+topics: [memory-consolidation, state-management, governance, agent-ops, long-horizon, taxonomy]
+about: [memory]
+scale: [single-agent]
+type: [survey]
+infra: []
+domain: [general]
+
+featured: true
+status: read
+tldr: "Reads 435 works on agents whose behaviour depends on durable state through six axes \u2014 authority, scope, mutability, provenance, recoverability, actionability \u2014 and a write-to-rollback lifecycle."
+notes: "Its headline finding is a gap in the literature rather than in a system: the field concentrates on accumulating and retrieving state far more than on governing, recovering or relinquishing it. Filed under memory, but the governance and state-management topics are what make it worth reading from the safety side."
+relates_to: []
+evaluated_on: []
+added: 2026-08-24

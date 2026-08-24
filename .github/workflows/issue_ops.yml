@@ -2,11 +2,17 @@ name: Process Paper Submission
 
 on:
   issues:
-    types: [opened]
+    # `reopened` so that fixing a rejected issue is just close-and-reopen,
+    # instead of filing a new one. That is what the error comment tells them.
+    types: [opened, reopened]
 
 permissions:
   contents: write
   pull-requests: write
+  # To report the result back to whoever opened the issue. Without this, a
+  # validation error dies in the Action logs, which the contributor does not
+  # know how (and may not be allowed) to open.
+  issues: write
 
 jobs:
   process-paper:
@@ -14,31 +20,116 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      
+        uses: actions/checkout@v5
+
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-          
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install bibtexparser
-          
+          pip install -r requirements-dev.txt
+          npm ci
+
       - name: Save Issue Body
         env:
           BODY: ${{ github.event.issue.body }}
         run: echo "$BODY" > issue_body.md
-        
+
+      # These three steps are the gate: nothing reaches a pull request without
+      # passing the parser, a real Astro build, and the test suite.
       - name: Process Issue
-        run: python scripts/process_issue.py issue_body.md
-        
+        id: process
+        run: |
+          set -o pipefail
+          python scripts/process_issue.py issue_body.md 2>&1 | tee process.log
+
+      # `npm run build` is the only proof that the generated record compiles.
+      # It runs HERE rather than in an `on: pull_request` workflow because pull
+      # requests opened with GITHUB_TOKEN do not trigger other workflows: if we
+      # waited for the PR, it would never be validated at all.
+      - name: Validate build
+        id: validate
+        run: |
+          set -o pipefail
+          npm run build 2>&1 | tee build.log
+
+      # The test suite has to run HERE for the same reason the build does: a
+      # pull request opened with GITHUB_TOKEN does not trigger `on:
+      # pull_request`, so validate.yml never runs on it. Without this step the
+      # bot's pull request would arrive with no checks at all, and the reviewer
+      # would have nothing to go on but the diff.
+      - name: Run tests
+        id: tests
+        run: |
+          set -o pipefail
+          npm test 2>&1 | tee test.log
+
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
         with:
           commit-message: "Add new paper from issue #${{ github.event.issue.number }}"
           title: "Add paper: ${{ github.event.issue.title }}"
-          body: "Closes #${{ github.event.issue.number }}\n\nAuto-generated from issue submission."
+          body: |
+            Closes #${{ github.event.issue.number }}
+
+            Generated automatically from the issue.
+
+            **Already verified** before this pull request was opened:
+            `scripts/process_issue.py` accepted the submission, `npm run build`
+            succeeded with the new record in place, and `npm test` passed.
+
+            GitHub does not run `on: pull_request` workflows for pull requests
+            opened by a bot, so those checks ran in the
+            [intake job](../actions/workflows/issue_ops.yml) rather than here.
+
+            This pull request is **not** approved or merged automatically.
+            Before merging, check by hand:
+            - [ ] `area` describes the paper's **contribution**, not the topic it discusses.
+            - [ ] `scale` reflects the scale of the system studied.
+            - [ ] It is not a duplicate of a paper already filed under a different title.
           branch: "add-paper-${{ github.event.issue.number }}"
           labels: "paper"
+
+      - name: Comment success
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ steps.cpr.outputs.pull-request-url }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" --body \
+          "Done — the record was generated, the site builds and the tests pass. The pull request is ${PR_URL}, waiting for a maintainer to review and merge it. Thanks for adding the paper."
+
+      # The reason for the failure has to reach whoever opened the issue, not
+      # the log. process_issue.py already writes actionable messages ("Valid
+      # values: ..."), so we paste them through verbatim.
+      - name: Comment failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          LOG=$(cat process.log build.log test.log 2>/dev/null | tail -30)
+          gh label create needs-fix --color D93F0B --description "Automatic intake failed; the issue needs correcting" --force || true
+          gh issue edit "${{ github.event.issue.number }}" --add-label needs-fix || true
+          gh issue comment "${{ github.event.issue.number }}" --body "$(cat <<EOF
+          I could not generate the record automatically. The reason:
+
+          \`\`\`
+          ${LOG}
+          \`\`\`
+
+          Edit the issue with the fix, then close and reopen it — that runs the
+          intake again. If the error mentions the taxonomy, the full list of
+          valid values is at
+          [\`/taxonomy\`](https://juliodosreis.github.io/awesome-agenticsystems/taxonomy).
+          EOF
+          )"

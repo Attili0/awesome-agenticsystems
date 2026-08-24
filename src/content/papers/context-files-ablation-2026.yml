@@ -1,0 +1,22 @@
+id: context-files-ablation-2026
+title: "Do Context Files Help Coding Agents? A Two-Agent Ablation Study on Real Repositories"
+authors: ["Prakhar Khatri"]
+year: 2026
+arxiv: "2607.27250"
+links:
+  paper: https://arxiv.org/abs/2607.27250
+
+area: tools-context
+topics: [context-engineering, harness, procedural-memory]
+about: [memory]
+scale: [single-agent]
+type: [empirical]
+infra: []
+domain: [software-engineering]
+
+status: read
+tldr: "A controlled ablation of AGENTS.md and CLAUDE.md across two frontier agents and 288 evaluated runs finds no measurable effect on correctness, bounded to 10-15pp by equivalence testing."
+notes: "A negative result with a mechanism: the failure triage shows agents fail on implementation skill, not on repository knowledge a context file could supply. It also offers a reason prior work disagrees \u2014 borderline task difficulty is agent-specific, so single-agent studies sample from different informative bands."
+relates_to: []
+evaluated_on: []
+added: 2026-08-24

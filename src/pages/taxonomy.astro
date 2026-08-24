@@ -1,23 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
-import fs from 'node:fs';
-import path from 'node:path';
-import yaml from 'js-yaml';
+import { listPapers } from '../lib/papers';
+import { taxonomy, allTopics } from '../lib/taxonomy';
+import { REPO_URL } from '../lib/url';
 
-const taxonomyRaw = fs.readFileSync(path.join(process.cwd(), 'src/data/taxonomy.yml'), 'utf-8');
-const taxonomy = yaml.load(taxonomyRaw) as any;
 const facets = taxonomy.facets;
+const topics = allTopics;
 
-// Aggregate topics from areas
-const topics = new Set<string>();
-Object.values(taxonomy.areas).forEach((area: any) => {
-    if (area.topics) {
-        area.topics.forEach((t: string) => topics.add(t));
-    }
-});
-
-const papers = await getCollection('papers');
+const papers = await listPapers();
 
 function getCount(field: string, value: string) {
     if (field === 'topic') {
@@ -25,28 +15,79 @@ function getCount(field: string, value: string) {
     }
     return papers.filter(p => (p.data as any)[field]?.includes(value)).length;
 }
+
+// What each facet is for. These live in taxonomy.yml rather than here: this
+// page, the issue form and the guides all need them, and three hand-kept
+// copies is exactly how they drift apart. assertGroupsResolve() fails the
+// build if a facet has no description.
+const FACET_BLURBS = taxonomy.facet_blurbs;
+
+// The available vocabulary is not the vocabulary in use: this page is the
+// reference for filing a paper, so unused terms are shown too. The gap says
+// what is left to read.
+const vocabTotal = topics.length + Object.values(facets).flat().length;
+const vocabUsed =
+    topics.filter(t => getCount('topic', t) > 0).length +
+    Object.entries(facets).flatMap(([k, vs]) =>
+        (vs as string[]).filter(v => getCount(k, v) > 0)
+    ).length;
 ---
 
-<Layout title="Taxonomy | Awesome Agentic Systems">
+<Layout
+    title="Taxonomy | Awesome Agentic Systems"
+    description={`The complete classification vocabulary: ${topics.length} topics and ${Object.values(facets).flat().length} facet values, with how often each is used.`}
+>
     <div class="page-header">
         <h2>Taxonomy Graph</h2>
-        <p class="subtitle">Explore the cross-cutting dimensions used to categorize the literature.</p>
+        <p class="subtitle">
+            The complete vocabulary a paper is classified with. This is the reference
+            for filing one: everything you see here is a valid value, and nothing
+            outside it is — the build rejects anything else.
+        </p>
+        <p class="legend">
+            <span class="swatch" aria-hidden="true"></span>
+            In grey, the available terms no paper uses yet
+            (<strong>{vocabTotal - vocabUsed}</strong> of <strong>{vocabTotal}</strong>).
+            The gap says what is left to read.
+            See <a href={`${REPO_URL}/blob/main/TAXONOMY.md`}>TAXONOMY.md</a>
+            for the criterion behind each field.
+        </p>
     </div>
 
     <div class="taxonomy-container">
-        
+
+        <div class="facet-group">
+            <h3>Bibliographic basis</h3>
+            <p class="facet-desc">
+                The layers and axes of this taxonomy are not our own: they come from these works.
+                Citing them is what makes it arguable rather than merely opinionated.
+            </p>
+            <ul class="refs">
+                {taxonomy.references.map(ref => (
+                    <li>
+                        <a href={ref.url} target="_blank" rel="noopener">{ref.cite}</a>
+                        <span class="used-for">{ref.used_for}</span>
+                    </li>
+                ))}
+            </ul>
+        </div>
+
         <div class="facet-group">
             <h3>Topics</h3>
-            <p class="facet-desc">Specific technical subjects or methods identified across areas.</p>
+            <p class="facet-desc">
+                Flat, global vocabulary: topics are not restricted by area.
+                A <code>memory</code> paper declaring a coordination topic is the signal
+                that it crosses two areas, not an error.
+            </p>
             <div class="tags">
-                {Array.from(topics).sort().map(topic => {
+                {[...topics].sort().map(topic => {
                     const count = getCount('topic', topic);
-                    return count > 0 ? (
-                        <div class="tag-wrapper">
+                    return (
+                        <div class:list={['tag-wrapper', { unused: count === 0 }]}>
                             <span class="tag">{topic}</span>
                             <span class="count">{count}</span>
                         </div>
-                    ) : null;
+                    );
                 })}
             </div>
         </div>
@@ -54,20 +95,21 @@ function getCount(field: string, value: string) {
         {Object.entries(facets).map(([facetKey, facetValues]: [string, any]) => (
             <div class="facet-group">
                 <h3 style="text-transform: capitalize;">{facetKey}</h3>
+                <p class="facet-desc">{FACET_BLURBS[facetKey] ?? ''}</p>
                 <div class="tags">
                     {facetValues.map((val: string) => {
                         const count = getCount(facetKey, val);
-                        return count > 0 ? (
-                            <div class="tag-wrapper">
+                        return (
+                            <div class:list={['tag-wrapper', { unused: count === 0 }]}>
                                 <span class="tag">{val}</span>
                                 <span class="count">{count}</span>
                             </div>
-                        ) : null;
+                        );
                     })}
                 </div>
             </div>
         ))}
-        
+
     </div>
 </Layout>
 
@@ -114,6 +156,29 @@ function getCount(field: string, value: string) {
         gap: 12px;
     }
 
+    .refs {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        max-width: 760px;
+    }
+
+    .refs li {
+        border-left: 2px solid var(--border-color);
+        padding-left: 16px;
+    }
+
+    .refs a {
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .used-for {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
     .tag-wrapper {
         display: flex;
         align-items: center;
@@ -130,11 +195,54 @@ function getCount(field: string, value: string) {
     }
 
     .count {
-        background: rgba(88, 166, 255, 0.1);
+        background: var(--accent-tint);
         color: var(--accent-color);
         padding: 4px 10px;
         font-size: 0.8rem;
         font-weight: 600;
         border-left: 1px solid var(--border-color);
+    }
+
+    /* Available but unused vocabulary. Same treatment as the empty areas on
+       /areas: dashed border, no accent colour. */
+    .tag-wrapper.unused {
+        background: transparent;
+        border-style: dashed;
+    }
+
+    .tag-wrapper.unused .tag,
+    .tag-wrapper.unused .count {
+        color: var(--text-muted);
+    }
+
+    .tag-wrapper.unused .count {
+        background: transparent;
+    }
+
+    .legend {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin: 12px 0 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .swatch {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 1px dashed var(--border-color);
+        border-radius: 4px;
+        flex-shrink: 0;
+    }
+
+    .facet-desc code {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        padding: 1px 5px;
+        font-size: 0.85em;
     }
 </style>

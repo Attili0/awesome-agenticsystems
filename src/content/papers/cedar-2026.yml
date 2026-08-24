@@ -1,0 +1,22 @@
+id: cedar-2026
+title: "CEDAR: Agent-Orchestrated Tree Search for Goal-Directed Optimization of Complex Systems"
+authors: ["Yingtao Tian"]
+year: 2026
+arxiv: "2608.06871"
+links:
+  paper: https://arxiv.org/abs/2608.06871
+
+area: reasoning-planning
+topics: [tree-of-thoughts, task-decomposition, llm-as-a-judge, code-execution]
+about: [reasoning, planning]
+scale: [multi-agent]
+type: [method]
+infra: [sandbox]
+domain: [science]
+
+status: read
+tldr: "Runs Monte Carlo Tree Search where an LLM Judge scores emergent behaviour and an LLM Editor proposes variants, searching for complex systems that meet a stated behavioural goal."
+notes: "The Judge-as-fitness-function and Editor-as-variation-operator pairing makes this a generate-and-evaluate loop in the evolutionary sense. Filed under reasoning-planning because the contribution is the search procedure; the two LLM roles are recorded as level: multi-agent."
+relates_to: [tree-of-thoughts-2023]
+evaluated_on: []
+added: 2026-08-24

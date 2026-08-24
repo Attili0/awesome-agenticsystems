@@ -1,0 +1,22 @@
+id: filesystem-memory-2026
+title: "Filesystem-Based Memory for LLM Agents: Organization, Evolution, and Sustainability"
+authors: ["Sizhe Zhou", "Sheldon Yu", "Hui Wei", "Junda Wu", "Siru Ouyang", "Yizhu Jiao", "Shijia Pan", "Julian McAuley", "Yu Zhang", "Tong Yu", "Jiawei Han"]
+year: 2026
+arxiv: "2607.26637"
+links:
+  paper: https://arxiv.org/abs/2607.26637
+
+area: memory
+topics: [procedural-memory, semantic-memory, memory-consolidation, memory-retrieval, skill-learning, harness]
+about: [memory, learning]
+scale: [multi-agent]
+type: [empirical]
+infra: [sandbox]
+domain: [general]
+
+status: read
+tldr: "Studies the de facto default for agent memory \u2014 a directory of markdown files the agent maintains itself \u2014 across memory shape, stream scale and tool harness."
+notes: "Two results worth arguing with. Organisation buys search economy, roughly halving retrieval cost, but no measured agent converts organisation into better answers. And changing only the tool set reshapes the store as strongly as changing the model, which makes the harness a variable in memory research rather than a constant."
+relates_to: [generative-agents-2023]
+evaluated_on: []
+added: 2026-08-24

@@ -1,26 +1,71 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { listPapers } from '../../lib/papers';
+import { taxonomy } from '../../lib/taxonomy';
+import { url } from '../../lib/url';
 
 export async function getStaticPaths() {
-  const papers = await getCollection('papers');
-  
+  const papers = await listPapers();
+  const byId = new Map(papers.map(p => [p.data.id, p]));
+
+  // relates_to / evaluated_on point at other paper ids. An id that does not
+  // exist would be a silently broken link, so we break the build instead.
+  const dangling: string[] = [];
+  for (const p of papers) {
+    for (const ref of [...p.data.relates_to, ...p.data.evaluated_on]) {
+      if (!byId.has(ref)) dangling.push(`${p.data.id} -> "${ref}"`);
+    }
+  }
+  if (dangling.length) {
+    throw new Error(`References to papers that do not exist: ${dangling.join(', ')}`);
+  }
+
+  const resolve = (ids: string[]) => ids.map(id => byId.get(id)!.data);
+
   return papers.map(paper => ({
     params: { id: paper.data.id },
-    props: { paper }
+    props: {
+      paper,
+      relates: resolve(paper.data.relates_to),
+      evaluatedOn: resolve(paper.data.evaluated_on),
+      // relates_to is declared in one direction only; we compute the reverse
+      // here so the graph is navigable both ways without duplicating data.
+      relatedFrom: papers
+        .filter(p => p.data.relates_to.includes(paper.data.id))
+        .map(p => p.data),
+    }
   }));
 }
 
-const { paper } = Astro.props;
+const { paper, relates, evaluatedOn, relatedFrom } = Astro.props;
+const area = taxonomy.areas[paper.data.area];
+const group = taxonomy.groups[area.group];
+
+// Union of declared and incoming relations, without duplicates.
+const neighbours = [...relates, ...relatedFrom].filter(
+  (p, i, arr) => arr.findIndex(q => q.id === p.id) === i
+);
 ---
 
-<Layout title={`${paper.data.title} | Awesome Agentic Systems`}>
+<Layout
+  title={`${paper.data.title} | Awesome Agentic Systems`}
+  activeArea={paper.data.area}
+  description={paper.data.tldr
+    ?? `${paper.data.authors.join(', ')} (${paper.data.year}). Filed under ${area.label}.`}
+>
   <div class="breadcrumb">
-    <a href={`/awesome-agenticsystems/areas/${paper.data.area}`}>← Back to Area</a>
+    <a href={url('/areas')}>Areas</a>
+    <span class="crumb-sep">/</span>
+    <span class="crumb-group">{group.label}</span>
+    <span class="crumb-sep">/</span>
+    <a href={url(`/areas/${paper.data.area}`)}>{area.label}</a>
   </div>
 
   <div class="paper-header">
-    <h2>{paper.data.title}</h2>
+    <h2>
+      {paper.data.type.includes('survey') && <span class="badge survey-badge">survey</span>}
+      {paper.data.title}
+    </h2>
     <div class="authors">{paper.data.authors.join(', ')}</div>
     
     <div class="metadata-grid">
@@ -64,13 +109,48 @@ const { paper } = Astro.props;
       </div>
     )}
 
+    {neighbours.length > 0 && (
+      <div class="section-block">
+        <h3>Reading path</h3>
+        <div class="graph">
+          {neighbours.map((p: any) => {
+            // relates_to points at what to read BEFORE. What points at this
+            // paper is what comes next.
+            const outgoing = relates.some((r: any) => r.id === p.id);
+            return (
+              <a href={url(`/papers/${p.id}`)} class="neighbour">
+                <span class="direction">{outgoing ? 'read first' : 'then read'}</span>
+                <span class="neighbour-title">{p.title}</span>
+                <span class="neighbour-year">{p.year}</span>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    )}
+
+    {evaluatedOn.length > 0 && (
+      <div class="section-block">
+        <h3>Evaluated on</h3>
+        <div class="graph">
+          {evaluatedOn.map((p: any) => (
+            <a href={url(`/papers/${p.id}`)} class="neighbour">
+              <span class="direction">benchmark</span>
+              <span class="neighbour-title">{p.title}</span>
+              <span class="neighbour-year">{p.year}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
     <div class="tags-section">
       <h3>Taxonomy</h3>
       <div class="tag-group">
-        <span class="tag-label">Area</span>
-        <a href={`/awesome-agenticsystems/areas/${paper.data.area}`} class="tag area-tag">{paper.data.area}</a>
+        <span class="tag-label">Area <em>({group.label})</em></span>
+        <a href={url(`/areas/${paper.data.area}`)} class="tag area-tag">{area.label}</a>
       </div>
-      
+
       <div class="tag-group">
         <span class="tag-label">Topics</span>
         <div class="tags">
@@ -79,9 +159,41 @@ const { paper } = Astro.props;
       </div>
 
       <div class="tag-group">
-        <span class="tag-label">Capabilities</span>
+        <span class="tag-label">About</span>
         <div class="tags">
-          {paper.data.capability.map((c: string) => <span class="tag">{c}</span>)}
+          {paper.data.about.map((c: string) => <span class="tag">{c}</span>)}
+        </div>
+      </div>
+
+      <div class="tag-group">
+        <span class="tag-label">Scale</span>
+        <div class="tags">
+          {paper.data.scale.map((l: string) => <span class="tag">{l}</span>)}
+        </div>
+      </div>
+
+      <div class="tag-group">
+        <span class="tag-label">Type</span>
+        <div class="tags">
+          {paper.data.type.map((t: string) => <span class="tag">{t}</span>)}
+        </div>
+      </div>
+
+      {paper.data.infra.length > 0 && (
+        <div class="tag-group">
+          <span class="tag-label">Infra</span>
+          <div class="tags">
+            {paper.data.infra.map((i: string) => <span class="tag">{i}</span>)}
+          </div>
+        </div>
+      )}
+
+      <div class="tag-group">
+        <span class="tag-label">Domain</span>
+        <div class="tags">
+          {paper.data.domain.map((d: string) => (
+            <a href={url(`/domains/${d}`)} class="tag domain-tag">{d}</a>
+          ))}
         </div>
       </div>
     </div>
@@ -91,15 +203,90 @@ const { paper } = Astro.props;
 <style>
   .breadcrumb {
     margin-bottom: 32px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
   }
-  
+
   .breadcrumb a {
     color: var(--text-muted);
-    font-size: 0.9rem;
   }
 
   .breadcrumb a:hover {
     color: var(--accent-color);
+  }
+
+  .crumb-sep {
+    margin: 0 8px;
+    opacity: 0.5;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+
+  .survey-badge {
+    background: var(--accent-tint-strong);
+    color: var(--accent-color);
+  }
+
+  .graph {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .neighbour {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    text-decoration: none;
+  }
+
+  .neighbour:hover {
+    border-color: var(--accent-color);
+    text-decoration: none;
+  }
+
+  .direction {
+    flex-shrink: 0;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    width: 82px;
+  }
+
+  .neighbour-title {
+    flex: 1;
+    color: var(--text-main);
+  }
+
+  .neighbour-year {
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .tag-label em {
+    opacity: 0.7;
+    font-style: normal;
+  }
+
+  .domain-tag:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
   }
 
   .paper-header {
@@ -164,11 +351,11 @@ const { paper } = Astro.props;
 
   .btn.primary {
     background: var(--accent-color);
-    color: #000;
+    color: var(--on-accent);
   }
 
   .btn.primary:hover {
-    background: #3a82f6;
+    background: var(--accent-hover);
     text-decoration: none;
   }
 
@@ -179,7 +366,7 @@ const { paper } = Astro.props;
   }
 
   .btn.secondary:hover {
-    background: rgba(88, 166, 255, 0.1);
+    background: var(--accent-tint);
     text-decoration: none;
   }
 
@@ -235,7 +422,7 @@ const { paper } = Astro.props;
   }
 
   .tag {
-    background: rgba(139, 148, 158, 0.1);
+    background: var(--muted-tint);
     color: var(--text-muted);
     padding: 4px 12px;
     border-radius: 12px;
@@ -244,7 +431,7 @@ const { paper } = Astro.props;
   }
 
   .area-tag {
-    background: rgba(88, 166, 255, 0.1);
+    background: var(--accent-tint);
     color: var(--accent-color);
     display: inline-block;
   }

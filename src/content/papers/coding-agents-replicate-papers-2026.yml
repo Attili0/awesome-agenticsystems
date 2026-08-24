@@ -1,0 +1,22 @@
+id: coding-agents-replicate-papers-2026
+title: "Coding-agents can replicate scientific machine learning papers"
+authors: ["Atharva Hans", "Ilias Bilionis"]
+year: 2026
+arxiv: "2607.02134"
+links:
+  paper: https://arxiv.org/abs/2607.02134
+
+area: engineering
+topics: [harness, verification-loops, skill-learning, observability, state-management, reproducibility]
+about: [tool-use, planning]
+scale: [single-agent]
+type: [case-study]
+infra: [sandbox]
+domain: [science, software-engineering]
+
+status: read
+tldr: "A replication workflow implemented as a coding-agent skill, where each paper claim becomes a recorded target and completion depends on workspace evidence passing validation checks rather than on the agent declaring it is done."
+notes: "The design move worth stealing is making the completion gate external to the agent's final message. Even so, all twelve runs pass the gate while differing in how papers are split into targets and in the rules used to accept evidence \u2014 completion checks bound the failure, they do not make runs comparable."
+relates_to: []
+evaluated_on: []
+added: 2026-08-24

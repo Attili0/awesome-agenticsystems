@@ -10,16 +10,16 @@ links:
 
 area: evaluation
 topics: [agent-evaluation, benchmark-design]
-capability: [reasoning, planning, tool-use]
-level: [single-agent]
+about: [reasoning, planning, tool-use]
+scale: [single-agent]
 type: [benchmark]
 infra: [sandbox]
 domain: [general]
 
 featured: true
 status: read
-tldr: "Reúne ocho entornos interactivos heterogéneos para medir agentes en tareas de múltiples turnos bajo un protocolo común."
-notes: "Todo single-agent: confirma el hueco de evaluación de MAS que motiva la tesis. Útil como línea base de comparación y como ejemplo de agregación de entornos heterogéneos bajo una métrica única, decisión que vale la pena discutir."
-relates_to: [tau-bench-2024]
+tldr: "Gathers eight heterogeneous interactive environments to measure agents on multi-turn tasks under a common protocol."
+notes: "All single-agent, which is itself the finding: there is no equivalent standard for evaluating multi-agent systems. Useful as a comparison baseline, and as an example of aggregating heterogeneous environments under a single metric — a decision worth arguing about."
+relates_to: []
 evaluated_on: []
 added: 2026-08-21

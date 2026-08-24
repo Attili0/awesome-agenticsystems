@@ -1,0 +1,23 @@
+id: llm-as-a-verifier-2026
+title: "LLM-as-a-Verifier: A General-Purpose Verification Framework"
+authors: ["Jacky Kwok", "Shulu Li", "Pranav Atreya", "Yuejiang Liu", "Yixing Jiang", "Chelsea Finn", "Marco Pavone", "Ion Stoica", "Azalia Mirhoseini"]
+year: 2026
+arxiv: "2607.05391"
+links:
+  paper: https://arxiv.org/abs/2607.05391
+
+area: evaluation
+topics: [llm-as-a-judge, verification-loops, process-vs-outcome, agent-evaluation]
+about: [reflection, reasoning]
+scale: [single-agent]
+type: [method, framework]
+infra: []
+domain: [software-engineering, robotics]
+
+featured: true
+status: read
+tldr: "Scores candidate solutions by taking the expectation over scoring-token logits rather than emitting a discrete judgement, which makes verification scale with granularity, repetition and criteria decomposition."
+notes: "Argues verification is a scaling axis alongside pre-training, post-training and test-time compute. The practical hook is that the same fine-grained signal doubles as a task-progress estimate and as dense reward for RL."
+relates_to: [reflexion-2023]
+evaluated_on: []
+added: 2026-08-24

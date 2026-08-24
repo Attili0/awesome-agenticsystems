@@ -1,0 +1,22 @@
+id: in-context-retrieval-2026
+title: "Can Language Models Actually Retrieve In-Context? Drowning in Documents at Million Token Scale"
+authors: ["Siddharth Gollapudi", "Nilesh Gupta", "Prasann Singhal", "Sewon Min"]
+year: 2026
+arxiv: "2607.01538"
+links:
+  paper: https://arxiv.org/abs/2607.01538
+
+area: memory
+topics: [memory-retrieval, agentic-search, context-engineering]
+about: [memory]
+scale: [single-agent]
+type: [method]
+infra: [rag]
+domain: [general]
+
+status: read
+tldr: "Studies in-context retrieval at million-token corpus scale and traces its collapse to attention dilution, where irrelevant documents dominate the softmax denominator."
+notes: "The diagnosis is more transferable than the model: as the corpus grows, normalised attention mass on the gold document falls even when its pre-softmax score holds. Relevant to anyone treating a long context window as a substitute for retrieval."
+relates_to: []
+evaluated_on: []
+added: 2026-08-24

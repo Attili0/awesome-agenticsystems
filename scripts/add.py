@@ -1,41 +1,29 @@
 #!/usr/bin/env python3
-"""Crea una ficha desde un id o URL de arXiv.
+"""Create a paper record from an arXiv id or URL.
 
     python scripts/add.py 2210.03629
     python scripts/add.py https://arxiv.org/abs/2303.11366
+    python scripts/add.py 2210.03629 custom-slug
 
-Baja título, autores y año de la API de arXiv y deja los campos de
-clasificación vacíos con status: captured. Vos ponés area, level y type.
+Downloads title, authors and year from the arXiv API and leaves the
+classification fields commented out, with status: captured. You pick area,
+level and type.
+
+A `captured` paper is valid but does not show up on the site: it is a saved
+link. To get it into the index, uncomment area/level/type and switch status
+to `triaged`.
 """
 import datetime
+import json
 import re
 import sys
-import urllib.request
-import xml.etree.ElementTree as ET
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import arxiv  # noqa: E402  (same directory, must follow the path insert)
+
 ROOT = Path(__file__).resolve().parent.parent
-NS = {"a": "http://www.w3.org/2005/Atom"}
 STOP = {"a", "an", "the", "of", "for", "and", "with", "in", "on", "to", "via"}
-
-
-def arxiv_id(raw):
-    match = re.search(r"(\d{4}\.\d{4,5})(v\d+)?", raw)
-    if not match:
-        sys.exit(f"No pude extraer un id de arXiv de '{raw}'")
-    return match.group(1)
-
-
-def fetch(aid):
-    url = f"http://export.arxiv.org/api/query?id_list={aid}"
-    with urllib.request.urlopen(url, timeout=30) as resp:
-        entry = ET.fromstring(resp.read()).find("a:entry", NS)
-    if entry is None:
-        sys.exit(f"arXiv no devolvió nada para {aid}")
-    title = " ".join(entry.findtext("a:title", "", NS).split())
-    authors = [a.findtext("a:name", "", NS) for a in entry.findall("a:author", NS)]
-    published = entry.findtext("a:published", "", NS)
-    return title, authors, int(published[:4]) if published else None
 
 
 def slugify(title, year):
@@ -51,35 +39,51 @@ def yaml_list(values):
 def main():
     if len(sys.argv) < 2:
         sys.exit(__doc__)
-    aid = arxiv_id(sys.argv[1])
-    title, authors, year = fetch(aid)
-    slug = sys.argv[2] if len(sys.argv) > 2 else slugify(title, year)
-    path = ROOT / "papers" / f"{slug}.yml"
-    if path.exists():
-        sys.exit(f"Ya existe {path.relative_to(ROOT)}")
 
-    quoted = [f'"{a}"' if any(c in a for c in ",:") else a for a in authors]
+    aid = arxiv.extract_id(sys.argv[1])
+    if not aid:
+        sys.exit(f"Could not extract an arXiv id from '{sys.argv[1]}'")
+
+    try:
+        title, authors, year, venue = arxiv.fetch(aid)
+    except arxiv.ArxivError as exc:
+        sys.exit(str(exc))
+    if not year:
+        sys.exit(f"arXiv returned no year for {aid}, and the schema requires one")
+
+    slug = sys.argv[2] if len(sys.argv) > 2 else slugify(title, year)
+    path = ROOT / "src" / "content" / "papers" / f"{slug}.yml"
+    if path.exists():
+        sys.exit(f"{path.relative_to(ROOT)} already exists")
+
+    quoted = [json.dumps(a) for a in authors]
+    # journal_ref is only set once the paper is published; for a preprint the
+    # key is omitted, because the schema rejects an empty venue.
+    venue_line = f"venue: {json.dumps(venue)}\n" if venue else "# venue: \"\"   # fill in once published\n"
+
+    # Classification fields stay commented out: an empty `area:` is null and the
+    # schema rejects it. Commented, the stub is always valid as `captured`.
     path.write_text(
         f"id: {slug}\n"
-        f'title: "{title}"\n'
+        f"title: {json.dumps(title)}\n"
         f"authors: {yaml_list(quoted)}\n"
         f"year: {year}\n"
-        f'venue: "arXiv preprint"   # completar si tiene venue\n'
+        f"{venue_line}"
         f'arxiv: "{aid}"\n'
         f"links:\n"
         f"  paper: https://arxiv.org/abs/{aid}\n\n"
-        f"# --- triage: con estos tres campos ya entra al índice ---\n"
-        f"area:            # ver taxonomy.yml\n"
-        f"level: []        # single-agent | multi-agent | human-agent\n"
-        f"type: []         # survey | method | benchmark | framework | ...\n\n"
-        f"# --- al leerlo ---\n"
-        f"topics: []\ncapability: []\ninfra: []\ndomain: [general]\n"
-        f'tldr: ""\nnotes: ""\nrelates_to: []\nevaluated_on: []\n\n'
+        f"# --- triage: uncomment these three and set status: triaged ---\n"
+        f"# area:            # see src/data/taxonomy.yml\n"
+        f"# scale: []        # single-agent | multi-agent | human-agent\n"
+        f"# type: []         # survey | method | benchmark | framework | ...\n\n"
+        f"# --- once you have read it: fill these in and set status: read ---\n"
+        f"# topics: []\n# about: []\n# infra: []\n# domain: [general]\n"
+        f'# tldr: ""\n# notes: ""\n# relates_to: []\n# evaluated_on: []\n\n'
         f"status: captured\n"
         f"added: {datetime.date.today().isoformat()}\n",
         encoding="utf-8",
     )
-    print(f"creado papers/{slug}.yml — completá area, level y type")
+    print(f"created {path.relative_to(ROOT)} — now fill in area, scale and type")
 
 
 if __name__ == "__main__":

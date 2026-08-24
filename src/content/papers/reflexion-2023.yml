@@ -9,16 +9,16 @@ links:
   code: https://github.com/noahshinn/reflexion
 
 area: reasoning-planning
-topics: [self-reflection, self-correction, verbal-rl, episodic-memory]
-capability: [reflection, memory, learning]
-level: [single-agent]
+topics: [self-correction, episodic-memory]
+about: [reflection, memory, learning]
+scale: [single-agent]
 type: [method]
 infra: []
 domain: [general]
 
 status: read
-tldr: "Convierte el feedback de un intento fallido en texto y lo guarda en memoria episódica para condicionar el reintento, sin actualizar pesos."
-notes: "Caso claro donde la unidad de evaluación no es el intento sino la secuencia de intentos. Un benchmark que mide solo pass@1 no captura lo que este método aporta. Ojo con la frontera: esto es self-correction dentro de un episodio, no self-evolution — el aprendizaje se descarta al terminar la tarea."
+tldr: "Turns the feedback from a failed attempt into text and stores it in episodic memory to condition the retry, without updating weights."
+notes: "A clear case where the unit of evaluation is not the attempt but the sequence of attempts. A benchmark measuring only pass@1 does not capture what this method contributes. Mind the boundary: this is self-correction within an episode, not self-evolution — the learning is discarded when the task ends."
 relates_to: [react-2022]
 evaluated_on: []
 added: 2026-08-21

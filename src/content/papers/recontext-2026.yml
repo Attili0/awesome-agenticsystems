@@ -1,0 +1,22 @@
+id: recontext-2026
+title: "ReContext: Recursive Evidence Replay as LLM Harness for Long-Context Reasoning"
+authors: ["Yanjun Zhao", "Ruizhong Qiu", "Tianxin Wei", "Yuanchen Bei", "Zhining Liu", "Lingjie Chen", "Ismini Lourentzou", "Hanghang Tong", "Jingrui He"]
+year: 2026
+arxiv: "2607.02509"
+links:
+  paper: https://arxiv.org/abs/2607.02509
+
+area: tools-context
+topics: [context-engineering, memory-retrieval, working-memory]
+about: [reasoning, memory]
+scale: [single-agent]
+type: [method]
+infra: []
+domain: [general]
+
+status: read
+tldr: "A training-free inference method that builds a query-conditioned evidence pool from the model's own relevance signals and replays it before generation, without pruning the original context."
+notes: "Frames the context window itself as an associative memory store, with replay as trace reactivation. That framing is the reason this is filed under tools-context rather than memory: the contribution is how context is organised for one call, not what the agent retains across them."
+relates_to: []
+evaluated_on: []
+added: 2026-08-24

@@ -1,0 +1,22 @@
+id: verifiable-rewards-demonstrations-2026
+title: "Right in the Right Way: LM Training with Verifiable Rewards and Human Demonstrations"
+authors: ["Mehul Damani", "Isha Puri", "Idan Shenfeld", "Jacob Andreas"]
+year: 2026
+arxiv: "2607.01181"
+links:
+  paper: https://arxiv.org/abs/2607.01181
+
+area: safety
+topics: [alignment, agent-tuning]
+about: [learning]
+scale: [single-agent]
+type: [method]
+infra: []
+domain: [general, software-engineering]
+
+status: read
+tldr: "Augments RL with verifiable rewards with an adversarial discriminator trained on human demonstrations, so non-verifiable properties like style and structure are optimised alongside task accuracy."
+notes: "Filed under safety for the reward-hacking result \u2014 the method nearly eliminates the misbehaviour while keeping benchmark scores \u2014 rather than for the training recipe. Diversity collapse and unnatural output are treated as consequences of optimising only what can be scored."
+relates_to: []
+evaluated_on: []
+added: 2026-08-24

@@ -1,0 +1,123 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { listPapers } from '../../lib/papers';
+import { taxonomy } from '../../lib/taxonomy';
+import { url } from '../../lib/url';
+
+const papers = await listPapers();
+
+const countFor = (domain: string) =>
+  papers.filter(p => p.data.domain.includes(domain)).length;
+---
+
+<Layout
+    title="Domains | Awesome Agentic Systems"
+    description="Where agents are applied, as an axis independent of what each paper contributes."
+>
+    <div class="page-header">
+        <h2>Domains</h2>
+        <p class="subtitle">
+            Where an agent is applied, not what it contributes. This axis is transversal:
+            a paper can have several domains, and its area does not change because of that.
+        </p>
+    </div>
+
+    {Object.values(taxonomy.domain_groups).map(dg => (
+        <section class="group">
+            <div class="group-header">
+                <h3>{dg.label}</h3>
+                <p>{dg.blurb}</p>
+            </div>
+            <div class="chips">
+                {dg.members.map(domain => {
+                    const count = countFor(domain);
+                    return (
+                        <a href={url(`/domains/${domain}`)} class:list={["chip", { empty: count === 0 }]}>
+                            <span class="chip-name">{domain}</span>
+                            <span class="chip-count">{count}</span>
+                        </a>
+                    );
+                })}
+            </div>
+        </section>
+    ))}
+</Layout>
+
+<style>
+    .page-header {
+        margin-bottom: 40px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .page-header h2 {
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+
+    .subtitle {
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        margin: 0;
+        max-width: 700px;
+    }
+
+    .group {
+        margin-bottom: 40px;
+    }
+
+    .group-header h3 {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+    }
+
+    .group-header p {
+        color: var(--text-main);
+        font-size: 1.05rem;
+        margin-bottom: 16px;
+    }
+
+    .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .chip {
+        display: flex;
+        align-items: center;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        overflow: hidden;
+        text-decoration: none;
+    }
+
+    .chip:hover {
+        border-color: var(--accent-color);
+        text-decoration: none;
+    }
+
+    .chip.empty {
+        border-style: dashed;
+        opacity: 0.5;
+    }
+
+    .chip-name {
+        padding: 4px 12px;
+        font-size: 0.9rem;
+        color: var(--text-main);
+    }
+
+    .chip-count {
+        background: var(--accent-tint);
+        color: var(--accent-color);
+        padding: 4px 10px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-left: 1px solid var(--border-color);
+    }
+</style>

@@ -1,115 +1,327 @@
-# Fuente única de verdad del vocabulario.
-# El validador, el índice generado y (más adelante) el sitio leen SOLO de acá.
-version: 1
+# Single source of truth for the vocabulary.
+# The validator (src/content.config.ts), the site and scripts/gen_docs.py read
+# ONLY from here. Change a label here and `npm run docs` propagates it to the
+# guides and to the issue form.
+version: 3
 
 # ---------------------------------------------------------------------------
-# AREAS — un paper pertenece a EXACTAMENTE una.
-# Criterio: "¿dónde lo buscaría yo primero?". Todo lo demás va en facets/topics.
+# BIBLIOGRAPHIC BASIS
+# The taxonomy is not arbitrary: the layers and axes come from these works.
+# Citing them is what makes it arguable rather than merely opinionated.
+# ---------------------------------------------------------------------------
+references:
+  - key: coala
+    cite: "Sumers et al. (2023). Cognitive Architectures for Language Agents."
+    url: https://arxiv.org/abs/2309.02427
+    used_for: >-
+      The vocabulary of the memory area (working / episodic / semantic /
+      procedural, via Tulving's trichotomy) and the split of the action space
+      into internal (retrieval, reasoning, learning) and external (grounding).
+
+  - key: wang-survey
+    cite: "Wang et al. (2024). A Survey on LLM-based Autonomous Agents. Frontiers of Computer Science 18:186345."
+    url: https://link.springer.com/article/10.1007/s11704-024-40231-1
+    used_for: >-
+      The profile / memory / planning / action framework, which the
+      architectures topics (profile, persona) come from.
+
+  - key: luo-survey
+    cite: "Luo et al. (2025). Large Language Model Agent: A Survey on Methodology, Applications and Challenges."
+    url: https://arxiv.org/abs/2503.21460
+    used_for: >-
+      The construction / collaboration / evolution axis, which is what
+      justifies learning-evolution as an area of its own rather than a
+      subcategory.
+
+  - key: harness-survey
+    cite: "From Question Answering to Task Completion: A Survey on Agent System and Harness Design (2026)."
+    url: https://arxiv.org/abs/2606.20683
+    used_for: "The vocabulary of the engineering area."
+
+  - key: masamasa59
+    cite: "masamasa59/ai-agent-papers"
+    url: https://github.com/masamasa59/ai-agent-papers
+    used_for: >-
+      The grouping of areas into the four navigation layers, and the decision
+      to place multi-agent systems under architecture rather than alongside
+      memory or reasoning.
+
+# ---------------------------------------------------------------------------
+# GROUPS — layers above the areas.
+# An area belongs to EXACTLY one group. They exist to navigate, not to
+# classify: no paper declares a group, it is derived from its area.
+# ---------------------------------------------------------------------------
+groups:
+  meta:
+    label: "Overview"
+    blurb: "Where to enter the field."
+  capabilities:
+    label: "What an agent can do"
+    blurb: "Agent capabilities: what it can reason about, remember, execute and learn."
+  architecture:
+    label: "How it is built"
+    blurb: "The shape of the system: its inner loop, how many agents it has, and the substrate it runs on."
+  operations:
+    label: "How it is judged and controlled"
+    blurb: "Measurement, risk and governance."
+
+# ---------------------------------------------------------------------------
+# AREAS — a paper belongs to EXACTLY one.
+# Criterion: "what is the contribution?", not "what does it talk about?".
+# What it talks about is carried by topics and the `about` facet, which DO
+# cross areas. The scale of the system is NOT decided here — that is the
+# `scale` facet.
+#
+# The first sentence of each blurb is what shows up as the option description
+# in the issue form, so keep it short and make it stand on its own.
 # ---------------------------------------------------------------------------
 areas:
   foundations:
+    group: meta
     label: "Foundations & surveys"
-    blurb: "Visión general del campo, surveys, taxonomías, position papers."
-    topics: [agentic-ai, llm-agents, cognitive-agents, taxonomy, open-problems]
-
-  architectures:
-    label: "Agent architectures"
-    blurb: "Cómo está construido internamente un agente."
-    topics:
-      [perceive-reason-act, modular, stateful, cognitive-architecture, agent-loop,
-       profile, persona, role-definition, perception, environment-modeling]
+    blurb: "A general view of the field: surveys, taxonomies, position papers."
 
   reasoning-planning:
+    group: capabilities
     label: "Reasoning, planning & reflection"
-    blurb: "Lo que pasa entre la entrada y la acción: razonar, planificar, criticarse."
-    topics:
-      [chain-of-thought, react, tree-of-thoughts, self-consistency,
-       task-decomposition, hierarchical-planning, plan-and-execute, replanning,
-       self-reflection, self-correction, verbal-rl, ideation, long-horizon]
+    blurb: "What happens between the input and the action: reasoning, planning, self-critique."
 
   memory:
+    group: capabilities
     label: "Memory"
-    blurb: "Qué recuerda el agente y cómo lo recupera."
-    topics:
-      [working-memory, episodic-memory, semantic-memory, procedural-memory,
-       long-term-memory, memory-retrieval, memory-consolidation, forgetting]
+    blurb: "What the agent remembers and how it retrieves it. Vocabulary taken from CoALA."
 
   tools-context:
+    group: capabilities
     label: "Tools, environment & context"
-    blurb: "Cómo el agente actúa sobre el mundo y de dónde saca contexto."
-    topics:
-      [tool-use, function-calling, code-execution, web-agents, computer-use,
-       gui-agents, rag, graph-rag, knowledge-graph, context-engineering, sandboxing,
-       agentic-search, skills, mcp-tools]
-
-  multi-agent:
-    label: "Multi-agent systems"
-    blurb: "Varios agentes: arquitectura, roles y cómo interactúan."
-    topics:
-      [mas-architecture, roles, agent-organizations, societies,
-       communication, coordination, collaboration, competition, negotiation,
-       emergent-behavior, orchestration]
-
-  interoperability:
-    label: "Interoperability & protocols"
-    blurb: "Estándares que permiten que agentes y herramientas se descubran y hablen."
-    topics: [mcp, a2a, agent-discovery, capability-description, agent-protocols]
+    blurb: "How the agent acts on the world and where it gets context from."
 
   learning-evolution:
+    group: capabilities
     label: "Learning, skills & self-evolution"
-    blurb: "Cambios que persisten ENTRE tareas: skills, experiencia, tuning."
-    topics:
-      [self-evolution, skill-learning, skill-library, skill-discovery,
-       agent-tuning, experience-learning, lifelong-learning, curriculum]
+    blurb: "Changes that persist BETWEEN tasks: skills, experience, tuning. If the learning is discarded when the task ends, it is self-correction and belongs in reasoning-planning."
+
+  architectures:
+    group: architecture
+    label: "Agent architectures"
+    blurb: "The complete loop of an agent. If the contribution is ONE component (memory, planning, tools), it belongs to that component instead."
+
+  coordination:
+    group: architecture
+    label: "Coordination & organization"
+    blurb: "The mechanisms by which several agents divide work and communicate. Having several agents does NOT put a paper here: that is what scale: multi-agent says. This area is for papers whose contribution IS the coordination mechanism."
+
+  interoperability:
+    group: architecture
+    label: "Interoperability & protocols"
+    blurb: "Standards that let agents and tools discover each other and talk."
 
   engineering:
+    group: architecture
     label: "Harness, scaffolding & AgentOps"
-    blurb: "El sustrato de runtime alrededor del modelo, y su operación."
-    topics:
-      [harness, scaffolding, observability, tracing, debugging, deployment,
-       agent-ops, cost-efficiency, failure-attribution, runtime-patterns]
+    blurb: "The runtime substrate around the model, and how it is operated. A harness does not make the model smarter: it makes its output reliable."
 
   evaluation:
+    group: operations
     label: "Evaluation & benchmarks"
-    blurb: "Cómo se mide un agente o un sistema multi-agente."
-    topics:
-      [agent-evaluation, mas-evaluation, benchmark-design, llm-as-a-judge,
-       process-vs-outcome, failure-analysis, reproducibility, safety-evaluation]
+    blurb: "How an agent or a multi-agent system is measured."
 
   safety:
+    group: operations
     label: "Safety, trust & governance"
-    blurb: "Riesgos, seguridad, confianza y control."
-    topics: [alignment, security, prompt-injection, trust, explainability, governance]
+    blurb: "Risk, security, trust and control."
 
 # ---------------------------------------------------------------------------
-# FACETAS — transversales. Cortan cualquier área. Un paper puede tener varias.
+# TOPICS — FLAT, global vocabulary. A paper declares as many as it wants.
+#
+# They are grouped by comments so the list stays readable, but the grouping is
+# not a constraint: a `memory` paper may declare a topic from the coordination
+# section. That is not an error — it is the signal that the paper crosses two
+# areas, which is exactly what `area` (only one) cannot express.
+#
+# To add one: it has to be something you would filter by TODAY. A topic that
+# does not discriminate between papers is not vocabulary, it is noise.
+# ---------------------------------------------------------------------------
+topics:
+  # Overview
+  - agentic-ai
+  - taxonomy
+  - open-problems
+
+  # Reasoning and planning
+  - chain-of-thought
+  - react
+  - tree-of-thoughts
+  - task-decomposition
+  - self-correction
+  - replanning
+  - long-horizon
+
+  # Memory (CoALA trichotomy)
+  - working-memory
+  - episodic-memory
+  - semantic-memory
+  - procedural-memory
+  - memory-retrieval
+  - memory-consolidation
+
+  # Tools, environment and context
+  - tool-use
+  - function-calling
+  - code-execution
+  - computer-use
+  - context-engineering
+  - agentic-search
+
+  # Learning and evolution
+  - self-evolution
+  - skill-learning
+  - experience-learning
+  - agent-tuning
+
+  # Agent architecture
+  - agent-loop
+  - cognitive-architecture
+  - profile
+  - persona
+  - environment-modeling
+
+  # Coordination and organization
+  - mas-architecture
+  - agent-organizations
+  - roles
+  - communication
+  - collaboration
+  - orchestration
+
+  # Interoperability and protocols
+  - mcp
+  - a2a
+  - agent-discovery
+  - agent-protocols
+
+  # Harness and operations
+  - harness
+  - state-management
+  - verification-loops
+  - context-compaction
+  - observability
+  - agent-ops
+
+  # Evaluation
+  - agent-evaluation
+  - mas-evaluation
+  - benchmark-design
+  - llm-as-a-judge
+  - process-vs-outcome
+  - reproducibility
+
+  # Safety and governance
+  - alignment
+  - security
+  - prompt-injection
+  - trust
+  - governance
+
+# ---------------------------------------------------------------------------
+# FACETS — transversal. They cut across any area. A paper may have several.
+#
+# `about` answers "what does it talk about?", which is why it overlaps with
+# the areas in the capabilities group on purpose: a `coordination` paper may
+# declare about: memory. The overlap is not redundancy — it is the axis that
+# lets you find everything touching memory regardless of where it is filed.
+#
+# The facet is named `about` and not `capability` precisely because of that
+# overlap: `capability` read like a synonym for the capabilities areas, which
+# is the single thing newcomers got wrong most often.
+#
+# Each term lives in exactly ONE vocabulary. mcp and a2a are topics (the paper
+# is about the protocol); rag, knowledge-graph, sandbox and api are infra (the
+# system uses them).
+#
+# `blurbs` feeds /taxonomy and the issue form. Keep each one to a sentence.
 # ---------------------------------------------------------------------------
 facets:
-  capability: [reasoning, planning, memory, reflection, tool-use, learning,
-               perception, search, self-evolution]
-  level:      [single-agent, multi-agent, human-agent]
-  interaction: [communication, coordination, collaboration, negotiation]
-  infra:      [mcp, a2a, rag, knowledge-graph, sandbox, api]
+  about:      [reasoning, planning, memory, reflection, tool-use, learning,
+               self-evolution]
+  scale:      [single-agent, multi-agent, human-agent]
+  infra:      [rag, knowledge-graph, sandbox, api]
   type:       [survey, position, method, benchmark, framework, empirical, case-study]
-  domain:     [general, software-engineering, data, science, research, education,
-               healthcare, business, finance, enterprise,
-               embodied, robotics, gui, web, mobile]
+  domain:     [general, software-engineering, data, science,
+               healthcare, business, finance,
+               robotics, gui, web, deep-research]
+
+facet_blurbs:
+  about: >-
+    What the paper is about. Crosses areas on purpose: a coordination paper
+    may declare about: memory.
+  scale: >-
+    The scale of the system studied. "multi-agent" goes here — never in the
+    area.
+  infra: >-
+    Infrastructure the system uses. If the paper is ABOUT the protocol (mcp,
+    a2a), that is a topic, not infra.
+  type: "What kind of contribution it is."
+  domain: "Where it is applied. Generates the /domains pages."
+
+# Per-value descriptions for the values a contributor picks in the issue form.
+# Only scale and type are in the form; the rest are filled in while reading.
+value_blurbs:
+  scale:
+    single-agent: "One agent acting on its own."
+    multi-agent: "Several agents in the same system."
+    human-agent: "A human is part of the loop."
+  type:
+    survey: "Reviews an existing body of work."
+    position: "Argues for a stance without new experiments."
+    method: "Proposes a new technique."
+    benchmark: "Introduces a dataset or an evaluation suite."
+    framework: "Describes a system end to end rather than one technique."
+    empirical: "Measures or compares existing approaches."
+    case-study: "Reports one deployment in depth."
 
 # ---------------------------------------------------------------------------
-# ESTADOS — un paper avanza; nunca bloquea la carga.
+# DOMAIN GROUPS — only for navigating /domains. Not a new vocabulary:
+# it regroups values that already exist in facets.domain.
+# The cut (interface / vertical / system pattern) follows masamasa59.
 # ---------------------------------------------------------------------------
-# featured: true marca un paper para la seccion de destacados del mes.
+domain_groups:
+  interface:
+    label: "By interface"
+    blurb: "Which surface the agent manipulates."
+    members: [web, gui, robotics]
+  vertical:
+    label: "By field"
+    blurb: "Which industry or discipline it operates in."
+    members: [software-engineering, science, healthcare, business, finance]
+  pattern:
+    label: "By system pattern"
+    blurb: "Which shape of task it solves."
+    members: [data, deep-research, general]
+
+# ---------------------------------------------------------------------------
+# STATUSES — a paper moves forward; it never blocks the submission.
+# ---------------------------------------------------------------------------
+# featured: true sorts the paper first in the listing. It no longer draws a badge.
 
 status:
-  - captured   # solo metadata automática, sin clasificar
-  - triaged    # tiene area + level + type. Ya aparece en el índice.
-  - read       # tiene tldr, notes, capability, topics
+  - captured   # automatic metadata only, unclassified
+  - triaged    # has area + scale + type. Already shows up in the index.
+  - read       # has tldr, notes, about, topics
+
+status_blurbs:
+  captured: "Kept in git, not visible on the site."
+  triaged: "Visible in the index."
+  read: "Works as a summary on the site."
 
 # ---------------------------------------------------------------------------
-# REGLAS DE CRECIMIENTO — para no rediseñar la taxonomía por impulso.
+# GROWTH RULES — so the taxonomy is not redesigned on impulse.
 # ---------------------------------------------------------------------------
 rules:
-  # Un area con más de N papers se parte en dos.
+  # An area with more than N papers gets split in two.
   split_area_at: 25
-  # Un topic con más de N papers se promueve a area propia.
+  # A topic used by more than N papers is promoted to its own area.
   promote_topic_at: 10
+  # An area stays valid even when empty: the gap says what is missing.
+  # From here on, NO new area is created without at least one paper to live in
+  # it. The empty areas that already exist are accepted debt, not precedent.

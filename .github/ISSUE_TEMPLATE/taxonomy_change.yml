@@ -1,0 +1,70 @@
+name: Propose a taxonomy change
+description: Add a topic, add an area, or change how the vocabulary is organised
+title: "[Taxonomy]: "
+labels: ["taxonomy"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The vocabulary is meant to grow. Adding a **topic** is cheap and
+        expected. Adding an **area** is a structural change and needs an
+        argument. See the criteria in
+        [TAXONOMY.md](https://github.com/juliodosreis/awesome-agenticsystems/blob/main/TAXONOMY.md#changing-the-taxonomy).
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of change
+      options:
+        - Add a topic
+        - Add a facet value (capability / level / type / infra / domain)
+        - Add an area
+        - Rename or remove something
+        - Restructure (layers, how facets are cut)
+    validations:
+      required: true
+
+  - type: input
+    id: term
+    attributes:
+      label: The term
+      description: The exact value you would write in a `.yml` file. Lowercase, hyphenated.
+      placeholder: tool-retrieval
+    validations:
+      required: true
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Why it is needed
+      description: >-
+        The test for a topic is whether you would filter by it **today**: a term
+        that does not separate the papers already in the collection is noise,
+        not vocabulary. So: which existing papers would carry it, and which
+        would not?
+      placeholder: |
+        Would apply to: toolformer-2023, react-2022.
+        Would not apply to: metagpt-2023, agentbench-2023.
+        Today those first two are only reachable through `tool-use`, which
+        also covers papers about invoking a known tool.
+    validations:
+      required: true
+
+  - type: textarea
+    id: literature
+    attributes:
+      label: Support from the literature
+      description: >-
+        Required for a new area or a restructure, optional for a topic. The
+        taxonomy's axes come from cited work so that they can be argued with
+        rather than merely preferred — see the bibliography in TAXONOMY.md.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checked
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked [/taxonomy](https://juliodosreis.github.io/awesome-agenticsystems/taxonomy) and the term is not already there under another name.
+          required: true

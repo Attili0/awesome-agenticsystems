@@ -10,15 +10,15 @@ links:
 
 area: reasoning-planning
 topics: [react, chain-of-thought, tool-use]
-capability: [reasoning, tool-use]
-level: [single-agent]
+about: [reasoning, tool-use]
+scale: [single-agent]
 type: [method]
 infra: []
 domain: [general]
 
 status: read
-tldr: "Intercala trazas de razonamiento con acciones sobre el entorno, de modo que cada observación corrige el razonamiento siguiente."
-notes: "Referencia obligatoria: casi todo framework agentico implementa alguna variante del loop thought-action-observation. Para U-Eval importa que la traza intermedia es observable y por lo tanto evaluable a nivel de proceso, no solo de resultado."
-relates_to: [tree-of-thoughts-2023, reflexion-2023]
+tldr: "Interleaves reasoning traces with actions on the environment, so that each observation corrects the reasoning that follows."
+notes: "Required reading: nearly every agentic framework implements some variant of the thought-action-observation loop. The intermediate trace is observable, which makes the agent evaluable at the process level and not only at the outcome."
+relates_to: []
 evaluated_on: []
 added: 2026-08-21

@@ -1,2 +1,5 @@
-PyYAML>=6.0
-bibtexparser
+# bibtexparser 2.x reescribio la API: `bparser.BibTexParser` y `loads()`
+# desaparecen. Sin este pin, el dia que salga la v2 el Action se rompe solo
+# sin que nadie haya tocado nada. Ver scripts/process_issue.py.
+bibtexparser>=1.4,<2
+PyYAML>=6.0,<7

@@ -1,0 +1,22 @@
+id: harness-r1-2026
+title: "Harness-R1: Learning to Edit Executable Runtime Harnesses from Agent Failure Trajectories"
+authors: ["Shuai Shao", "Kangning Zhang", "Qingyao Li", "Shijian Wang", "Hao Wang", "Wenxiang Jiao", "Yuan Lu", "Yi Guo", "Weiwen Liu", "Weinan Zhang"]
+year: 2026
+arxiv: "2608.02276"
+links:
+  paper: https://arxiv.org/abs/2608.02276
+
+area: learning-evolution
+topics: [harness, self-evolution, experience-learning, agent-tuning, verification-loops]
+about: [self-evolution, learning]
+scale: [multi-agent]
+type: [method]
+infra: []
+domain: [general]
+
+status: read
+tldr: "Post-trains a separate 9B harness engineer with online RL to turn batches of agent failures into validated executable patches to the runtime harness, rewarded by the target agent's realised success."
+notes: "Filed under learning-evolution rather than engineering because the contribution is making harness editing a learned capability, not a harness design; the harness topic keeps it reachable from the engineering side. Read alongside rethinking-evaluation-harness-evolution-2026, which argues this class of method is not yet evaluated fairly."
+relates_to: [harness-effect-2026]
+evaluated_on: []
+added: 2026-08-24

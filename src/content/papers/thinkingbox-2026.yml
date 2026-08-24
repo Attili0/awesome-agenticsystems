@@ -1,0 +1,23 @@
+id: thinkingbox-2026
+title: "One Success Isn't Reliability: Thinkingbox, a Sandbox and Benchmark for Agents in Stateful Business Workflows"
+authors: ["Zhuochun Li", "Youngmin Ko", "Ali Keramati", "Nicola Ferri", "Susana Palmaz Lopez Pelaez", "Liang-Chun Tsai", "Calvin Wang", "Mirco Milletari", "Tuhin Kundu", "Vadim Smolyakov", "Kjartan Olafsson", "Tommy Guy"]
+year: 2026
+arxiv: "2608.19741"
+links:
+  paper: https://arxiv.org/abs/2608.19741
+
+area: evaluation
+topics: [agent-evaluation, benchmark-design, mcp, state-management, process-vs-outcome, reproducibility, tool-use]
+about: [tool-use, planning]
+scale: [single-agent, human-agent]
+type: [benchmark]
+infra: [sandbox, api]
+domain: [business]
+
+featured: true
+status: read
+tldr: "507 policy-conditioned workflows in an MCP-compatible sandbox, scored on the persistent backend state an agent leaves behind rather than on its response or tool calls."
+notes: "The gap it exposes is the reason to read it: the strongest model reaches 65.36% pass@1 but 25.25% pass^20. Many failed runs terminate cleanly with valid state-changing actions, so response-level and tool-call-level signals are not proxies for task completion."
+relates_to: [tau-bench-2024]
+evaluated_on: []
+added: 2026-08-24

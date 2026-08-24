@@ -19,3 +19,18 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+-------------------------------------------------------------------------------
+
+The MIT License above covers the code in this repository: `src/`, `scripts/`,
+`.github/` and the configuration files.
+
+The paper collection in `src/content/papers/` and the taxonomy in
+`src/data/taxonomy.yml` are dedicated to the public domain under
+CC0 1.0 Universal:
+
+  https://creativecommons.org/publicdomain/zero/1.0/
+
+Bibliographic metadata about published research should be reusable without
+conditions, including without attribution. This does not extend to the papers
+themselves, which remain under whatever terms their publishers set.

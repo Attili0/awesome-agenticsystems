@@ -1,45 +1,123 @@
+# The dropdown options below are generated from src/data/taxonomy.yml by
+# scripts/gen_docs.py. Do not edit them by hand: edit the taxonomy and run
+# `npm run docs`. CI fails if they are out of sync — an issue form offering an
+# option the validator rejects is worse than no form at all.
 name: Add a Paper
-description: Submit a new paper to the repository using BibTeX
+description: Suggest a paper for the collection. Takes about a minute.
 title: "[Paper]: "
 labels: ["paper"]
 body:
   - type: markdown
     attributes:
-      value: "Thanks for contributing! Paste the BibTeX below and we will automatically create a Pull Request."
+      value: |
+        Thanks for contributing. You do not need to clone the repo or run
+        anything: submitting this issue opens a pull request automatically.
+
+        You cannot break anything here — the pull request is reviewed before
+        it is merged, and a suggestion with a debatable area beats a paper
+        nobody suggested.
+
   - type: input
     id: paper_link
     attributes:
       label: Link to the paper
-      description: URL to arXiv, OpenReview, ACL Anthology, etc.
-      placeholder: https://arxiv.org/abs/...
+      description: arXiv, OpenReview, ACL Anthology, a publisher page — whatever you have.
+      placeholder: https://arxiv.org/abs/2210.03629
     validations:
       required: true
+
   - type: textarea
     id: bibtex
     attributes:
-      label: BibTeX
-      description: Paste the full BibTeX citation here.
+      label: BibTeX (optional)
+      description: >-
+        Leave this empty for an arXiv link — the title, authors and year are
+        fetched automatically. Only needed when the link is not arXiv. Most
+        publisher pages have a "Cite" or "Export citation" button that gives
+        you a BibTeX entry to paste here.
       placeholder: |
-        @article{...
+        @inproceedings{...
         }
     validations:
-      required: true
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Classification
+
+        Three fields, and only the first needs thought. Not sure? Pick the
+        closest option — a reviewer will correct it if needed.
+
   - type: dropdown
     id: area
     attributes:
       label: Area
-      description: What is the primary area of this paper?
+      description: >-
+        What is the paper's main *contribution*? Not the topic it discusses —
+        the thing it adds. A paper with several agents only belongs in
+        `coordination` if the coordination mechanism IS the contribution;
+        otherwise pick the component it improves and mark it `multi-agent`
+        below.
       options:
-        - foundations
-        - architectures
-        - reasoning-planning
-        - memory
-        - tools-context
-        - multi-agent
-        - interoperability
-        - learning-evolution
-        - engineering
-        - evaluation
-        - safety
+        # gen:issue-areas
+        - foundations — A general view of the field: surveys, taxonomies, position papers.
+        - reasoning-planning — What happens between the input and the action: reasoning, planning, self-critique.
+        - memory — What the agent remembers and how it retrieves it.
+        - tools-context — How the agent acts on the world and where it gets context from.
+        - learning-evolution — Changes that persist BETWEEN tasks: skills, experience, tuning.
+        - architectures — The complete loop of an agent.
+        - coordination — The mechanisms by which several agents divide work and communicate.
+        - interoperability — Standards that let agents and tools discover each other and talk.
+        - engineering — The runtime substrate around the model, and how it is operated.
+        - evaluation — How an agent or a multi-agent system is measured.
+        - safety — Risk, security, trust and control.
+        # /gen:issue-areas
     validations:
       required: true
+
+  - type: dropdown
+    id: scale
+    attributes:
+      label: Scale
+      description: >-
+        The scale of the system studied. This is what carries "multi-agent" —
+        not the area. Pick all that apply.
+      multiple: true
+      options:
+        # gen:issue-scale
+        - single-agent — One agent acting on its own.
+        - multi-agent — Several agents in the same system.
+        - human-agent — A human is part of the loop.
+        # /gen:issue-scale
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type
+      description: What kind of contribution is it? Pick all that apply.
+      multiple: true
+      options:
+        # gen:issue-type
+        - survey — Reviews an existing body of work.
+        - position — Argues for a stance without new experiments.
+        - method — Proposes a new technique.
+        - benchmark — Introduces a dataset or an evaluation suite.
+        - framework — Describes a system end to end rather than one technique.
+        - empirical — Measures or compares existing approaches.
+        - case-study — Reports one deployment in depth.
+        # /gen:issue-type
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        Submitting opens a pull request with the paper added in the `triaged`
+        state, which is enough for it to show up on the site. `tldr`, `notes`
+        and `topics` are filled in later, by whoever reads it.
+
+        If something is wrong with the submission, a bot comments the reason
+        on this issue — you will not have to dig through CI logs.

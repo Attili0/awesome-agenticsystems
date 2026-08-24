@@ -10,15 +10,15 @@ links:
 
 area: reasoning-planning
 topics: [tree-of-thoughts, chain-of-thought, task-decomposition]
-capability: [reasoning, planning]
-level: [single-agent]
+about: [reasoning, planning]
+scale: [single-agent]
 type: [method]
 infra: []
 domain: [general]
 
 status: read
-tldr: "Explora varios caminos de razonamiento en paralelo y los poda con autoevaluación, en vez de comprometerse con una única cadena lineal."
-notes: "Introduce costo de cómputo variable por tarea, lo que rompe las comparaciones de benchmark que asumen una llamada por instancia."
+tldr: "Explores several reasoning paths in parallel and prunes them with self-evaluation, instead of committing to a single linear chain."
+notes: "Introduces per-task variable compute cost, which breaks benchmark comparisons that assume one call per instance."
 relates_to: [react-2022]
 evaluated_on: []
 added: 2026-08-21

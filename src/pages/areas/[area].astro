@@ -1,38 +1,38 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
-import fs from 'node:fs';
-import path from 'node:path';
-import yaml from 'js-yaml';
-
+import { listPapers, formatAuthors } from '../../lib/papers';
+import { taxonomy } from '../../lib/taxonomy';
+import { url } from '../../lib/url';
 
 export async function getStaticPaths() {
-  const papers = await getCollection('papers');
-  const taxonomyRaw = fs.readFileSync(path.join(process.cwd(), 'src/data/taxonomy.yml'), 'utf-8');
-  const taxonomy = yaml.load(taxonomyRaw) as any;
+  const papers = await listPapers();
 
-
-  const areas = taxonomy.areas;
-
-
-  return Object.keys(areas).map(areaKey => {
-    return {
-      params: { area: areaKey },
-      props: {
-        areaData: areas[areaKey],
-        papers: papers.filter(p => p.data.area === areaKey)
-      }
-    };
-  });
+  return Object.entries(taxonomy.areas).map(([areaKey, area]) => ({
+    params: { area: areaKey },
+    props: {
+      areaData: area,
+      group: taxonomy.groups[area.group],
+      papers: papers.filter(p => p.data.area === areaKey)
+    }
+  }));
 }
 
-const { area } = Astro.params;
-const { areaData, papers } = Astro.props;
+const { areaData, group, papers } = Astro.props;
+
+// Surveys are the way into an area: they go on top, separated out.
+const surveys = papers.filter((p: any) => p.data.type.includes('survey'));
+const rest = papers.filter((p: any) => !p.data.type.includes('survey'));
+rest.sort((a: any, b: any) => (b.data.year || 0) - (a.data.year || 0));
 ---
 
-<Layout title={`${areaData.label} | Awesome Agentic Systems`}>
+<Layout
+  title={`${areaData.label} | Awesome Agentic Systems`}
+  description={`${areaData.blurb} ${papers.length} papers.`}
+>
   <div class="breadcrumb">
-    <a href="/awesome-agenticsystems/">← Back to Areas</a>
+    <a href={url('/areas')}>← All areas</a>
+    <span class="crumb-sep">/</span>
+    <span class="crumb-group">{group.label}</span>
   </div>
 
   <div class="area-header">
@@ -43,11 +43,32 @@ const { areaData, papers } = Astro.props;
     </div>
   </div>
 
+  {surveys.length > 0 && (
+    <section class="entry-point">
+      <h3>Where to start</h3>
+      <p class="entry-desc">Surveys and taxonomies for this area.</p>
+      <div class="paper-list">
+        {surveys.map((paper: any) => (
+          <a href={url(`/papers/${paper.data.id}`)} class="paper-card survey">
+            <div class="paper-title">
+              <span class="badge survey-badge">survey</span>
+              {paper.data.title}
+            </div>
+            <div class="paper-authors" data-authors={JSON.stringify(paper.data.authors)} data-suffix={` (${paper.data.year})`}>{formatAuthors(paper.data.authors)} ({paper.data.year})</div>
+            {paper.data.tldr && <p class="paper-tldr">{paper.data.tldr}</p>}
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
   <div class="paper-list">
-    {papers.map(paper => (
-      <a href={`/awesome-agenticsystems/papers/${paper.data.id}`} class="paper-card">
-        <div class="paper-title">{paper.data.title}</div>
-        <div class="paper-authors">{paper.data.authors.join(', ')} ({paper.data.year})</div>
+    {rest.map((paper: any) => (
+      <a href={url(`/papers/${paper.data.id}`)} class="paper-card">
+        <div class="paper-title">
+          {paper.data.title}
+        </div>
+        <div class="paper-authors" data-authors={JSON.stringify(paper.data.authors)} data-suffix={` (${paper.data.year})`}>{formatAuthors(paper.data.authors)} ({paper.data.year})</div>
         <div class="paper-topics">
           {paper.data.topics.map((t: string) => (
             <span class="topic-tag">{t}</span>
@@ -56,7 +77,10 @@ const { areaData, papers } = Astro.props;
       </a>
     ))}
     {papers.length === 0 && (
-      <div class="empty-state">No papers categorized in this area yet.</div>
+      <div class="empty-state">
+        No papers in this area yet. The gap is deliberate: the area exists in
+        the taxonomy even before anything lives in it.
+      </div>
     )}
   </div>
 </Layout>
@@ -64,15 +88,21 @@ const { areaData, papers } = Astro.props;
 <style>
   .breadcrumb {
     margin-bottom: 24px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
   }
-  
+
   .breadcrumb a {
     color: var(--text-muted);
-    font-size: 0.9rem;
   }
 
   .breadcrumb a:hover {
     color: var(--accent-color);
+  }
+
+  .crumb-sep {
+    margin: 0 8px;
+    opacity: 0.5;
   }
 
   .area-header {
@@ -99,6 +129,21 @@ const { areaData, papers } = Astro.props;
     font-weight: 500;
   }
 
+  .entry-point {
+    margin-bottom: 40px;
+  }
+
+  .entry-point h3 {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+  }
+
+  .entry-desc {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+  }
+
   .paper-list {
     display: flex;
     flex-direction: column;
@@ -120,6 +165,10 @@ const { areaData, papers } = Astro.props;
     text-decoration: none;
   }
 
+  .paper-card.survey {
+    border-left: 3px solid var(--accent-color);
+  }
+
   .paper-title {
     font-size: 1.2rem;
     font-weight: 600;
@@ -127,10 +176,36 @@ const { areaData, papers } = Astro.props;
     margin-bottom: 8px;
   }
 
+  .badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  .survey-badge {
+    background: var(--accent-tint-strong);
+    color: var(--accent-color);
+  }
+
   .paper-authors {
     color: var(--text-muted);
     font-size: 0.9rem;
     margin-bottom: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .paper-tldr {
+    color: var(--text-main);
+    font-size: 0.95rem;
+    margin: 0;
   }
 
   .paper-topics {
@@ -140,7 +215,7 @@ const { areaData, papers } = Astro.props;
   }
 
   .topic-tag {
-    background: rgba(139, 148, 158, 0.1);
+    background: var(--muted-tint);
     color: var(--text-muted);
     padding: 2px 8px;
     border-radius: 12px;
@@ -151,5 +226,6 @@ const { areaData, papers } = Astro.props;
     color: var(--text-muted);
     font-style: italic;
     padding: 40px 0;
+    max-width: 600px;
   }
 </style>

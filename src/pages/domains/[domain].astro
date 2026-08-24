@@ -1,0 +1,172 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { listPapers, formatAuthors } from '../../lib/papers';
+import { taxonomy } from '../../lib/taxonomy';
+import { url } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const papers = await listPapers();
+
+  // A domain may not belong to any domain_group yet; it still gets a page.
+  const groupOf = (domain: string) =>
+    Object.values(taxonomy.domain_groups).find(dg => dg.members.includes(domain));
+
+  return taxonomy.facets.domain.map(domain => ({
+    params: { domain },
+    props: {
+      domain,
+      groupLabel: groupOf(domain)?.label ?? null,
+      papers: papers.filter(p => p.data.domain.includes(domain)),
+    }
+  }));
+}
+
+const { domain, groupLabel, papers } = Astro.props;
+
+papers.sort((a: any, b: any) => (b.data.year || 0) - (a.data.year || 0));
+
+// A domain cuts across several areas: showing which ones is the point of this view.
+const areasHit = [...new Set(papers.map((p: any) => p.data.area))];
+---
+
+<Layout
+  title={`${domain} | Awesome Agentic Systems`}
+  description={`${papers.length} papers applied to ${domain}, across ${areasHit.length} areas.`}
+>
+  <div class="breadcrumb">
+    <a href={url('/domains')}>← All domains</a>
+    {groupLabel && <><span class="crumb-sep">/</span><span>{groupLabel}</span></>}
+  </div>
+
+  <div class="area-header">
+    <h2>{domain}</h2>
+    <div class="meta">
+      <span>{papers.length} papers</span>
+      {areasHit.length > 0 && (
+        <span class="areas-hit">
+          across {areasHit.length} {areasHit.length === 1 ? 'area' : 'areas'}:
+          {areasHit.map((a: string) => (
+            <a href={url(`/areas/${a}`)}>{taxonomy.areas[a].label}</a>
+          ))}
+        </span>
+      )}
+    </div>
+  </div>
+
+  <div class="paper-list">
+    {papers.map((paper: any) => (
+      <a href={url(`/papers/${paper.data.id}`)} class="paper-card">
+        <div class="paper-title">{paper.data.title}</div>
+        <div class="paper-authors" data-authors={JSON.stringify(paper.data.authors)} data-suffix={` (${paper.data.year})`}>{formatAuthors(paper.data.authors)} ({paper.data.year})</div>
+        {paper.data.tldr && <p class="paper-tldr">{paper.data.tldr}</p>}
+        <span class="area-chip">{taxonomy.areas[paper.data.area].label}</span>
+      </a>
+    ))}
+    {papers.length === 0 && (
+      <div class="empty-state">No papers in this domain yet.</div>
+    )}
+  </div>
+</Layout>
+
+<style>
+  .breadcrumb {
+    margin-bottom: 24px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .breadcrumb a {
+    color: var(--text-muted);
+  }
+
+  .breadcrumb a:hover {
+    color: var(--accent-color);
+  }
+
+  .crumb-sep {
+    margin: 0 8px;
+    opacity: 0.5;
+  }
+
+  .area-header {
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .area-header h2 {
+    font-size: 2rem;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+
+  .meta {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .areas-hit a {
+    margin-left: 8px;
+  }
+
+  .paper-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .paper-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: 8px;
+    transition: border-color 0.2s;
+    text-decoration: none;
+    display: block;
+  }
+
+  .paper-card:hover {
+    border-color: var(--accent-color);
+    text-decoration: none;
+  }
+
+  .paper-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+
+  .paper-authors {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .paper-tldr {
+    color: var(--text-main);
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+  }
+
+  .area-chip {
+    display: inline-block;
+    background: var(--accent-tint);
+    color: var(--accent-color);
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+  }
+
+  .empty-state {
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 40px 0;
+  }
+</style>

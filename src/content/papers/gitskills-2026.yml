@@ -1,0 +1,22 @@
+id: gitskills-2026
+title: "GitSkills: A Dataset of Agent Skills on GitHub"
+authors: ["Giuseppe Destefanis", "Daniel Graziotin", "Matteo Vaccargiu", "Marco Ortu"]
+year: 2026
+arxiv: "2608.10906"
+links:
+  paper: https://arxiv.org/abs/2608.10906
+
+area: learning-evolution
+topics: [skill-learning, procedural-memory, agent-ops]
+about: [learning]
+scale: [single-agent]
+type: [empirical]
+infra: []
+domain: [software-engineering]
+
+status: read
+tldr: "A dataset of 3.8M SKILL.md files mined from 282,200 public repositories, with front matter, folder contents and partial commit history."
+notes: "Skills spread by copying folders, with no registry, no package manager and no checker verifying that the agent picks the right one. That makes their adoption an empirical question, and this is the first dataset that lets anyone ask it."
+relates_to: []
+evaluated_on: []
+added: 2026-08-24

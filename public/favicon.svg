@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Un nodo con tres hijos: la estructura padre-hijo de la taxonomia. -->
+  <rect width="32" height="32" rx="7" fill="#0d1117"/>
+  <g stroke="#58a6ff" stroke-width="1.8" stroke-linecap="round" fill="none">
+    <path d="M16 11v4M16 15h-6v5M16 15h6v5M16 15v5"/>
+  </g>
+  <g fill="#58a6ff">
+    <circle cx="16" cy="9" r="2.6"/>
+    <circle cx="10" cy="22" r="2.2"/>
+    <circle cx="16" cy="22" r="2.2"/>
+    <circle cx="22" cy="22" r="2.2"/>
+  </g>
+</svg>

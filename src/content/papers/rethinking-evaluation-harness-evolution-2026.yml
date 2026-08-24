@@ -1,0 +1,22 @@
+id: rethinking-evaluation-harness-evolution-2026
+title: "Rethinking the Evaluation of Harness Evolution for Agents"
+authors: ["Yike Wang", "Huaisheng Zhu", "Zhengyu Hu", "Yige Yuan", "Zhengyu Chen", "Shakti Senthil", "Hannaneh Hajishirzi", "Yulia Tsvetkov", "Pradeep Dasigi", "Teng Xiao"]
+year: 2026
+arxiv: "2607.12227"
+links:
+  paper: https://arxiv.org/abs/2607.12227
+
+area: evaluation
+topics: [harness, self-evolution, agent-evaluation, benchmark-design, reproducibility, process-vs-outcome]
+about: [self-evolution]
+scale: [single-agent]
+type: [empirical, position]
+infra: []
+domain: [software-engineering]
+
+status: read
+tldr: "Argues automatic harness evolution must be compared against plain test-time scaling under matched feedback and inference budgets, and finds it does not consistently win or generalise to held-out tasks."
+notes: "Two methodological objections that generalise well past this subfield: an iterative search procedure has to be compared with simple search under a matched budget, and searching and reporting on the same benchmark invites overfitting to that task set."
+relates_to: [harness-effect-2026]
+evaluated_on: []
+added: 2026-08-24

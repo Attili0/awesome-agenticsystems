@@ -9,16 +9,16 @@ links:
   code: https://github.com/joonspk-research/generative_agents
 
 area: memory
-topics: [long-term-memory, memory-retrieval, memory-consolidation, societies]
-capability: [memory, reflection, planning]
-level: [multi-agent]
+topics: [episodic-memory, memory-retrieval, memory-consolidation, agent-organizations]
+about: [memory, reflection, planning]
+scale: [multi-agent]
 type: [method, case-study]
-infra: []
+infra: [sandbox]
 domain: [general]
 
 status: read
-tldr: "Arquitectura de memoria con stream de observaciones, recuperación ponderada por relevancia-recencia-importancia y síntesis periódica en reflexiones."
-notes: "El componente de reflexión es una consolidación de memoria, no un mecanismo de razonamiento. Vale la pena distinguirlo de Reflexion, que ocupa otro nivel."
+tldr: "A memory architecture with an observation stream, retrieval weighted by relevance-recency-importance, and periodic synthesis into reflections."
+notes: "The reflection component is memory consolidation, not a reasoning mechanism. Worth distinguishing from Reflexion, which sits at a different level."
 relates_to: [reflexion-2023]
 evaluated_on: []
 added: 2026-08-21

@@ -1,11 +1,20 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { listPapers, formatAuthors } from '../lib/papers';
+import { url } from '../lib/url';
 
-const papers = await getCollection('papers');
+const papers = await listPapers();
 
-// Sort papers by year descending, then alphabetically
+// Featured and surveys first (they are the way in), then by year.
+// Kept as ONE list so the search filter keeps counting correctly.
+function rank(p: (typeof papers)[number]) {
+  if (p.data.featured) return 0;
+  if (p.data.type.includes('survey')) return 1;
+  return 2;
+}
+
 papers.sort((a, b) => {
+  if (rank(a) !== rank(b)) return rank(a) - rank(b);
   if (b.data.year !== a.data.year) {
     return (b.data.year || 0) - (a.data.year || 0);
   }
@@ -13,30 +22,58 @@ papers.sort((a, b) => {
 });
 ---
 
-<Layout title="All Papers | Awesome Agentic Systems">
+<Layout
+    title="All Papers | Awesome Agentic Systems"
+    description={`All ${papers.length} papers in the collection, featured and surveys first.`}
+>
     <div class="page-header">
         <h2>All Papers</h2>
+        {/*
+          This narrows the list below, in place. It is deliberately not the
+          same thing as the search box in the header: that one searches the
+          whole site and returns a result list, this one filters what you are
+          already looking at. The labels say which is which.
+        */}
         <div class="search-container">
             <form id="global-search-form" action="" method="GET">
-                <input type="search" name="q" id="global-search-input" placeholder="Search across all papers..." aria-label="Search papers" />
+                <input type="search" name="q" id="global-search-input" placeholder="Filter this list by title, author, topic..." aria-label="Filter the paper list" />
             </form>
         </div>
-        <p class="subtitle">Showing {papers.length} papers, sorted by newest.</p>
+        <p class="subtitle">Showing {papers.length} papers — featured and surveys first, then by year.</p>
     </div>
 
     <div class="feed">
         {papers.map(paper => (
-            <article class="feed-card">
+            <article
+                class="feed-card"
+                data-search={[
+                    paper.data.title,
+                    // ALL authors, not the 3 that are shown: otherwise searching
+                    // for a paper's 20th author would not find it.
+                    ...paper.data.authors,
+                    paper.data.venue ?? '',
+                    paper.data.tldr ?? '',
+                    paper.data.area,
+                    ...paper.data.topics,
+                    ...paper.data.about,
+                    ...paper.data.scale,
+                    ...paper.data.type,
+                    ...paper.data.domain,
+                ].join(' ').toLowerCase()}
+            >
                 <div class="card-header">
-                    <h3><a href={`/awesome-agenticsystems/papers/${paper.data.id}`}>{paper.data.title}</a></h3>
+                    <h3>
+                        {paper.data.type.includes('survey') && <span class="badge survey-badge">survey</span>}
+                        <a href={url(`/papers/${paper.data.id}`)}>{paper.data.title}</a>
+                    </h3>
                     <div class="meta">
                         <span class="year">{paper.data.year}</span>
                         {paper.data.venue && <span class="venue"> • {paper.data.venue}</span>}
                     </div>
                 </div>
                 
-                <div class="authors">
-                    {paper.data.authors.join(', ')}
+                <div class="authors" data-authors={JSON.stringify(paper.data.authors)}>
+                    {formatAuthors(paper.data.authors)}
                 </div>
                 
                 {paper.data.tldr && (
@@ -46,7 +83,7 @@ papers.sort((a, b) => {
                 )}
                 
                 <div class="tags">
-                    <a href={`/awesome-agenticsystems/areas/${paper.data.area}`} class="tag area-tag">{paper.data.area}</a>
+                    <a href={url(`/areas/${paper.data.area}`)} class="tag area-tag">{paper.data.area}</a>
                     {paper.data.topics.slice(0, 3).map((t: string) => (
                         <span class="tag">{t}</span>
                     ))}
@@ -55,7 +92,7 @@ papers.sort((a, b) => {
                 
                 <div class="actions">
                     <a href={paper.data.links.paper} target="_blank" class="action-btn">Read Paper ↗</a>
-                    <a href={`/awesome-agenticsystems/papers/${paper.data.id}`} class="action-btn outline">Details</a>
+                    <a href={url(`/papers/${paper.data.id}`)} class="action-btn outline">Details</a>
                 </div>
             </article>
         ))}
@@ -107,7 +144,7 @@ papers.sort((a, b) => {
 
     .search-container input:focus {
         border-color: var(--accent-color);
-        box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
+        box-shadow: 0 0 0 2px var(--accent-tint-strong);
     }
 
     .feed {
@@ -155,7 +192,7 @@ papers.sort((a, b) => {
         flex-shrink: 0;
         font-size: 0.9rem;
         color: var(--text-muted);
-        background: rgba(139, 148, 158, 0.1);
+        background: var(--muted-tint);
         padding: 4px 10px;
         border-radius: 16px;
     }
@@ -169,6 +206,10 @@ papers.sort((a, b) => {
         font-size: 0.95rem;
         color: var(--text-muted);
         margin-bottom: 16px;
+        /* Safety net: even with 3 names, a narrow screen must not wrap. */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .tldr {
@@ -193,13 +234,30 @@ papers.sort((a, b) => {
         font-size: 0.8rem;
         padding: 2px 10px;
         border-radius: 12px;
-        background: rgba(139, 148, 158, 0.1);
+        background: var(--muted-tint);
         color: var(--text-muted);
         text-decoration: none;
     }
 
+    .badge {
+        display: inline-block;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 2px 8px;
+        border-radius: 4px;
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+
+    .survey-badge {
+        background: var(--accent-tint-strong);
+        color: var(--accent-color);
+    }
+
     .area-tag {
-        background: rgba(88, 166, 255, 0.1);
+        background: var(--accent-tint);
         color: var(--accent-color);
         font-weight: 500;
     }
@@ -231,11 +289,11 @@ papers.sort((a, b) => {
 
     .action-btn:not(.outline) {
         background: var(--accent-color);
-        color: #000;
+        color: var(--on-accent);
     }
 
     .action-btn:not(.outline):hover {
-        background: #3a82f6;
+        background: var(--accent-hover);
     }
 
     .action-btn.outline {
@@ -246,7 +304,7 @@ papers.sort((a, b) => {
 
     .action-btn.outline:hover {
         border-color: var(--text-main);
-        background: rgba(255, 255, 255, 0.05);
+        background: var(--muted-tint);
     }
 
     .hidden {
@@ -268,8 +326,10 @@ papers.sort((a, b) => {
 
             feedCards.forEach((card) => {
                 const el = card as HTMLElement;
-                const text = el.innerText.toLowerCase();
-                
+                // data-search is precomputed at build time. Reading innerText here
+                // forced a reflow per card on every keystroke.
+                const text = el.dataset.search || '';
+
                 if (text.includes(q)) {
                     el.classList.remove('hidden');
                     visibleCount++;
@@ -282,7 +342,7 @@ papers.sort((a, b) => {
                 if (q) {
                     subtitle.textContent = `Showing ${visibleCount} results for "${query}" (out of ${totalPapers})`;
                 } else {
-                    subtitle.textContent = `Showing ${totalPapers} papers, sorted by newest.`;
+                    subtitle.textContent = `Showing ${totalPapers} papers — featured and surveys first, then by year.`;
                 }
             }
         }

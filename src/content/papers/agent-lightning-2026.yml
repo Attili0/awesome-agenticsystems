@@ -1,0 +1,22 @@
+id: agent-lightning-2026
+title: "Agent Lightning v1.0: Towards Harnessed Agentic RL"
+authors: ["Zhiyuan He", "Siwei Zhang", "Zhiwen Zhou", "Yuqing Yang", "Yu Kang", "Yuge Zhang", "Luna K. Qiu", "Tin Yan Tsui", "Jiahang Xu", "Chong Luo"]
+year: 2026
+arxiv: "2608.17528"
+links:
+  paper: https://arxiv.org/abs/2608.17528
+
+area: engineering
+topics: [harness, agent-tuning, agent-ops, state-management]
+about: [learning]
+scale: [single-agent]
+type: [framework]
+infra: []
+domain: [software-engineering]
+
+status: read
+tldr: "A small framework for harnessed agentic RL, where the deploy-time harness owns the environment loop and the trainer sees only request-response pairs."
+notes: "Names the paradigm \u2014 harnessed agentic RL \u2014 and is explicit about what it costs: retokenization, sample merging, advantage calculation and loss normalisation all become open problems once the trainer no longer owns the loop."
+relates_to: []
+evaluated_on: []
+added: 2026-08-24

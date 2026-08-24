@@ -2,7 +2,7 @@ id: tau-bench-2024
 title: "tau-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains"
 authors: [Shunyu Yao, Noah Shinn, Pedram Razavi, Karthik Narasimhan]
 year: 2024
-venue: "arXiv preprint"
+venue: "ICLR 2025"
 arxiv: "2406.12045"
 links:
   paper: https://arxiv.org/abs/2406.12045
@@ -10,16 +10,16 @@ links:
 
 area: evaluation
 topics: [agent-evaluation, benchmark-design, reproducibility]
-capability: [tool-use, reasoning]
-level: [single-agent, human-agent]
+about: [tool-use, reasoning]
+scale: [single-agent, human-agent]
 type: [benchmark]
 infra: [api]
 domain: [business]
 
 featured: true
 status: read
-tldr: "Evalua al agente contra un usuario simulado y políticas de dominio, midiendo consistencia entre corridas ademas de exito por tarea."
-notes: "La metrica pass^k, que exige acertar k veces seguidas, es la idea a robar: separa capacidad de fiabilidad. Directamente aplicable a MAS, donde la varianza entre corridas es aun mayor."
+tldr: "Evaluates the agent against a simulated user and domain policies, measuring consistency across runs on top of per-task success."
+notes: "The pass^k metric, which requires getting it right k times in a row, is the idea worth stealing: it separates capability from reliability. Directly applicable to MAS, where variance across runs is even larger."
 relates_to: [agentbench-2023]
 evaluated_on: []
 added: 2026-08-21

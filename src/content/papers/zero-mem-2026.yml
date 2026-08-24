@@ -1,0 +1,22 @@
+id: zero-mem-2026
+title: "Zero-Mem: Zero-Token Memory Operations for LLM Agents"
+authors: ["Yilin Xiao", "Zhehan Zhu", "Yujing Zhang", "Jin Chen", "Zijin Hong", "Luyao Zhuang", "Qinggang Zhang", "Shengyuan Chen", "Xiaocao Ouyang", "Lingfei Ren", "Xiao Huang"]
+year: 2026
+arxiv: "2607.29377"
+links:
+  paper: https://arxiv.org/abs/2607.29377
+
+area: memory
+topics: [memory-retrieval, memory-consolidation, episodic-memory, semantic-memory]
+about: [memory]
+scale: [single-agent]
+type: [method]
+infra: [knowledge-graph]
+domain: [general]
+
+status: read
+tldr: "Runs memory operations with no LLM calls at all \u2014 an entity-context graph plus a temporal hierarchy over the original traces \u2014 reserving generation for the final answer."
+notes: "Worth reading against the assumption that agent memory needs an LLM to write and mediate it. Keeping the raw traces as the record also sidesteps the usual failure where summarisation drops the evidence the answer needed."
+relates_to: [generative-agents-2023]
+evaluated_on: []
+added: 2026-08-24

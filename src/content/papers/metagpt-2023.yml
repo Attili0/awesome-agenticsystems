@@ -8,17 +8,19 @@ links:
   paper: https://arxiv.org/abs/2308.00352
   code: https://github.com/geekan/MetaGPT
 
-area: multi-agent
+area: coordination
 topics: [roles, agent-organizations, collaboration, orchestration]
-capability: [planning, reasoning]
-level: [multi-agent]
+about: [planning, reasoning]
+scale: [multi-agent]
 type: [framework, method]
 infra: []
 domain: [software-engineering]
 
 status: read
-tldr: "Codifica procedimientos operativos de una empresa de software como roles de agente encadenados por artefactos estructurados en vez de diálogo libre."
-notes: "El artefacto intermedio como interfaz entre agentes reduce la propagación de errores. Es una hipótesis concreta y medible: buen caso de prueba para U-Eval."
-relates_to: [autogen-2023]
-evaluated_on: [agentbench-2023]
+tldr: "Encodes the standard operating procedures of a software company as agent roles chained by structured artifacts rather than free-form dialogue."
+notes: "Using the intermediate artifact as the interface between agents reduces error propagation. That is a concrete and measurable claim, not just a design preference — which makes it unusually easy to test against a free-form dialogue baseline."
+relates_to: []
+# HumanEval, MBPP and its own SoftwareDev dataset — none of them are in the
+# collection yet, and evaluated_on only accepts ids of papers that are.
+evaluated_on: []
 added: 2026-08-21

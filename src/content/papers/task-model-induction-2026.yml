@@ -1,0 +1,22 @@
+id: task-model-induction-2026
+title: "Inducing Task Models from Computer-Use Traces"
+authors: ["Yucheng Jiang", "Zora Zhiruo Wang", "Ruishi Chen", "Diyi Yang"]
+year: 2026
+arxiv: "2608.20319"
+links:
+  paper: https://arxiv.org/abs/2608.20319
+
+area: learning-evolution
+topics: [skill-learning, experience-learning, computer-use, task-decomposition, procedural-memory]
+about: [learning, planning]
+scale: [single-agent, human-agent]
+type: [method]
+infra: []
+domain: [gui]
+
+status: read
+tldr: "Recovers the latent tasks inside an unconstrained computer-use trace and induces, for each, a hierarchical objective model paired with a procedure model of the control flow."
+notes: "Interesting for treating passively recorded human work as the training signal, and for insisting the output be symbolic and auditable rather than a step-level summary. The disentangling of interleaved concurrent tasks is the hard part it claims to solve."
+relates_to: []
+evaluated_on: []
+added: 2026-08-24

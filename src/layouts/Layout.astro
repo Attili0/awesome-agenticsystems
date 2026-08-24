@@ -1,36 +1,96 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
-import yaml from 'js-yaml';
+import Search from 'astro-pagefind/components/Search.astro';
+import { areasByGroup } from '../lib/taxonomy';
+import { listPapers, countCaptured } from '../lib/papers';
+import { url, REPO_URL } from '../lib/url';
 
 interface Props {
 	title: string;
+	/**
+	 * Area to highlight in the tree. Area pages derive it from the path;
+	 * paper pages pass it explicitly.
+	 */
+	activeArea?: string;
+	/**
+	 * What a link preview shows when the page is shared. Without a per-page
+	 * value every card said "Awesome Agentic Systems" and nothing else, so
+	 * sharing a paper in Slack conveyed nothing about the paper.
+	 */
+	description?: string;
 }
 
-const { title } = Astro.props;
+const DEFAULT_DESCRIPTION =
+	'Papers on agentic AI systems, classified by what each one contributes: ' +
+	'reasoning, memory, tools, coordination, evaluation and safety.';
 
-// Load taxonomy for the sidebar
-const taxonomyRaw = fs.readFileSync(path.join(process.cwd(), 'src/data/taxonomy.yml'), 'utf-8');
-const taxonomy = yaml.load(taxonomyRaw) as any;
-const areas = taxonomy.areas;
+const { title, activeArea, description = DEFAULT_DESCRIPTION } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+const groups = areasByGroup();
+const papers = await listPapers();
+const countIn = (key: string) => papers.filter(p => p.data.area === key).length;
+
+// `captured` papers are not shown anywhere on the site. Without this counter
+// the backlog is invisible and nobody knows something is waiting for triage.
+const captured = await countCaptured();
+
+const favicon = url('/favicon.svg');
+
+const path = Astro.url.pathname.replace(/\/$/, '');
+const active = activeArea ?? path.match(/\/areas\/([^/]+)$/)?.[1];
+const isCurrent = (href: string) => path === href.replace(/\/$/, '');
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Awesome Agentic Systems" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<link rel="icon" type="image/svg+xml" href={favicon} />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Awesome Agentic Systems" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title="Awesome Agentic Systems"
+			href={url('/rss.xml')}
+		/>
+		<!-- The site has no forced theme: it follows the reader's OS setting. -->
+		<meta name="color-scheme" content="dark light" />
 	</head>
 	<body>
         <header class="site-header">
             <div class="header-container">
-                <h1>Awesome Agentic Systems</h1>
+                <h1><a href={url('/')}>Awesome Agentic Systems</a></h1>
+                {/*
+                  Search lives in the header so it works from every page. The
+                  old input only filtered the home page: from /areas/memory or
+                  a paper page there was no way to search at all.
+
+                  Pagefind indexes the built HTML, so this returns nothing in
+                  `astro dev` — run `npm run build && npm run preview` to try it.
+                */}
+                <div class="header-search">
+                    <Search
+                        className="pagefind"
+                        configOptions={{ showImages: false }}
+                    />
+                </div>
                 <nav>
-                    <a href="https://github.com/juliodosreis/awesome-agenticsystems">GitHub</a>
+                    <a href={REPO_URL}>GitHub</a>
                 </nav>
             </div>
         </header>
@@ -40,28 +100,142 @@ const areas = taxonomy.areas;
                 <nav class="sidebar-nav">
                     <div class="nav-section">
                         <span class="nav-heading">Explore</span>
-                        <a href="/awesome-agenticsystems/">All Papers</a>
-                        <a href="/awesome-agenticsystems/areas">Areas Overview</a>
-                        <a href="/awesome-agenticsystems/taxonomy">Taxonomy List</a>
-                    </div>
-                    
-                    <div class="nav-section">
-                        <span class="nav-heading">Filter by Area</span>
-                        {Object.entries(areas).map(([areaKey, areaData]: [string, any]) => (
-                            <a href={`/awesome-agenticsystems/areas/${areaKey}`} class="area-link">
-                                {areaData.label}
-                            </a>
+                        {[
+                            [url('/'), 'All Papers'],
+                            [url('/areas'), 'Areas Overview'],
+                            [url('/domains'), 'Domains'],
+                            [url('/taxonomy'), 'Taxonomy List'],
+                        ].map(([href, label]) => (
+                            <a href={href} class:list={{ current: isCurrent(href) }}>{label}</a>
                         ))}
+                        {captured > 0 && (
+                            <a
+                                class="triage-cta"
+                                href={`${REPO_URL}/blob/main/CONTRIBUTING.md#a-paper-is-never-blocked`}
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <span>Help triage</span>
+                                <span class="triage-count">{captured}</span>
+                            </a>
+                        )}
+                    </div>
+
+                    <div class="nav-section">
+                        <span class="nav-heading">Areas</span>
+                        <div class="tree">
+                            {groups.map(({ key, group, areas }) => (
+                                <details class="tree-group" data-group={key} open>
+                                    <summary class="tree-parent">
+                                        <svg class="twisty" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+                                        <span>{group.label}</span>
+                                    </summary>
+                                    <ul class="tree-children">
+                                        {areas.map(({ key: areaKey, area }) => (
+                                            <li>
+                                                <a
+                                                    href={url(`/areas/${areaKey}`)}
+                                                    class:list={["tree-child", { current: areaKey === active }]}
+                                                    aria-current={areaKey === active ? 'page' : undefined}
+                                                >
+                                                    <span class="tree-label">{area.label}</span>
+                                                    <span class="tree-count">{countIn(areaKey)}</span>
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </details>
+                            ))}
+                        </div>
                     </div>
                 </nav>
             </aside>
-            <main class="main-content">
+            {/*
+              data-pagefind-body limits the index to the page's own content.
+              Without it the sidebar — which lists all eleven areas on every
+              page — would be indexed into every page, and searching "memory"
+              would match all 35 of them.
+            */}
+            <main class="main-content" data-pagefind-body>
+                {/*
+                  Pagefind indexes `dist/`, so the URL it records for a page is
+                  relative to that directory — "/areas/memory/", with no base.
+                  The site is served from /awesome-agenticsystems/, so every
+                  search result would 404 in production while working fine in
+                  `npm run preview`, which serves dist at the root.
+
+                  The searchbox template resolves `meta.url | default(url)`,
+                  so declaring the real path here wins over the indexed one.
+                  Astro.url.pathname already carries the base.
+                */}
+                <span hidden data-pagefind-meta={`url:${Astro.url.pathname}`}></span>
 		        <slot />
             </main>
         </div>
+
+        <script>
+            // Groups start expanded. If somebody collapses one, it should stay
+            // collapsed when navigating to another page instead of reopening.
+            const KEY = 'aas:collapsed-groups';
+            const closed = new Set<string>(JSON.parse(localStorage.getItem(KEY) || '[]'));
+
+            document.querySelectorAll<HTMLDetailsElement>('[data-group]').forEach(el => {
+                const id = el.dataset.group!;
+                if (closed.has(id)) el.open = false;
+                el.addEventListener('toggle', () => {
+                    el.open ? closed.delete(id) : closed.add(id);
+                    localStorage.setItem(KEY, JSON.stringify([...closed]));
+                });
+            });
+
+            // --- Author line: how many names fit ----------------------------
+            // The server renders 3 + "et al." (safe with no JS). Here we measure
+            // the real width and show as many as fit on ONE line.
+            const lines = document.querySelectorAll<HTMLElement>('[data-authors]');
+
+            function fit(el: HTMLElement) {
+                const authors: string[] = JSON.parse(el.dataset.authors || '[]');
+                const suffix = el.dataset.suffix || '';
+                if (!authors.length) return;
+
+                const render = (n: number) =>
+                    (n >= authors.length
+                        ? authors.join(', ')
+                        : `${authors.slice(0, n).join(', ')} et al.`) + suffix;
+
+                const fits = () => el.scrollWidth <= el.clientWidth;
+
+                el.textContent = render(authors.length);
+                if (fits()) return;
+
+                // Binary search: the largest n that still fits on the line.
+                let lo = 1, hi = authors.length - 1, best = 1;
+                while (lo <= hi) {
+                    const mid = (lo + hi) >> 1;
+                    el.textContent = render(mid);
+                    if (fits()) { best = mid; lo = mid + 1; } else { hi = mid - 1; }
+                }
+                el.textContent = render(best);
+            }
+
+            const fitAll = () => lines.forEach(fit);
+            fitAll();
+            // Metrics change once the font has finished loading.
+            document.fonts?.ready.then(fitAll);
+
+            let resizeTimer: ReturnType<typeof setTimeout>;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(fitAll, 120);
+            });
+        </script>
 	</body>
 </html>
 <style is:global>
+    /* Dark is the default: it is what the site was designed in, and it is what
+       most readers of this kind of page are already using. Light is defined as
+       an override rather than the base so the dark palette stays the canonical
+       one. */
     :root {
         --bg-color: #0d1117;
         --text-main: #c9d1d9;
@@ -69,8 +243,40 @@ const areas = taxonomy.areas;
         --border-color: #30363d;
         --accent-color: #58a6ff;
         --card-bg: #161b22;
+        /* Tints derived from the accent and the muted text. They were written
+           inline as rgba() literals, which meant the light palette could not
+           override them and every hover state stayed dark-on-light. */
+        --accent-tint: rgba(88, 166, 255, 0.1);
+        --accent-tint-strong: rgba(88, 166, 255, 0.12);
+        --muted-tint: rgba(139, 148, 158, 0.08);
+        --warn-color: var(--warn-color);
+        --warn-tint: rgba(210, 153, 34, 0.15);
+        /* Text sitting ON the accent colour, and the accent's hover state.
+           These were #000 and #3a82f6 inline, which reads fine against a light
+           blue accent but puts black text on dark blue once the light palette
+           swaps the accent out. */
+        --on-accent: #0d1117;
+        --accent-hover: #3a82f6;
         --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
         --sidebar-width: 260px;
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --bg-color: #ffffff;
+            --text-main: #1f2328;
+            --text-muted: #59636e;
+            --border-color: #d1d9e0;
+            --accent-color: #0969da;
+            --card-bg: #f6f8fa;
+            --accent-tint: rgba(9, 105, 218, 0.08);
+            --accent-tint-strong: rgba(9, 105, 218, 0.12);
+            --muted-tint: rgba(89, 99, 110, 0.08);
+            --warn-color: #9a6700;
+            --warn-tint: rgba(154, 103, 0, 0.12);
+            --on-accent: #ffffff;
+            --accent-hover: #0550ae;
+        }
     }
     
     * {
@@ -116,6 +322,36 @@ const areas = taxonomy.areas;
         font-weight: 600;
         color: var(--text-main);
         margin: 0;
+        flex-shrink: 0;
+    }
+
+    .site-header h1 a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    /* --- Site-wide search ------------------------------------------------ */
+    /* Pagefind ships its own web component; we only recolour it so it does not
+       arrive as a light-themed island in a dark header. */
+
+    .header-search {
+        flex: 1;
+        max-width: 420px;
+        margin: 0 24px;
+    }
+
+    .header-search .pagefind {
+        --pagefind-ui-scale: 0.8;
+        --pagefind-ui-background: var(--card-bg);
+        --pagefind-ui-fullscreen-background: var(--bg-color);
+        --pagefind-ui-text: var(--text-main);
+        --pagefind-ui-primary: var(--accent-color);
+        --pagefind-ui-border: var(--border-color);
+        --pagefind-ui-tag: var(--card-bg);
+        --pagefind-ui-border-width: 1px;
+        --pagefind-ui-border-radius: 6px;
+        --pagefind-ui-font: var(--font-family);
+        display: block;
     }
 
     .site-header nav a {
@@ -142,7 +378,7 @@ const areas = taxonomy.areas;
         width: var(--sidebar-width);
         flex-shrink: 0;
         border-right: 1px solid var(--border-color);
-        padding: 24px;
+        padding: 20px 24px;
         position: sticky;
         top: 60px;
         height: calc(100vh - 60px);
@@ -150,10 +386,10 @@ const areas = taxonomy.areas;
     }
 
     .nav-section {
-        margin-bottom: 32px;
+        margin-bottom: 20px;
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 1px;
     }
 
     .nav-heading {
@@ -161,7 +397,7 @@ const areas = taxonomy.areas;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         color: var(--text-muted);
-        margin-bottom: 8px;
+        margin-bottom: 6px;
         font-weight: 600;
     }
 
@@ -169,24 +405,149 @@ const areas = taxonomy.areas;
         color: var(--text-main);
         text-decoration: none;
         font-size: 0.95rem;
-        padding: 6px 12px;
+        /* Own line-height: the body's 1.6 made each row too tall. */
+        line-height: 1.4;
+        padding: 4px 12px;
         border-radius: 6px;
         margin-left: -12px;
         transition: background-color 0.2s, color 0.2s;
     }
 
     .sidebar-nav a:hover {
-        background-color: rgba(88, 166, 255, 0.1);
+        background-color: var(--accent-tint);
         color: var(--accent-color);
     }
 
-    .sidebar-nav .area-link {
+    .sidebar-nav > .nav-section > a.current {
+        background-color: var(--accent-tint-strong);
+        color: var(--accent-color);
+        font-weight: 500;
+    }
+
+    .sidebar-nav .triage-cta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 6px;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        border: 1px dashed var(--border-color);
+        border-radius: 6px;
+    }
+
+    .sidebar-nav .triage-cta:hover {
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+        background: none;
+    }
+
+    .triage-count {
+        margin-left: auto;
+        font-variant-numeric: tabular-nums;
+        background: var(--warn-tint);
+        color: var(--warn-color);
+        padding: 0 7px;
+        border-radius: 10px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    /* --- Area tree ------------------------------------------------------ */
+    /* The parent stays visible: expanding a group does not hide the rest. */
+
+    .tree {
+        display: flex;
+        flex-direction: column;
+        margin-left: -12px;
+    }
+
+    .tree-parent {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        list-style: none;
+        line-height: 1.4;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--text-muted);
+        user-select: none;
+    }
+
+    .tree-parent::-webkit-details-marker {
+        display: none;
+    }
+
+    .tree-parent:hover {
+        background-color: var(--muted-tint);
+        color: var(--text-main);
+    }
+
+    .twisty {
+        flex-shrink: 0;
+        width: 13px;
+        height: 13px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transition: transform 0.15s ease;
+    }
+
+    .tree-group[open] > .tree-parent .twisty {
+        transform: rotate(90deg);
+    }
+
+    .tree-children {
+        list-style: none;
+        margin: 1px 0 6px 0;
+        /* The guide line is what makes the parent-child relation readable. */
+        border-left: 1px solid var(--border-color);
+        margin-left: 18px;
+        padding-left: 0;
+    }
+
+    .sidebar-nav .tree-child {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: 0;
+        padding: 3px 10px 3px 14px;
+        border-radius: 0 6px 6px 0;
         font-size: 0.9rem;
         color: var(--text-muted);
+        border-left: 2px solid transparent;
+        margin-left: -1px;
     }
 
-    .sidebar-nav .area-link:hover {
+    .sidebar-nav .tree-child:hover {
+        background-color: var(--muted-tint);
+        color: var(--text-main);
+    }
+
+    .sidebar-nav .tree-child.current {
         color: var(--accent-color);
+        background-color: var(--accent-tint);
+        border-left-color: var(--accent-color);
+        font-weight: 500;
+    }
+
+    .tree-label {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .tree-count {
+        flex-shrink: 0;
+        font-size: 0.75rem;
+        font-variant-numeric: tabular-nums;
+        color: var(--text-muted);
+        opacity: 0.75;
     }
 
     .main-content {

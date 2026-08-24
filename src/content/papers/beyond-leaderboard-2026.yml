@@ -1,0 +1,23 @@
+id: beyond-leaderboard-2026
+title: "Beyond the Leaderboard: A Synthesis of Tool-Use, Planning, and Reasoning Failures in Large Language Model Agents"
+authors: ["Wael Albayaydh", "Rui Zhao", "Ivan Flechais"]
+year: 2026
+arxiv: "2607.05775"
+links:
+  paper: https://arxiv.org/abs/2607.05775
+
+area: foundations
+topics: [taxonomy, open-problems, agent-evaluation, tool-use, long-horizon]
+about: [tool-use, planning, reasoning]
+scale: [single-agent, multi-agent]
+type: [survey]
+infra: []
+domain: [general]
+
+featured: true
+status: read
+tldr: "Synthesises 27 benchmark, taxonomy and audit papers across 19 benchmarks into six failure clusters, from tool invocation errors to measurement validity problems."
+notes: "A good entry point precisely because it reads across benchmarks rather than within one. Two claims to carry forward: failures compound nonlinearly with task length, and additional scaffolding does not consistently improve reliability."
+relates_to: [agentbench-2023, tau-bench-2024]
+evaluated_on: []
+added: 2026-08-24

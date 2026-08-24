@@ -23,17 +23,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: "20"
+          # From .nvmrc, so CI and local development do not drift apart.
+          node-version-file: ".nvmrc"
+          cache: "npm"
       - name: Install dependencies
         run: npm ci
+      # `npm run build` runs `astro check` first: a type error, or a paper that
+      # fails taxonomy validation, stops the deploy.
       - name: Build with Astro
-        run: npx astro build
+        run: npm run build
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ${{ env.BUILD_PATH }}/dist
 
@@ -47,4 +51,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

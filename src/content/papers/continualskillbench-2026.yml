@@ -1,0 +1,22 @@
+id: continualskillbench-2026
+title: "ContinualSkillBench: Can LLM Agents Truly Evolve Their Capabilities?"
+authors: ["Tianyi Guan", "Yiding Wang", "Haotong Yang", "Siyuan Cao", "Shirui Liu", "Yi Hu", "Jiaqi Li", "Muhan Zhang"]
+year: 2026
+arxiv: "2608.03874"
+links:
+  paper: https://arxiv.org/abs/2608.03874
+
+area: evaluation
+topics: [agent-evaluation, benchmark-design, skill-learning, self-evolution, experience-learning]
+about: [learning, self-evolution]
+scale: [single-agent]
+type: [benchmark]
+infra: []
+domain: [general]
+
+status: read
+tldr: "Five domains of 100 interconnected subtasks ordered by difficulty, built to test whether agents actually consolidate reusable skills rather than just adapting to recent context."
+notes: "The control is the point: in-context learning performs comparably to explicit skill maintenance on average, which suggests much of the apparent skill evolution is just adaptation to prior context. Weaker models accumulate larger and more fragmented skill collections."
+relates_to: [reflexion-2023]
+evaluated_on: []
+added: 2026-08-24

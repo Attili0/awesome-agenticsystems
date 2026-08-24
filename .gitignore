@@ -7,6 +7,7 @@ dist/
 
 # Python
 __pycache__/
+.pytest_cache/
 *.py[cod]
 *$py.class
 .env
@@ -16,3 +17,8 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# Artifacts written by scripts/process_issue.py in CI
+output_slug.txt
+test.log
+issue_body.md

@@ -1,0 +1,22 @@
+id: openforgerl-2026
+title: "OpenForgeRL: Train Harness-native Agents in Any Environment"
+authors: ["Xiao Yu", "Baolin Peng", "Ruize Xu", "Hao Zou", "Qianhui Wu", "Hao Cheng", "Wenlin Yao", "Nikhil Singh", "Zhou Yu", "Jianfeng Gao"]
+year: 2026
+arxiv: "2607.21557"
+links:
+  paper: https://arxiv.org/abs/2607.21557
+
+area: engineering
+topics: [harness, agent-tuning, agent-ops, computer-use]
+about: [learning, tool-use]
+scale: [single-agent]
+type: [framework]
+infra: [sandbox]
+domain: [software-engineering, gui, web]
+
+status: read
+tldr: "Trains agents inside the real inference harness they are deployed with, by proxying the harness's model calls into a standard RL codebase and running each rollout in its own container."
+notes: "The finding worth carrying: harness choice changes how learnable a task is, and RL improves self-verification and tool coverage while error recovery stays weak. Reports pass^3 alongside pass@3, the same capability-versus-reliability split tau-bench argues for."
+relates_to: [tau-bench-2024]
+evaluated_on: []
+added: 2026-08-24

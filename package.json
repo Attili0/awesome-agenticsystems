@@ -2,21 +2,29 @@
   "name": "awesome-agenticsystems",
   "type": "module",
   "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "docs": "python3 scripts/gen_docs.py",
+    "docs:check": "python3 scripts/gen_docs.py --check",
+    "test": "python3 -m pytest",
+    "test:fast": "python3 -m pytest -m \"not slow\""
   },
   "dependencies": {
-    "astro": "^4.14.0",
-    "js-yaml": "^4.1.0"
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.2.4",
+    "astro-pagefind": "^2.0.1",
+    "js-yaml": "^5.3.0"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.3",
-    "@types/js-yaml": "^4.0.9",
+    "@astrojs/check": "^0.9.10",
     "@types/node": "^26.2.0",
-    "typescript": "^5.5.4",
-    "zod": "^3.23.8"
+    "typescript": "^6.0.3"
   }
 }

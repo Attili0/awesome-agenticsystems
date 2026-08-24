@@ -1,0 +1,22 @@
+id: nemotron-puzzle-2026
+title: "Nemotron-Labs-3-Puzzle-75B-A9B: Compressing Hybrid MoE LLMs"
+authors: ["Akhiad Bercovich", "Talor Abramovich", "Daniel Afrimi", "Shay Aharon", "Nir Ailon", "Vladimir Anisimov", "Omer Ullman Argov", "Maor Ashkenazi", "Tomer Asida", "Nave Assaf", "Tomer Bar Natan", "Alexander Bukharin", "Grzegorz Chlebus", "Marcin Chochowski", "Eric Chung", "Mohammad Dabbah", "Carlo del Mundo", "Ewa Dobrowolska", "Ido Galil", "Yaniv Galron", "Amnon Geifman", "Yonatan Geifman", "Izik Golan", "Alex Gronskiy", "Tomasz Grzegorzek", "Netanel Haber", "Lior Kadoch", "Grzegorz Karch", "Tomer Keren", "Abhinav Khattar", "Amir Klein", "Tugrul Konuk", "Roi Koren", "Daniel Korzekwa", "Shaun Kotek", "Konstantinos Krommydas", "Itay Levy", "Ofri Masad", "Yoav Miron", "Pavlo Molchanov", "Shahar Mor", "Zach Moshe", "Saurav Muralidharan", "Najeeb Nabwani", "Besmira Nushi", "Mostofa Patwary", "Omri Puny", "Johannes Rausch", "Tomer Ronen", "Sepehr Sameni", "Itamar Schen", "Elad Segal", "Daniel Serebrenik", "Ido Shahaf", "Soumye Singhal", "Daniil Sorokin", "Sharath Turuvekere Sreenivas", "Marta Stepniewska-Dziubinska", "Ali Taghibakhshi", "Nima Tajbakhsh", "Oren Tropp", "Dor Tzur", "Anna Warno", "Yi-Fu Wu", "Michal Zawalski", "Jiaqi Zeng", "Yian Zhang", "Ran Zilberstein", "Amit Zuker", "Ran El-Yaniv"]
+year: 2026
+arxiv: "2607.04371"
+links:
+  paper: https://arxiv.org/abs/2607.04371
+
+area: engineering
+topics: [agent-ops]
+about: [tool-use]
+scale: [single-agent]
+type: [method]
+infra: []
+domain: [general]
+
+status: read
+tldr: "A compressed hybrid-MoE variant tuned for interactive serving, roughly doubling server throughput at matched user throughput and raising 1M-token concurrency from one request to eight."
+notes: "Boundary case for this collection: the contribution is model compression, not agent design, and it is filed under engineering only because long-context concurrency is what makes long agent runs affordable. If the scope line moves, this is the first record to reconsider."
+relates_to: []
+evaluated_on: []
+added: 2026-08-24

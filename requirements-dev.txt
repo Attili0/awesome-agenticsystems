@@ -1,0 +1,5 @@
+# Test dependencies. Runtime deps live in requirements.txt, which the Action
+# installs on its own — keeping them apart means a test-only package can never
+# end up in the issue-intake job.
+-r requirements.txt
+pytest>=8,<10
