@@ -577,6 +577,18 @@ const isCurrent = (href: string) => path === href.replace(/\/$/, '');
     }
 
     @media (max-width: 768px) {
+        .header-container {
+            padding: 0 16px;
+        }
+        .header-search {
+            margin: 0 12px;
+        }
+        .site-header h1 {
+            font-size: 1.1rem;
+        }
+        .site-header nav a {
+            margin-left: 0;
+        }
         .app-layout {
             flex-direction: column;
         }
