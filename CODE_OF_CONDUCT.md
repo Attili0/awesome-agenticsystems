@@ -35,15 +35,14 @@ Examples of unacceptable behavior:
 * Other conduct which could reasonably be considered inappropriate in a
   professional setting
 
-### A note specific to this project
+### Classification disagreements
 
-This repository classifies research, and classification is a judgement call.
-Disagreeing with how a paper is filed, or with the shape of the taxonomy, is
-participation working as intended — not a challenge to be deflected. Equally,
-nobody should be made to feel that asking a basic question about agentic
-systems is an imposition. This collection exists partly for people who are new
-to the field; treating their questions as noise is the fastest way to make it
-useless.
+This repository classifies research, and classification is a judgment call.
+Disagreement about how a paper is filed, or about the structure of the
+taxonomy, is a form of participation and is treated as such. Questions from
+people new to agentic systems are treated the same way. This collection is
+addressed in part to that audience, and dismissing their questions removes the
+audience it was built for.
 
 ## Enforcement Responsibilities
 

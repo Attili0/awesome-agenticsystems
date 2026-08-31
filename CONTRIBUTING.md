@@ -1,18 +1,18 @@
-# How to add a paper
+# Adding a Paper
 
-This is a collection of **papers**. Software repositories are not included,
-even when they have an associated paper: we document the paper, not the tool.
+This is a collection of **papers**. Software repositories do not get a record,
+including when they have an associated paper.
 
-That rule is about what gets a record, not about what a paper may be *about*.
-A paper describing a framework is perfectly welcome — that is what
-`type: framework` is for. AutoGen and MetaGPT are both in the collection as
-papers; their repositories are not. Benchmarks likewise count as papers, and
-belong to the `evaluation` area like anything else.
+The rule governs what gets a record. The subject matter of a paper is
+unrestricted: a paper describing a framework belongs here, recorded as
+`type: framework`. AutoGen and MetaGPT are both in the collection as papers;
+their repositories are not. Benchmarks count as papers and belong to the
+`evaluation` area.
 
-New here? [Suggest a paper](#suggest-a-paper) is a one-minute job and needs no
-setup. Everything below that is for people filling records in by hand.
+[Issue submission](#issue-submission) takes one minute and needs no setup. The
+sections after it cover filling records in by hand.
 
-## The model, in short
+## Classification model
 
 A paper is classified on two axes:
 
@@ -20,71 +20,71 @@ A paper is classified on two axes:
 - `topics` and the facets (<!-- gen:facet-names -->`about`, `scale`, `infra`, `type`, `domain`<!-- /gen:facet-names -->) —
   as many as apply. They answer *"what is it about?"* and cross areas freely.
 
-To contribute through an issue you only need three fields: `area`, `scale` and
-`type`. The rest are optional and get filled in later, while reading the paper.
+An issue submission requires three fields: `area`, `scale` and `type`. The rest
+are optional and get filled in later, while reading the paper.
 
 ## Two paths
 
-Which path you take depends on what you want to do:
+The path depends on the intended contribution:
 
 | | Who | How | Resulting status |
 |---|---|---|---|
 | Suggest a paper | Anyone | Issue with 3 fields → reviewed PR | `triaged` — visible on the site |
 | Add and read | Anyone willing to clone | Edit the `.yml` and open a pull request | `read` — includes `tldr` and `notes` |
 
-### Suggest a paper
+### Issue submission
 
 1. Go to **Issues** → **New Issue** → **Add a Paper**.
-2. Paste the link to the paper. If it is an arXiv link, that is all the
-   metadata we need — title, authors and year are fetched automatically. For
+2. Paste the link to the paper. An arXiv link supplies the rest: title,
+   authors and year are fetched automatically. For
    any other source, paste the **BibTeX** too (most publisher pages have a
    "Cite" or "Export citation" button).
-3. Pick **`area`** (see [below](#how-to-pick-the-area)), **`scale`** and
+3. Pick **`area`** (see [below](#area-selection)), **`scale`** and
    **`type`**. Each option in the form carries a one-line description.
 4. An automated process reads the metadata, generates the `.yml` file, checks
    that the site still builds and that the tests pass, and opens a **pull
    request** for a maintainer to review. Nothing is merged automatically.
 
-You do not need to clone the repository or run anything locally.
+This path requires no clone and no local setup.
 
-If you are unsure about the classification, pick the closest option. The pull
-request is reviewed before it is merged; a debatable area beats a paper nobody
-suggested.
+When the classification is unclear, pick the closest option. The pull request
+is reviewed before it is merged, and a debatable area still records a paper
+that would otherwise be missing.
 
-The submission is validated before any pull request is opened: if the year is
-missing, the link is invalid, the paper is already in the collection (we
-compare the arXiv id and the title, not just the filename), or a value is not
-part of the taxonomy, the process stops. The site is then built with the new
-record and the test suite is run; the pull request is only opened if both
-succeed.
+The submission is validated before any pull request is opened. The process
+stops when the year is missing, the link is invalid, a value falls outside the
+taxonomy, or the paper is already in the collection, which is checked against
+the arXiv id and the title as well as the filename. The site is then built with
+the new record and the test suite is run. The pull request is opened only when
+both succeed.
 
-**If something fails, the reason is posted as a comment on your issue** and it
-gets labelled `needs-fix` — you do not have to open CI logs. Fix the issue and
-close/reopen it to retry.
+**A failure is posted as a comment on the issue** and the issue is labeled
+`needs-fix`, so the reason is readable without opening CI logs. Fix the issue
+and close/reopen it to retry.
 
-### Add and read
+### Direct edit
 
-The issue path reaches `triaged`: it has no `tldr`, `notes`, `topics` or
+The issue path reaches `triaged`, with no `tldr`, `notes`, `topics` or
 `about`, because those come from reading the paper. To add them, edit the
-`.yml` file directly and open a pull request. You do not need to be a
-maintainer to do this — it just needs a clone, since the issue form
-deliberately does not ask for fields you can only fill in after reading.
+`.yml` file directly and open a pull request. This path is open to anyone with
+a clone and requires no maintainer status. The issue form omits those fields
+deliberately, since they can only be filled in after reading.
 
 See the [local workflow](./TAXONOMY.md#local-workflow) and the
 [fields of a record](./TAXONOMY.md#fields-of-a-record).
 
-## How to pick the area
+## Area selection
 
-The areas are grouped into layers. The criterion for picking one is not the
-paper's general topic but its **main contribution**.
+The areas are grouped into layers. The criterion for picking one is the
+**main contribution** of the paper, and not its general topic.
 
 <!-- gen:areas-table -->
 | Layer | Areas |
 |---|---|
 | Overview | `foundations` |
-| What an agent can do | `reasoning-planning`, `memory`, `tools-context`, `learning-evolution` |
-| How it is built | `architectures`, `coordination`, `interoperability`, `engineering` |
-| How it is judged and controlled | `evaluation`, `safety` |
+| Agent capabilities | `reasoning-planning`, `memory`, `tools-context`, `learning-evolution` |
+| System structure | `architectures`, `coordination`, `interoperability`, `engineering` |
+| Measurement and control | `evaluation`, `safety` |
 <!-- /gen:areas-table -->
 
 Each area with the rule for picking it:
@@ -93,16 +93,16 @@ Each area with the rule for picking it:
 | Area | Layer | Pick it when |
 |---|---|---|
 | `foundations` | Overview | A general view of the field: surveys, taxonomies, position papers. |
-| `reasoning-planning` | What an agent can do | What happens between the input and the action: reasoning, planning, self-critique. |
-| `memory` | What an agent can do | What the agent remembers and how it retrieves it. Vocabulary taken from CoALA. |
-| `tools-context` | What an agent can do | How the agent acts on the world and where it gets context from. |
-| `learning-evolution` | What an agent can do | Changes that persist BETWEEN tasks: skills, experience, tuning. If the learning is discarded when the task ends, it is self-correction and belongs in reasoning-planning. |
-| `architectures` | How it is built | The complete loop of an agent. If the contribution is ONE component (memory, planning, tools), it belongs to that component instead. |
-| `coordination` | How it is built | The mechanisms by which several agents divide work and communicate. Having several agents does NOT put a paper here: that is what scale: multi-agent says. This area is for papers whose contribution IS the coordination mechanism. |
-| `interoperability` | How it is built | Standards that let agents and tools discover each other and talk. |
-| `engineering` | How it is built | The runtime substrate around the model, and how it is operated. A harness does not make the model smarter: it makes its output reliable. |
-| `evaluation` | How it is judged and controlled | How an agent or a multi-agent system is measured. |
-| `safety` | How it is judged and controlled | Risk, security, trust and control. |
+| `reasoning-planning` | Agent capabilities | What happens between the input and the action: reasoning, planning, self-critique. |
+| `memory` | Agent capabilities | What the agent stores and how it retrieves it. Vocabulary taken from CoALA. |
+| `tools-context` | Agent capabilities | How the agent acts on the world and where it gets context from. |
+| `learning-evolution` | Agent capabilities | Changes that persist between tasks: skills, experience, tuning. Learning discarded when the task ends is self-correction and belongs in reasoning-planning. |
+| `architectures` | System structure | The complete loop of an agent. A contribution covering one component (memory, planning, tools) belongs to that component instead. |
+| `coordination` | System structure | The mechanisms by which several agents divide work and communicate. A system with several agents is recorded as scale: multi-agent, which does not place the paper here. This area holds papers whose contribution is the coordination mechanism itself. |
+| `interoperability` | System structure | Standards through which agents and tools locate and communicate with each other. |
+| `engineering` | System structure | The runtime substrate around the model, and how it is operated. A harness acts on the reliability of the output, with the model unchanged. |
+| `evaluation` | Measurement and control | How an agent or a multi-agent system is measured. |
+| `safety` | Measurement and control | Risk, security, trust and control. |
 <!-- /gen:areas-detail -->
 
 Every area also has its description on
@@ -111,16 +111,16 @@ Every area also has its description on
 Two rules that resolve most ambiguous cases:
 
 - **Scale does not define the area.** A multi-agent system does not
-  automatically belong to `coordination`; that is what `scale: [multi-agent]`
-  says. `coordination` is for work whose central contribution is the
-  coordination mechanism itself. A paper on shared memory, for example, goes
+  automatically belong to `coordination`; the count of agents is recorded by
+  `scale: [multi-agent]`. `coordination` holds work whose central contribution
+  is the coordination mechanism itself. A paper on shared memory, for example, goes
   to `memory` with `scale: [multi-agent]`.
 - **`architectures` means the whole loop.** If the contribution is one
   component (memory, planning, tool use), it belongs to that component.
 
-## A paper is never blocked
+## Record states
 
-You do not have to read a paper in full to record it. The schema implements
+Recording a paper does not require reading it in full. The schema implements
 three states:
 
 <!-- gen:status-table -->
@@ -132,31 +132,31 @@ three states:
 <!-- /gen:status-table -->
 
 An issue lands the paper in `triaged`, which is enough for it to appear on the
-site, and it can stay there indefinitely. That is deliberate: the cost of
-suggesting a paper should be close to zero.
+site, and a record may stay in that state without a time limit. The cost of
+suggesting a paper is meant to stay close to zero.
 
-Enforcement through the schema means strict validation: declaring
-`status: read` without a `tldr` breaks the build, with a message saying that
-this state requires that field and suggesting you drop back to `triaged`.
+The schema enforces the states. Declaring `status: read` without a `tldr`
+breaks the build, with a message naming the missing field and offering
+`triaged` as the state that does not require it.
 
-## Where to ask
+## Questions and issues
 
-- **Something is misclassified?** Open an issue with the *Fix a
-  classification* template. Disagreeing about an area is useful signal, not a
-  complaint.
-- **A term is missing from the vocabulary?** Use the *Propose a taxonomy
-  change* template. Adding topics is cheap and expected; see the criteria in
+- **A misclassified paper.** Open an issue with the *Fix a classification*
+  template. Disagreement about an area is recorded as signal on the taxonomy.
+- **A term missing from the vocabulary.** Use the *Propose a taxonomy change*
+  template. Adding topics is expected; the criteria are in
   [TAXONOMY.md](./TAXONOMY.md#changing-the-taxonomy).
-- **Anything else?** Open a regular issue. Questions from people new to the
-  field are welcome — if a guide left you guessing, that is a bug in the guide.
+- **Anything else.** Open a regular issue. Questions from people new to the
+  field are welcome, and a guide that leaves a step unclear is a defect in the
+  guide.
 
 Participation is covered by the [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## Further reading
 
-- **[TAXONOMY.md](./TAXONOMY.md)** — The rest of the fields, how topics and
-  facets work, the criteria for changing the taxonomy, and the bibliography
-  behind it. Read this before filling records in by hand or proposing changes
-  to the vocabulary.
+- **[TAXONOMY.md](./TAXONOMY.md)** — The rest of the fields, the behavior of
+  topics and facets, the criteria for changing the taxonomy, and the
+  bibliography behind it. Read it before filling records in by hand or
+  proposing changes to the vocabulary.
 - **[`/taxonomy`](https://juliodosreis.github.io/awesome-agenticsystems/taxonomy)** — The complete vocabulary. Terms nobody
-  uses yet are shown in grey and are still valid.
+  uses yet are shown in gray and are still valid.

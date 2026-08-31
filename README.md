@@ -6,13 +6,13 @@
 [![Papers: CC0](https://img.shields.io/badge/papers-CC0--1.0-lightgrey.svg)](./LICENSE)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
-A curated collection of papers on agentic AI systems, classified by what each
-one actually contributes.
+A curated collection of papers on agentic AI systems, classified by the
+contribution of each one.
 
-It works as a knowledge base rather than a link dump: every paper is filed
-under a single area (its contribution), then cut across by topics and facets
-(what it is about, at what scale, in which domain). The vocabulary is validated
-at build time, so it cannot quietly rot.
+Every paper is filed under a single area, its contribution, then cut across by
+topics and facets: what it is about, at what scale, in which domain. The
+vocabulary is validated at build time, so a term that stops resolving stops the
+build.
 
 **[Browse the site](https://juliodosreis.github.io/awesome-agenticsystems)** ·
 [Suggest a paper](https://github.com/juliodosreis/awesome-agenticsystems/issues/new?template=add_paper.yml) ·
@@ -26,7 +26,7 @@ at build time, so it cannot quietly rot.
 ## Contents
 
 - [The collection](#the-collection)
-- [What makes this different](#what-makes-this-different)
+- [Design decisions](#design-decisions)
 - [Adding a paper](#adding-a-paper)
 - [The taxonomy](#the-taxonomy)
 - [Local development](#local-development)
@@ -54,38 +54,38 @@ Where to enter the field.
 #### Foundations & surveys ([`foundations`](https://juliodosreis.github.io/awesome-agenticsystems/areas/foundations))
 
 - 🔥 📖 [Beyond the Leaderboard: A Synthesis of Tool-Use, Planning, and Reasoning Failures in Large Language Model Agents](https://arxiv.org/abs/2607.05775) — `2026`  
-  Synthesises 27 benchmark, taxonomy and audit papers across 19 benchmarks into six failure clusters, from tool invocation errors to measurement validity problems.
+  Synthesizes 27 benchmark, taxonomy and audit papers across 19 benchmarks into six failure clusters, from tool invocation errors to measurement validity problems.
 
 
-### What an agent can do
+### Agent capabilities
 
-Agent capabilities: what it can reason about, remember, execute and learn.
+What the agent reasons about, stores, executes and learns.
 
 #### Reasoning, planning & reflection ([`reasoning-planning`](https://juliodosreis.github.io/awesome-agenticsystems/areas/reasoning-planning))
 
 - 🔥 📖 [Metacognition in LLMs: Foundations, Progress, and Opportunities](https://arxiv.org/abs/2607.11881) — `2026`  
-  A survey of metacognition in LLMs: how it is measured, how it can be elicited or improved, and where the evidence for it is currently thin.
+  A survey of metacognition in LLMs: how it is measured, how it can be elicited or improved, and where the evidence for it is limited.
 - [CEDAR: Agent-Orchestrated Tree Search for Goal-Directed Optimization of Complex Systems](https://arxiv.org/abs/2608.06871) — `2026`  
-  Runs Monte Carlo Tree Search where an LLM Judge scores emergent behaviour and an LLM Editor proposes variants, searching for complex systems that meet a stated behavioural goal.
+  Runs Monte Carlo Tree Search where an LLM Judge scores emergent behavior and an LLM Editor proposes variants, searching for complex systems that meet a stated behavioral goal.
 - [Reflexion: Language Agents with Verbal Reinforcement Learning](https://arxiv.org/abs/2303.11366) — `NeurIPS 2023` · 2023  
   Turns the feedback from a failed attempt into text and stores it in episodic memory to condition the retry, without updating weights.
 - [Tree of Thoughts: Deliberate Problem Solving with Large Language Models](https://arxiv.org/abs/2305.10601) — `NeurIPS 2023` · 2023  
-  Explores several reasoning paths in parallel and prunes them with self-evaluation, instead of committing to a single linear chain.
+  Explores several reasoning paths in parallel and prunes them with self-evaluation.
 - [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629) — `ICLR 2023` · 2022  
   Interleaves reasoning traces with actions on the environment, so that each observation corrects the reasoning that follows.
 
 #### Memory ([`memory`](https://juliodosreis.github.io/awesome-agenticsystems/areas/memory))
 
 - 🔥 📖 [Always-On Agents: A Survey of Persistent Memory, State, and Governance in LLM Agents](https://arxiv.org/abs/2606.30306) — `2026`  
-  Reads 435 works on agents whose behaviour depends on durable state through six axes — authority, scope, mutability, provenance, recoverability, actionability — and a write-to-rollback lifecycle.
+  Surveys 435 works on agents whose behavior depends on durable state, along six axes (authority, scope, mutability, provenance, recoverability, actionability) and a write-to-rollback lifecycle.
 - [A Hippocampus for Linear Attention: An Exact Memory for What the Recurrent State Forgets](https://arxiv.org/abs/2607.02303) — `2026`  
   Gives linear attention a bounded exact KV cache alongside its compressive recurrent state, so associations that do not survive compression are still recallable.
 - [Can Language Models Actually Retrieve In-Context? Drowning in Documents at Million Token Scale](https://arxiv.org/abs/2607.01538) — `2026`  
   Studies in-context retrieval at million-token corpus scale and traces its collapse to attention dilution, where irrelevant documents dominate the softmax denominator.
 - [Filesystem-Based Memory for LLM Agents: Organization, Evolution, and Sustainability](https://arxiv.org/abs/2607.26637) — `2026`  
-  Studies the de facto default for agent memory — a directory of markdown files the agent maintains itself — across memory shape, stream scale and tool harness.
+  Studies the de facto default for agent memory, a directory of markdown files the agent maintains itself, across memory shape, stream scale and tool harness.
 - [Zero-Mem: Zero-Token Memory Operations for LLM Agents](https://arxiv.org/abs/2607.29377) — `2026`  
-  Runs memory operations with no LLM calls at all — an entity-context graph plus a temporal hierarchy over the original traces — reserving generation for the final answer.
+  Runs memory operations with no LLM calls, using an entity-context graph and a temporal hierarchy over the original traces, and reserves generation for the final answer.
 - [Generative Agents: Interactive Simulacra of Human Behavior](https://arxiv.org/abs/2304.03442) — `UIST 2023` · 2023  
   A memory architecture with an observation stream, retrieval weighted by relevance-recency-importance, and periodic synthesis into reflections.
 
@@ -103,28 +103,28 @@ Agent capabilities: what it can reason about, remember, execute and learn.
 - [GitSkills: A Dataset of Agent Skills on GitHub](https://arxiv.org/abs/2608.10906) — `2026`  
   A dataset of 3.8M SKILL.md files mined from 282,200 public repositories, with front matter, folder contents and partial commit history.
 - [Harness-R1: Learning to Edit Executable Runtime Harnesses from Agent Failure Trajectories](https://arxiv.org/abs/2608.02276) — `2026`  
-  Post-trains a separate 9B harness engineer with online RL to turn batches of agent failures into validated executable patches to the runtime harness, rewarded by the target agent's realised success.
+  Post-trains a separate 9B harness engineer with online RL to turn batches of agent failures into validated executable patches to the runtime harness, rewarded by the target agent's realized success.
 - [Inducing Task Models from Computer-Use Traces](https://arxiv.org/abs/2608.20319) — `2026`  
   Recovers the latent tasks inside an unconstrained computer-use trace and induces, for each, a hierarchical objective model paired with a procedure model of the control flow.
 
 
-### How it is built
+### System structure
 
-The shape of the system: its inner loop, how many agents it has, and the substrate it runs on.
+The inner loop of the system, its number of agents, and the substrate it runs on.
 
 #### Coordination & organization ([`coordination`](https://juliodosreis.github.io/awesome-agenticsystems/areas/coordination))
 
 - [AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation](https://arxiv.org/abs/2308.08155) — `COLM 2024` · 2023  
   Models the application as a conversation between configurable agents, with humans and code execution as first-class participants.
 - [MetaGPT: Meta Programming for a Multi-Agent Collaborative Framework](https://arxiv.org/abs/2308.00352) — `ICLR 2024` · 2023  
-  Encodes the standard operating procedures of a software company as agent roles chained by structured artifacts rather than free-form dialogue.
+  Encodes the standard operating procedures of a software company as agent roles chained by structured artifacts.
 
 #### Harness, scaffolding & AgentOps ([`engineering`](https://juliodosreis.github.io/awesome-agenticsystems/areas/engineering))
 
 - [Agent Lightning v1.0: Towards Harnessed Agentic RL](https://arxiv.org/abs/2608.17528) — `2026`  
-  A small framework for harnessed agentic RL, where the deploy-time harness owns the environment loop and the trainer sees only request-response pairs.
+  A framework for harnessed agentic RL, where the deploy-time harness runs the environment loop and the trainer receives only request-response pairs.
 - [Coding-agents can replicate scientific machine learning papers](https://arxiv.org/abs/2607.02134) — `2026`  
-  A replication workflow implemented as a coding-agent skill, where each paper claim becomes a recorded target and completion depends on workspace evidence passing validation checks rather than on the agent declaring it is done.
+  A replication workflow implemented as a coding-agent skill, where each paper claim becomes a recorded target and completion depends on workspace evidence passing validation checks.
 - [Nemotron-Labs-3-Puzzle-75B-A9B: Compressing Hybrid MoE LLMs](https://arxiv.org/abs/2607.04371) — `2026`  
   A compressed hybrid-MoE variant tuned for interactive serving, roughly doubling server throughput at matched user throughput and raising 1M-token concurrency from one request to eight.
 - [OpenForgeRL: Train Harness-native Agents in Any Environment](https://arxiv.org/abs/2607.21557) — `2026`  
@@ -133,20 +133,20 @@ The shape of the system: its inner loop, how many agents it has, and the substra
   Holds six models constant and swaps only the orchestration layer, cutting cost per task 41% and tokens per task 38% at parity quality.
 
 
-### How it is judged and controlled
+### Measurement and control
 
-Measurement, risk and governance.
+How a system is measured, and how its risk is governed.
 
 #### Evaluation & benchmarks ([`evaluation`](https://juliodosreis.github.io/awesome-agenticsystems/areas/evaluation))
 
 - ⚖️ [ContinualSkillBench: Can LLM Agents Truly Evolve Their Capabilities?](https://arxiv.org/abs/2608.03874) — `2026`  
-  Five domains of 100 interconnected subtasks ordered by difficulty, built to test whether agents actually consolidate reusable skills rather than just adapting to recent context.
+  Five domains of 100 interconnected subtasks ordered by difficulty, built to separate skill consolidation from adaptation to recent context.
 - 🔥 [LLM-as-a-Verifier: A General-Purpose Verification Framework](https://arxiv.org/abs/2607.05391) — `2026`  
-  Scores candidate solutions by taking the expectation over scoring-token logits rather than emitting a discrete judgement, which makes verification scale with granularity, repetition and criteria decomposition.
+  Scores candidate solutions by taking the expectation over scoring-token logits. Verification then scales with granularity, repetition and criteria decomposition.
 - 🔥 ⚖️ [One Success Isn't Reliability: Thinkingbox, a Sandbox and Benchmark for Agents in Stateful Business Workflows](https://arxiv.org/abs/2608.19741) — `2026`  
-  507 policy-conditioned workflows in an MCP-compatible sandbox, scored on the persistent backend state an agent leaves behind rather than on its response or tool calls.
+  507 policy-conditioned workflows in an MCP-compatible sandbox, scored on the persistent backend state an agent leaves behind.
 - [Rethinking the Evaluation of Harness Evolution for Agents](https://arxiv.org/abs/2607.12227) — `2026`  
-  Argues automatic harness evolution must be compared against plain test-time scaling under matched feedback and inference budgets, and finds it does not consistently win or generalise to held-out tasks.
+  Argues automatic harness evolution must be compared against test-time scaling under matched feedback and inference budgets, and finds it does not outperform that baseline or generalize to held-out tasks.
 - 🔥 ⚖️ [tau-bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains](https://arxiv.org/abs/2406.12045) — `ICLR 2025` · 2024  
   Evaluates the agent against a simulated user and domain policies, measuring consistency across runs on top of per-task success.
 - 🔥 ⚖️ [AgentBench: Evaluating LLMs as Agents](https://arxiv.org/abs/2308.03688) — `ICLR 2024` · 2023  
@@ -155,16 +155,16 @@ Measurement, risk and governance.
 #### Safety, trust & governance ([`safety`](https://juliodosreis.github.io/awesome-agenticsystems/areas/safety))
 
 - [Right in the Right Way: LM Training with Verifiable Rewards and Human Demonstrations](https://arxiv.org/abs/2607.01181) — `2026`  
-  Augments RL with verifiable rewards with an adversarial discriminator trained on human demonstrations, so non-verifiable properties like style and structure are optimised alongside task accuracy.
+  Augments RL with verifiable rewards with an adversarial discriminator trained on human demonstrations, so non-verifiable properties like style and structure are optimized alongside task accuracy.
 
 
 > **Gaps.** No papers yet in `architectures`, `interoperability`. The areas exist in the taxonomy before anything lives in them — the gap is a reading list, and a good place to make a first contribution.
 <!-- /gen:papers -->
 
-## What makes this different
+## Design decisions
 
-- **A validated vocabulary, not free-form tags.** The Zod schema reads the
-  vocabulary from `taxonomy.yml`. A nonexistent area or topic breaks the build
+- **A validated vocabulary.** The Zod schema reads the vocabulary from
+  `taxonomy.yml`. A nonexistent area or topic breaks the build
   and prints the valid values. The taxonomy validates itself too: an area
   pointing at a missing layer, or an orphaned domain, stops compilation.
 - **A taxonomy with a declared bibliographic basis** (CoALA, Wang et al. 2024,
@@ -187,38 +187,38 @@ Measurement, risk and governance.
 | Suggest a paper | Anyone | Issue with 3 fields → reviewed PR | `triaged` — visible on the site |
 | Add and read | Maintainers | Edit the `.yml` directly | `read` — includes `tldr` and `notes` |
 
-### Suggest a paper
+### Issue submission
 
 No cloning, no local scripts.
 
 1. Go to the **Issues** tab.
 2. Pick **New Issue** → **Add a Paper**.
-3. Paste the link to the paper. For an arXiv link that is all we need — the
-   title, authors and year are fetched automatically. For any other source,
-   paste the **BibTeX** as well.
+3. Paste the link to the paper. An arXiv link supplies the rest: the title,
+   authors and year are fetched automatically. For any other source, paste the
+   **BibTeX** as well.
 4. Pick **area**, **scale** and **type**. Each option in the form carries a
-   one-line description. These three fields are what the `triaged` state
-   requires, which is what makes the paper visible once the PR is merged. Not
-   sure? Pick the closest option — the PR is reviewed before merging.
+   one-line description. The `triaged` state requires these three fields, and
+   reaching it makes the paper visible once the PR is merged. When the choice
+   is unclear, pick the closest option; the PR is reviewed before merging.
 5. A GitHub Action (`issue_ops.yml`) validates the data, builds the site with
-   the new record, and opens a pull request. If anything is wrong — missing
-   year, invalid link, duplicate paper, a value outside the taxonomy — the
-   Action **comments the reason on your issue** and labels it `needs-fix`
-   instead of opening a broken PR. Close and reopen the issue to retry.
+   the new record, and opens a pull request. On a missing year, an invalid
+   link, a duplicate paper, or a value outside the taxonomy, the Action
+   **comments the reason on the issue** and labels it `needs-fix` in place of
+   opening a broken PR. Close and reopen the issue to retry.
 
 Nothing is merged automatically. The Action opens a pull request; a maintainer
 reviews and merges it.
 
-> **Maintainers — two things to set up once.**
+> **Maintainers: two settings to apply once.**
 >
 > 1. Enable *Settings → Actions → General → Workflow permissions → Allow GitHub
->    Actions to create and approve pull requests*. Despite the name, this only
->    lets the Action **open** a pull request — it does not approve or merge
->    anything. Without it, `issue_ops.yml` fails at the pull request step even
->    when the record is valid.
-> 2. If you want approval to be enforced rather than a habit, add a branch
->    protection rule on `main` requiring a pull request and at least one
->    approval. That is the mechanism that blocks merging, not the setting above.
+>    Actions to create and approve pull requests*. Despite the name, the
+>    setting grants the Action permission to **open** a pull request, with no
+>    permission to approve or merge. Without it, `issue_ops.yml` fails at the
+>    pull request step even when the record is valid.
+> 2. For enforced approval, add a branch protection
+>    rule on `main` requiring a pull request and at least one approval. That
+>    rule is the mechanism that blocks merging; the setting above does not.
 >
 > GitHub does not run `on: pull_request` workflows for pull requests opened by
 > a bot, so `validate.yml` will not appear on them. That is why `issue_ops.yml`
@@ -226,7 +226,7 @@ reviews and merges it.
 > request: if either fails, no pull request is created and the reason is
 > commented on the issue instead.
 
-### Add and read
+### Direct edit
 
 The issue flow reaches `triaged`: no `tldr`, `notes`, `topics` or
 `about`, since those require reading the paper. To add them, edit the
@@ -234,8 +234,8 @@ The issue flow reaches `triaged`: no `tldr`, `notes`, `topics` or
 creates the record in the `captured` state with the classification fields
 commented out.
 
-A paper is never blocked by incomplete classification. The schema enforces
-three states:
+Incomplete classification does not block a paper. The schema enforces three
+states:
 
 <!-- gen:status-table -->
 | status | Requires | Effect |
@@ -258,9 +258,9 @@ validator, the site, the guides and the issue form all read from that one file.
 | Layer | Areas |
 |---|---|
 | Overview | `foundations` |
-| What an agent can do | `reasoning-planning`, `memory`, `tools-context`, `learning-evolution` |
-| How it is built | `architectures`, `coordination`, `interoperability`, `engineering` |
-| How it is judged and controlled | `evaluation`, `safety` |
+| Agent capabilities | `reasoning-planning`, `memory`, `tools-context`, `learning-evolution` |
+| System structure | `architectures`, `coordination`, `interoperability`, `engineering` |
+| Measurement and control | `evaluation`, `safety` |
 <!-- /gen:areas-table -->
 
 The complete vocabulary, with usage counts, is at
@@ -287,7 +287,7 @@ npm install
 npm run dev
 ```
 
-Python 3.11+ is needed only for the scripts — `npm run docs`, `npm test` and
+Python 3.11+ is needed only for the scripts: `npm run docs`, `npm test` and
 `scripts/add.py`. Browsing and building the site need nothing but Node.
 
 ```bash
@@ -297,12 +297,12 @@ pip install -r requirements-dev.txt
 The dev server starts at `http://localhost:4321`.
 
 > The search box in the header is powered by Pagefind, which indexes the
-> **built** HTML. In `astro dev` it returns nothing — that is expected. To try
-> search, run `npm run build && npm run preview`.
+> **built** HTML. Under `astro dev` it returns nothing, which is expected. To
+> exercise search, run `npm run build && npm run preview`.
 
 > Note: as of Astro 7 the dev server runs as a background daemon. Ctrl+C does
 > not stop it, and a later `npm run dev` attaches to the existing instance,
-> which can show you a stale version of the site. To stop it:
+> which can serve a stale version of the site. To stop it:
 >
 > ```bash
 > npx astro dev stop      # stop the server
@@ -353,38 +353,38 @@ pip install -r requirements-dev.txt
 npm test
 ```
 
-The suite covers the issue parser — the one script that runs unsupervised —
-along with the doc generator and the build-time guards. Its error messages are
-asserted too, not just its exit codes: a rejection a newcomer cannot act on is
-still a bad outcome.
+The suite covers the issue parser, the one script that runs unsupervised,
+along with the doc generator and the build-time guards. The assertions cover
+the error messages as well as the exit codes, since a rejection a contributor
+cannot act on leaves the submission stuck.
 
 `tests/test_schema.py` is deliberately slow. It falsifies a record or the
-taxonomy and runs a real `npm run build` per case, because `npm run build`
-passing only proves valid data compiles — it says nothing about whether the
-guards still fire. Skip it locally with `npm run test:fast`.
+taxonomy and runs a real `npm run build` per case. A passing `npm run build`
+proves only that valid data compiles, and leaves the behavior of the guards
+unmeasured. Skip it locally with `npm run test:fast`.
 
 ## Contributing
 
 Read [CONTRIBUTING.md](./CONTRIBUTING.md). Suggestions, corrections to a
-classification, and proposals for new vocabulary are all welcome — there is an
-issue template for each. Participation is covered by the
+classification, and proposals for new vocabulary are all welcome, and each has
+its own issue template. Participation is covered by the
 [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## Citing this collection
 
-If the taxonomy or the collection is useful in your own work, there is a
-[CITATION.cff](./CITATION.cff) — GitHub's "Cite this repository" button reads
-it. Citing the papers themselves matters more; this is only for the
-classification work on top of them.
+For citing the taxonomy or the collection, the repository carries a
+[CITATION.cff](./CITATION.cff), which GitHub's "Cite this repository" button
+reads. It covers the classification work only. The papers themselves are cited
+directly.
 
 ## License
 
 Two licenses, because the repository holds two different things:
 
-- **Code** (`src/`, `scripts/`, `.github/`) — [MIT](./LICENSE).
+- **Code** (`src/`, `scripts/`, `.github/`): [MIT](./LICENSE).
 - **The paper collection** (`src/content/papers/`) and the taxonomy
-  (`src/data/taxonomy.yml`) — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/).
-  Bibliographic metadata should be reusable without conditions.
+  (`src/data/taxonomy.yml`): [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/).
+  Bibliographic metadata is reusable without conditions.
 
-The papers themselves are not ours to license: they stay under whatever terms
-their publishers set. See [LICENSE](LICENSE).
+The papers themselves carry no license from this repository. They stay under
+the terms their publishers set. See [LICENSE](LICENSE).
