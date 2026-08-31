@@ -18,7 +18,7 @@ domain: [general]
 
 status: read
 tldr: "A memory architecture with an observation stream, retrieval weighted by relevance-recency-importance, and periodic synthesis into reflections."
-notes: "The reflection component is memory consolidation, not a reasoning mechanism. Worth distinguishing from Reflexion, which sits at a different level."
+notes: "The reflection component performs memory consolidation. Distinct from Reflexion, which operates at a different level."
 relates_to: [reflexion-2023]
 evaluated_on: []
 added: 2026-08-21

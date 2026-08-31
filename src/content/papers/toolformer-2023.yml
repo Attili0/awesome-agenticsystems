@@ -17,7 +17,7 @@ domain: [general]
 
 status: read
 tldr: "The model self-annotates where to insert API calls and keeps the ones that reduce perplexity, learning tool use without human supervision."
-notes: "Contrasts with the dominant prompting approach to tool use: here the capability lives in the weights. Relevant for separating 'learned tool use' from 'orchestrated tool use' in the taxonomy."
+notes: "The capability is in the weights. Separates 'learned tool use' from 'orchestrated tool use' in the taxonomy."
 relates_to: [react-2022]
 evaluated_on: []
 added: 2026-08-21

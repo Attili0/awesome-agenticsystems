@@ -15,8 +15,8 @@ infra: []
 domain: [software-engineering]
 
 status: read
-tldr: "A small framework for harnessed agentic RL, where the deploy-time harness owns the environment loop and the trainer sees only request-response pairs."
-notes: "Names the paradigm \u2014 harnessed agentic RL \u2014 and is explicit about what it costs: retokenization, sample merging, advantage calculation and loss normalisation all become open problems once the trainer no longer owns the loop."
+tldr: "A framework for harnessed agentic RL, where the deploy-time harness runs the environment loop and the trainer receives only request-response pairs."
+notes: "Introduces the term harnessed agentic RL and states its cost: retokenization, sample merging, advantage calculation and loss normalization become open problems once the trainer no longer runs the loop."
 relates_to: []
 evaluated_on: []
 added: 2026-08-24

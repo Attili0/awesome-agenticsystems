@@ -18,7 +18,7 @@ domain: [general]
 
 status: read
 tldr: "Models the application as a conversation between configurable agents, with humans and code execution as first-class participants."
-notes: "It is a framework, not empirical evidence. Once ecosystem/ exists, the software entry moves there and this record keeps only the paper."
+notes: "A framework paper without empirical evaluation. Once ecosystem/ exists, the software entry moves there and this record keeps only the paper."
 relates_to: [metagpt-2023]
 evaluated_on: []
 added: 2026-08-21

@@ -16,7 +16,7 @@ domain: [general]
 
 status: read
 tldr: "A training-free inference method that builds a query-conditioned evidence pool from the model's own relevance signals and replays it before generation, without pruning the original context."
-notes: "Frames the context window itself as an associative memory store, with replay as trace reactivation. That framing is the reason this is filed under tools-context rather than memory: the contribution is how context is organised for one call, not what the agent retains across them."
+notes: "Frames the context window itself as an associative memory store, with replay as trace reactivation. That framing is why this is filed under tools-context: the contribution is how context is organized for one call."
 relates_to: []
 evaluated_on: []
 added: 2026-08-24

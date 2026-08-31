@@ -16,7 +16,7 @@ domain: [general]
 
 status: read
 tldr: "Studies in-context retrieval at million-token corpus scale and traces its collapse to attention dilution, where irrelevant documents dominate the softmax denominator."
-notes: "The diagnosis is more transferable than the model: as the corpus grows, normalised attention mass on the gold document falls even when its pre-softmax score holds. Relevant to anyone treating a long context window as a substitute for retrieval."
+notes: "As the corpus grows, normalized attention mass on the gold document falls even when its pre-softmax score holds. The result applies to designs that use a long context window as a substitute for retrieval."
 relates_to: []
 evaluated_on: []
 added: 2026-08-24

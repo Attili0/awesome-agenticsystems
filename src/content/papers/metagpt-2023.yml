@@ -17,10 +17,11 @@ infra: []
 domain: [software-engineering]
 
 status: read
-tldr: "Encodes the standard operating procedures of a software company as agent roles chained by structured artifacts rather than free-form dialogue."
-notes: "Using the intermediate artifact as the interface between agents reduces error propagation. That is a concrete and measurable claim, not just a design preference — which makes it unusually easy to test against a free-form dialogue baseline."
+tldr: "Encodes the standard operating procedures of a software company as agent roles chained by structured artifacts."
+notes: "Using the intermediate artifact as the interface between agents reduces error propagation. The claim is measurable against a free-form dialogue baseline."
 relates_to: []
-# HumanEval, MBPP and its own SoftwareDev dataset — none of them are in the
-# collection yet, and evaluated_on only accepts ids of papers that are.
+# Evaluated on HumanEval, MBPP and its own SoftwareDev dataset. None of them
+# are in the collection yet, and evaluated_on only accepts ids of papers that
+# are.
 evaluated_on: []
 added: 2026-08-21

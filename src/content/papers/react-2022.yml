@@ -18,7 +18,7 @@ domain: [general]
 
 status: read
 tldr: "Interleaves reasoning traces with actions on the environment, so that each observation corrects the reasoning that follows."
-notes: "Required reading: nearly every agentic framework implements some variant of the thought-action-observation loop. The intermediate trace is observable, which makes the agent evaluable at the process level and not only at the outcome."
+notes: "Most agentic frameworks implement some variant of the thought-action-observation loop. The intermediate trace is observable and supports evaluation at the process level."
 relates_to: []
 evaluated_on: []
 added: 2026-08-21

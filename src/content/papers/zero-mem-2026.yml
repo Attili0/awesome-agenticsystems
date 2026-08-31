@@ -15,8 +15,8 @@ infra: [knowledge-graph]
 domain: [general]
 
 status: read
-tldr: "Runs memory operations with no LLM calls at all \u2014 an entity-context graph plus a temporal hierarchy over the original traces \u2014 reserving generation for the final answer."
-notes: "Worth reading against the assumption that agent memory needs an LLM to write and mediate it. Keeping the raw traces as the record also sidesteps the usual failure where summarisation drops the evidence the answer needed."
+tldr: "Runs memory operations with no LLM calls, using an entity-context graph and a temporal hierarchy over the original traces, and reserves generation for the final answer."
+notes: "Shows the memory layer running without an LLM to write or mediate it. Keeping the raw traces as the record avoids the failure where summarization drops the evidence the answer needed."
 relates_to: [generative-agents-2023]
 evaluated_on: []
 added: 2026-08-24

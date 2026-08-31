@@ -16,8 +16,8 @@ domain: [general]
 
 featured: true
 status: read
-tldr: "Synthesises 27 benchmark, taxonomy and audit papers across 19 benchmarks into six failure clusters, from tool invocation errors to measurement validity problems."
-notes: "A good entry point precisely because it reads across benchmarks rather than within one. Two claims to carry forward: failures compound nonlinearly with task length, and additional scaffolding does not consistently improve reliability."
+tldr: "Synthesizes 27 benchmark, taxonomy and audit papers across 19 benchmarks into six failure clusters, from tool invocation errors to measurement validity problems."
+notes: "Two reported results: failures compound nonlinearly with task length, and additional scaffolding does not improve reliability across the benchmarks reviewed."
 relates_to: [agentbench-2023, tau-bench-2024]
 evaluated_on: []
 added: 2026-08-24

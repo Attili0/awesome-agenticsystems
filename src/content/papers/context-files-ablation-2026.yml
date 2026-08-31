@@ -16,7 +16,7 @@ domain: [software-engineering]
 
 status: read
 tldr: "A controlled ablation of AGENTS.md and CLAUDE.md across two frontier agents and 288 evaluated runs finds no measurable effect on correctness, bounded to 10-15pp by equivalence testing."
-notes: "A negative result with a mechanism: the failure triage shows agents fail on implementation skill, not on repository knowledge a context file could supply. It also offers a reason prior work disagrees \u2014 borderline task difficulty is agent-specific, so single-agent studies sample from different informative bands."
+notes: "A negative result: the failure triage attributes the failures to implementation skill, which no context file supplies. It also offers a reason prior work disagrees: borderline task difficulty is agent-specific, so single-agent studies sample from different informative bands."
 relates_to: []
 evaluated_on: []
 added: 2026-08-24

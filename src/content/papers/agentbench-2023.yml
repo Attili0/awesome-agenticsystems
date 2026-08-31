@@ -19,7 +19,7 @@ domain: [general]
 featured: true
 status: read
 tldr: "Gathers eight heterogeneous interactive environments to measure agents on multi-turn tasks under a common protocol."
-notes: "All single-agent, which is itself the finding: there is no equivalent standard for evaluating multi-agent systems. Useful as a comparison baseline, and as an example of aggregating heterogeneous environments under a single metric — a decision worth arguing about."
+notes: "All eight environments are single-agent; there is no equivalent standard for evaluating multi-agent systems. Serves as a comparison baseline and as a case of aggregating heterogeneous environments under a single metric."
 relates_to: []
 evaluated_on: []
 added: 2026-08-21

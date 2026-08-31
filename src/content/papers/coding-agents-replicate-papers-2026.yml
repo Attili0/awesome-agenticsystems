@@ -15,8 +15,8 @@ infra: [sandbox]
 domain: [science, software-engineering]
 
 status: read
-tldr: "A replication workflow implemented as a coding-agent skill, where each paper claim becomes a recorded target and completion depends on workspace evidence passing validation checks rather than on the agent declaring it is done."
-notes: "The design move worth stealing is making the completion gate external to the agent's final message. Even so, all twelve runs pass the gate while differing in how papers are split into targets and in the rules used to accept evidence \u2014 completion checks bound the failure, they do not make runs comparable."
+tldr: "A replication workflow implemented as a coding-agent skill, where each paper claim becomes a recorded target and completion depends on workspace evidence passing validation checks."
+notes: "The completion gate is external to the agent's final message. Even so, all twelve runs pass the gate while differing in how papers are split into targets and in the rules used to accept evidence. Completion checks bound the failure; they do not make runs comparable."
 relates_to: []
 evaluated_on: []
 added: 2026-08-24

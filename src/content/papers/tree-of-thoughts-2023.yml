@@ -17,8 +17,8 @@ infra: []
 domain: [general]
 
 status: read
-tldr: "Explores several reasoning paths in parallel and prunes them with self-evaluation, instead of committing to a single linear chain."
-notes: "Introduces per-task variable compute cost, which breaks benchmark comparisons that assume one call per instance."
+tldr: "Explores several reasoning paths in parallel and prunes them with self-evaluation."
+notes: "Introduces per-task variable compute cost. Benchmark comparisons that assume one call per instance no longer hold."
 relates_to: [react-2022]
 evaluated_on: []
 added: 2026-08-21

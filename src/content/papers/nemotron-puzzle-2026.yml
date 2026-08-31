@@ -16,7 +16,7 @@ domain: [general]
 
 status: read
 tldr: "A compressed hybrid-MoE variant tuned for interactive serving, roughly doubling server throughput at matched user throughput and raising 1M-token concurrency from one request to eight."
-notes: "Boundary case for this collection: the contribution is model compression, not agent design, and it is filed under engineering only because long-context concurrency is what makes long agent runs affordable. If the scope line moves, this is the first record to reconsider."
+notes: "Boundary case for this collection: the contribution is model compression, and it is filed under engineering only because long-context concurrency makes long agent runs affordable. If the scope changes, this is the first record to reconsider."
 relates_to: []
 evaluated_on: []
 added: 2026-08-24

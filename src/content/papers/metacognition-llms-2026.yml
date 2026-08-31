@@ -16,8 +16,8 @@ domain: [general]
 
 featured: true
 status: read
-tldr: "A survey of metacognition in LLMs: how it is measured, how it can be elicited or improved, and where the evidence for it is currently thin."
-notes: "Useful for keeping self-monitoring distinct from self-correction. An agent that revises its answer is not necessarily one that knows when it is likely to be wrong, and the benchmarks for the second are much weaker than for the first."
+tldr: "A survey of metacognition in LLMs: how it is measured, how it can be elicited or improved, and where the evidence for it is limited."
+notes: "Separates self-monitoring from self-correction. An agent that revises its answer does not necessarily estimate when its output is wrong, and the benchmarks for the second are weaker than for the first."
 relates_to: []
 evaluated_on: []
 added: 2026-08-24

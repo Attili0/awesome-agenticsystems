@@ -15,8 +15,8 @@ infra: []
 domain: [general]
 
 status: read
-tldr: "Five domains of 100 interconnected subtasks ordered by difficulty, built to test whether agents actually consolidate reusable skills rather than just adapting to recent context."
-notes: "The control is the point: in-context learning performs comparably to explicit skill maintenance on average, which suggests much of the apparent skill evolution is just adaptation to prior context. Weaker models accumulate larger and more fragmented skill collections."
+tldr: "Five domains of 100 interconnected subtasks ordered by difficulty, built to separate skill consolidation from adaptation to recent context."
+notes: "In-context learning performs comparably to explicit skill maintenance on average. The measured skill evolution may therefore be adaptation to prior context. Weaker models accumulate larger and more fragmented skill collections."
 relates_to: [reflexion-2023]
 evaluated_on: []
 added: 2026-08-24

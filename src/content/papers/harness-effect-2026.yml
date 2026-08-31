@@ -17,7 +17,7 @@ domain: [business]
 featured: true
 status: read
 tldr: "Holds six models constant and swaps only the orchestration layer, cutting cost per task 41% and tokens per task 38% at parity quality."
-notes: "The controlled swap is what makes this citable: on this workload the orchestration layer moved cost more than the entire spread of the model menu did. The reported correlation between a model's gain and its baseline strength (r=0.99, n=6) is on six points and should be read as a direction, not a law."
+notes: "On this workload the orchestration layer moved cost more than the spread across the six models did. The reported correlation between a model's gain and its baseline strength (r=0.99, n=6) rests on six points."
 relates_to: []
 evaluated_on: []
 added: 2026-08-24

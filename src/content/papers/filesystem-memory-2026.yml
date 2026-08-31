@@ -15,8 +15,8 @@ infra: [sandbox]
 domain: [general]
 
 status: read
-tldr: "Studies the de facto default for agent memory \u2014 a directory of markdown files the agent maintains itself \u2014 across memory shape, stream scale and tool harness."
-notes: "Two results worth arguing with. Organisation buys search economy, roughly halving retrieval cost, but no measured agent converts organisation into better answers. And changing only the tool set reshapes the store as strongly as changing the model, which makes the harness a variable in memory research rather than a constant."
+tldr: "Studies the de facto default for agent memory, a directory of markdown files the agent maintains itself, across memory shape, stream scale and tool harness."
+notes: "Organization roughly halves retrieval cost, and no measured agent converts organization into higher answer accuracy. Changing only the tool set reshapes the store as much as changing the model. The harness is therefore a variable in memory research."
 relates_to: [generative-agents-2023]
 evaluated_on: []
 added: 2026-08-24

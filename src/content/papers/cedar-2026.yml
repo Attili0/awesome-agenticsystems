@@ -15,8 +15,8 @@ infra: [sandbox]
 domain: [science]
 
 status: read
-tldr: "Runs Monte Carlo Tree Search where an LLM Judge scores emergent behaviour and an LLM Editor proposes variants, searching for complex systems that meet a stated behavioural goal."
-notes: "The Judge-as-fitness-function and Editor-as-variation-operator pairing makes this a generate-and-evaluate loop in the evolutionary sense. Filed under reasoning-planning because the contribution is the search procedure; the two LLM roles are recorded as level: multi-agent."
+tldr: "Runs Monte Carlo Tree Search where an LLM Judge scores emergent behavior and an LLM Editor proposes variants, searching for complex systems that meet a stated behavioral goal."
+notes: "The Judge-as-fitness-function and Editor-as-variation-operator pairing makes this a generate-and-evaluate loop in the evolutionary sense. Filed under reasoning-planning because the contribution is the search procedure; the two LLM roles are recorded as scale: multi-agent."
 relates_to: [tree-of-thoughts-2023]
 evaluated_on: []
 added: 2026-08-24

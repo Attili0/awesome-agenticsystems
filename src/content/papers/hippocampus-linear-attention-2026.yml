@@ -16,7 +16,7 @@ domain: [general]
 
 status: read
 tldr: "Gives linear attention a bounded exact KV cache alongside its compressive recurrent state, so associations that do not survive compression are still recallable."
-notes: "Architecture-level memory rather than agent-level: the mechanism sits inside the model, not in a harness around it. Useful as the substrate end of the memory area \u2014 the counterpart to filesystem-memory-2026 at the other extreme."
+notes: "The mechanism sits inside the model. It occupies the substrate end of the memory area, with filesystem-memory-2026 at the other end."
 relates_to: []
 evaluated_on: []
 added: 2026-08-24

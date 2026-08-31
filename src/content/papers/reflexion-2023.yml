@@ -18,7 +18,7 @@ domain: [general]
 
 status: read
 tldr: "Turns the feedback from a failed attempt into text and stores it in episodic memory to condition the retry, without updating weights."
-notes: "A clear case where the unit of evaluation is not the attempt but the sequence of attempts. A benchmark measuring only pass@1 does not capture what this method contributes. Mind the boundary: this is self-correction within an episode, not self-evolution — the learning is discarded when the task ends."
+notes: "The unit of evaluation is the sequence of attempts, so a benchmark measuring only pass@1 does not capture what this method contributes. The mechanism is self-correction within an episode: the learning is discarded when the task ends."
 relates_to: [react-2022]
 evaluated_on: []
 added: 2026-08-21

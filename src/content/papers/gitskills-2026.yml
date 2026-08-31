@@ -16,7 +16,7 @@ domain: [software-engineering]
 
 status: read
 tldr: "A dataset of 3.8M SKILL.md files mined from 282,200 public repositories, with front matter, folder contents and partial commit history."
-notes: "Skills spread by copying folders, with no registry, no package manager and no checker verifying that the agent picks the right one. That makes their adoption an empirical question, and this is the first dataset that lets anyone ask it."
+notes: "Skills spread by copying folders, with no registry, no package manager and no checker verifying that the agent selects the right one. That makes their adoption an empirical question, and this dataset supplies the material to study it."
 relates_to: []
 evaluated_on: []
 added: 2026-08-24

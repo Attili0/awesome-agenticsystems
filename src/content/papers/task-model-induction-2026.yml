@@ -16,7 +16,7 @@ domain: [gui]
 
 status: read
 tldr: "Recovers the latent tasks inside an unconstrained computer-use trace and induces, for each, a hierarchical objective model paired with a procedure model of the control flow."
-notes: "Interesting for treating passively recorded human work as the training signal, and for insisting the output be symbolic and auditable rather than a step-level summary. The disentangling of interleaved concurrent tasks is the hard part it claims to solve."
+notes: "Treats passively recorded human work as the training signal, and constrains the output to be symbolic and auditable. The disentangling of interleaved concurrent tasks is the problem it claims to solve."
 relates_to: []
 evaluated_on: []
 added: 2026-08-24

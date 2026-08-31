@@ -15,8 +15,8 @@ infra: []
 domain: [software-engineering]
 
 status: read
-tldr: "Argues automatic harness evolution must be compared against plain test-time scaling under matched feedback and inference budgets, and finds it does not consistently win or generalise to held-out tasks."
-notes: "Two methodological objections that generalise well past this subfield: an iterative search procedure has to be compared with simple search under a matched budget, and searching and reporting on the same benchmark invites overfitting to that task set."
+tldr: "Argues automatic harness evolution must be compared against test-time scaling under matched feedback and inference budgets, and finds it does not outperform that baseline or generalize to held-out tasks."
+notes: "Two methodological objections that generalize past this subfield: an iterative search procedure has to be compared with simple search under a matched budget, and searching and reporting on the same benchmark overfits to that task set."
 relates_to: [harness-effect-2026]
 evaluated_on: []
 added: 2026-08-24
