@@ -70,6 +70,25 @@ The issue path reaches `triaged`, with no `tldr`, `notes`, `topics` or
 a clone and requires no maintainer status. The issue form omits those fields
 deliberately, since they can only be filled in after reading.
 
+### Existing records
+
+The same path covers a paper already in the collection: an `area` that fits the
+contribution better, missing topics or facets, a `relates_to` link, a `tldr`
+written after reading. Edit the file under `src/content/papers/`, commit it on a
+branch and open a pull request. `validate.yml` runs the checks listed under
+[build validation](./TAXONOMY.md#build-validation) on the pull request, and a
+maintainer reviews it before the merge.
+
+Two constraints apply to such an edit. Raising `status` to `read` requires
+`tldr`, `topics` and `about` in the same commit, and the build names the missing
+field. A `relates_to` link is declared in the newer paper alone; the site
+computes the reverse direction, so adding it by hand duplicates the link.
+
+Reporting a problem without editing the file goes through the *Fix a
+classification* issue template, described under [questions and
+issues](#questions-and-issues). That template records the disagreement on the
+paper; the edit to the record is then made by whoever picks the issue up.
+
 See the [local workflow](./TAXONOMY.md#local-workflow) and the
 [fields of a record](./TAXONOMY.md#fields-of-a-record).
 
@@ -143,6 +162,8 @@ breaks the build, with a message naming the missing field and offering
 
 - **A misclassified paper.** Open an issue with the *Fix a classification*
   template. Disagreement about an area is recorded as signal on the taxonomy.
+  The correction can also arrive as a pull request on the record itself: see
+  [existing records](#existing-records).
 - **A term missing from the vocabulary.** Use the *Propose a taxonomy change*
   template. Adding topics is expected; the criteria are in
   [TAXONOMY.md](./TAXONOMY.md#changing-the-taxonomy).

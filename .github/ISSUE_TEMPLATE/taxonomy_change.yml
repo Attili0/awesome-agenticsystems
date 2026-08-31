@@ -1,15 +1,12 @@
 name: Propose a taxonomy change
-description: Add a topic, add an area, or change how the vocabulary is organised
+description: Add a topic, add an area, or change how the vocabulary is organized
 title: "[Taxonomy]: "
 labels: ["taxonomy"]
 body:
   - type: markdown
     attributes:
       value: |
-        The vocabulary is meant to grow. Adding a **topic** is cheap and
-        expected. Adding an **area** is a structural change and needs an
-        argument. See the criteria in
-        [TAXONOMY.md](https://github.com/juliodosreis/awesome-agenticsystems/blob/main/TAXONOMY.md#changing-the-taxonomy).
+        The vocabulary is meant to grow. Adding a **topic** is expected and needs no argument. Adding an **area** changes the structure and requires one. The criteria are in [TAXONOMY.md](https://github.com/juliodosreis/awesome-agenticsystems/blob/main/TAXONOMY.md#changing-the-taxonomy).
 
   - type: dropdown
     id: kind
@@ -28,7 +25,7 @@ body:
     id: term
     attributes:
       label: The term
-      description: The exact value you would write in a `.yml` file. Lowercase, hyphenated.
+      description: The exact value as it would be written in a `.yml` file. Lowercase, hyphenated.
       placeholder: tool-retrieval
     validations:
       required: true
@@ -38,10 +35,10 @@ body:
     attributes:
       label: Why it is needed
       description: >-
-        The test for a topic is whether you would filter by it **today**: a term
-        that does not separate the papers already in the collection is noise,
-        not vocabulary. So: which existing papers would carry it, and which
-        would not?
+        A topic is tested by whether it serves as a filter **today**. A term
+        that does not separate the papers already in the collection adds no
+        filter. Name the existing papers that would carry it, and the ones
+        that would not.
       placeholder: |
         Would apply to: toolformer-2023, react-2022.
         Would not apply to: metagpt-2023, agentbench-2023.
@@ -56,8 +53,8 @@ body:
       label: Support from the literature
       description: >-
         Required for a new area or a restructure, optional for a topic. The
-        taxonomy's axes come from cited work so that they can be argued with
-        rather than merely preferred — see the bibliography in TAXONOMY.md.
+        axes of the taxonomy come from cited work so that they can be argued
+        with. The bibliography is in TAXONOMY.md.
     validations:
       required: false
 

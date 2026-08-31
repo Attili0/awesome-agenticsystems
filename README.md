@@ -185,7 +185,7 @@ How a system is measured, and how its risk is governed.
 | | Who | How | Resulting status |
 |---|---|---|---|
 | Suggest a paper | Anyone | Issue with 3 fields → reviewed PR | `triaged` — visible on the site |
-| Add and read | Maintainers | Edit the `.yml` directly | `read` — includes `tldr` and `notes` |
+| Add and read | Anyone willing to clone | Edit the `.yml` and open a pull request | `read` — includes `tldr` and `notes` |
 
 ### Issue submission
 
@@ -206,26 +206,6 @@ No cloning, no local scripts.
    **comments the reason on the issue** and labels it `needs-fix` in place of
    opening a broken PR. Close and reopen the issue to retry.
 
-Nothing is merged automatically. The Action opens a pull request; a maintainer
-reviews and merges it.
-
-> **Maintainers: two settings to apply once.**
->
-> 1. Enable *Settings → Actions → General → Workflow permissions → Allow GitHub
->    Actions to create and approve pull requests*. Despite the name, the
->    setting grants the Action permission to **open** a pull request, with no
->    permission to approve or merge. Without it, `issue_ops.yml` fails at the
->    pull request step even when the record is valid.
-> 2. For enforced approval, add a branch protection
->    rule on `main` requiring a pull request and at least one approval. That
->    rule is the mechanism that blocks merging; the setting above does not.
->
-> GitHub does not run `on: pull_request` workflows for pull requests opened by
-> a bot, so `validate.yml` will not appear on them. That is why `issue_ops.yml`
-> runs the build **and** the test suite itself, before opening the pull
-> request: if either fails, no pull request is created and the reason is
-> commented on the issue instead.
-
 ### Direct edit
 
 The issue flow reaches `triaged`: no `tldr`, `notes`, `topics` or
@@ -233,6 +213,10 @@ The issue flow reaches `triaged`: no `tldr`, `notes`, `topics` or
 `.yml` directly. `python scripts/add.py <arxiv-id>` fetches the metadata and
 creates the record in the `captured` state with the classification fields
 commented out.
+
+Editing a record already in the collection follows the same path: change the
+file under `src/content/papers/` and open a pull request. `validate.yml` runs
+the build and the test suite on it.
 
 Incomplete classification does not block a paper. The schema enforces three
 states:
