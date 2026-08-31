@@ -29,9 +29,8 @@ references:
     cite: "Luo et al. (2025). Large Language Model Agent: A Survey on Methodology, Applications and Challenges."
     url: https://arxiv.org/abs/2503.21460
     used_for: >-
-      The construction / collaboration / evolution axis, which is what
-      justifies learning-evolution as an area of its own rather than a
-      subcategory.
+      The construction / collaboration / evolution axis, which supports
+      learning-evolution as an area of its own.
 
   - key: harness-survey
     cite: "From Question Answering to Task Completion: A Survey on Agent System and Harness Design (2026)."
@@ -43,8 +42,7 @@ references:
     url: https://github.com/masamasa59/ai-agent-papers
     used_for: >-
       The grouping of areas into the four navigation layers, and the decision
-      to place multi-agent systems under architecture rather than alongside
-      memory or reasoning.
+      to place multi-agent systems under architecture.
 
 # ---------------------------------------------------------------------------
 # GROUPS — layers above the areas.
@@ -56,18 +54,18 @@ groups:
     label: "Overview"
     blurb: "Where to enter the field."
   capabilities:
-    label: "What an agent can do"
-    blurb: "Agent capabilities: what it can reason about, remember, execute and learn."
+    label: "Agent capabilities"
+    blurb: "What the agent reasons about, stores, executes and learns."
   architecture:
-    label: "How it is built"
-    blurb: "The shape of the system: its inner loop, how many agents it has, and the substrate it runs on."
+    label: "System structure"
+    blurb: "The inner loop of the system, its number of agents, and the substrate it runs on."
   operations:
-    label: "How it is judged and controlled"
-    blurb: "Measurement, risk and governance."
+    label: "Measurement and control"
+    blurb: "How a system is measured, and how its risk is governed."
 
 # ---------------------------------------------------------------------------
-# AREAS — a paper belongs to EXACTLY one.
-# Criterion: "what is the contribution?", not "what does it talk about?".
+# AREAS — a paper belongs to exactly one.
+# Criterion: "what is the contribution?" rather than the subject it covers.
 # What it talks about is carried by topics and the `about` facet, which DO
 # cross areas. The scale of the system is NOT decided here — that is the
 # `scale` facet.
@@ -89,7 +87,7 @@ areas:
   memory:
     group: capabilities
     label: "Memory"
-    blurb: "What the agent remembers and how it retrieves it. Vocabulary taken from CoALA."
+    blurb: "What the agent stores and how it retrieves it. Vocabulary taken from CoALA."
 
   tools-context:
     group: capabilities
@@ -99,27 +97,27 @@ areas:
   learning-evolution:
     group: capabilities
     label: "Learning, skills & self-evolution"
-    blurb: "Changes that persist BETWEEN tasks: skills, experience, tuning. If the learning is discarded when the task ends, it is self-correction and belongs in reasoning-planning."
+    blurb: "Changes that persist between tasks: skills, experience, tuning. Learning discarded when the task ends is self-correction and belongs in reasoning-planning."
 
   architectures:
     group: architecture
     label: "Agent architectures"
-    blurb: "The complete loop of an agent. If the contribution is ONE component (memory, planning, tools), it belongs to that component instead."
+    blurb: "The complete loop of an agent. A contribution covering one component (memory, planning, tools) belongs to that component instead."
 
   coordination:
     group: architecture
     label: "Coordination & organization"
-    blurb: "The mechanisms by which several agents divide work and communicate. Having several agents does NOT put a paper here: that is what scale: multi-agent says. This area is for papers whose contribution IS the coordination mechanism."
+    blurb: "The mechanisms by which several agents divide work and communicate. A system with several agents is recorded as scale: multi-agent, which does not place the paper here. This area holds papers whose contribution is the coordination mechanism itself."
 
   interoperability:
     group: architecture
     label: "Interoperability & protocols"
-    blurb: "Standards that let agents and tools discover each other and talk."
+    blurb: "Standards through which agents and tools locate and communicate with each other."
 
   engineering:
     group: architecture
     label: "Harness, scaffolding & AgentOps"
-    blurb: "The runtime substrate around the model, and how it is operated. A harness does not make the model smarter: it makes its output reliable."
+    blurb: "The runtime substrate around the model, and how it is operated. A harness acts on the reliability of the output, with the model unchanged."
 
   evaluation:
     group: operations
@@ -253,14 +251,14 @@ facets:
 
 facet_blurbs:
   about: >-
-    What the paper is about. Crosses areas on purpose: a coordination paper
-    may declare about: memory.
+    What the paper is about. Crosses areas by design: a coordination paper may
+    declare about: memory.
   scale: >-
-    The scale of the system studied. "multi-agent" goes here — never in the
-    area.
+    The scale of the system studied. "multi-agent" is recorded here and not as
+    an area.
   infra: >-
-    Infrastructure the system uses. If the paper is ABOUT the protocol (mcp,
-    a2a), that is a topic, not infra.
+    Infrastructure the system uses. A paper whose subject is the protocol
+    itself (mcp, a2a) records that as a topic.
   type: "What kind of contribution it is."
   domain: "Where it is applied. Generates the /domains pages."
 
